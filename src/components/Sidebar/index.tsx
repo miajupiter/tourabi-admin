@@ -70,8 +70,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <Link href="/">
           <Image
             width={176}
-            height={32}
-            src={"/images/logo/logo.svg"}
+            height={68}
+            src={"/img/tourabi.svg"}
             alt="Logo"
             priority
           />

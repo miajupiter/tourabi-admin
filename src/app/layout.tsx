@@ -1,24 +1,25 @@
-"use client";
-import "jsvectormap/dist/css/jsvectormap.css";
-import "flatpickr/dist/flatpickr.min.css";
-import "@/css/satoshi.css";
-import "@/css/style.css";
-import React, { useEffect, useState } from "react";
-import Loader from "@/components/common/Loader";
-
+"use client"
+import "jsvectormap/dist/css/jsvectormap.css"
+import "flatpickr/dist/flatpickr.min.css"
+import "@/styles/css/satoshi.css"
+import "@/styles/css/style.css"
+import React, { useEffect, useState } from "react"
+import Loader from "@/components/common/Loader"
+import { useLogin } from "@/lib/useLogin"
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(true);
-
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [loading, setLoading] = useState<boolean>(true)
+  const { token } = useLogin()
   // const pathname = usePathname();
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+    setLoading(false)
+    // setTimeout(() => setLoading(false), 1000);
+  }, [])
 
   return (
     <html lang="en">
@@ -28,5 +29,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  );
+  )
 }
