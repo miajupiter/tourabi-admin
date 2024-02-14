@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react"
 import { redirect, usePathname } from "next/navigation"
-import { useThemeMode } from "@/lib/useThemeMode"
+import { useThemeMode } from "@/hooks/useThemeMode"
 // import { useLogin } from '@/yeni_auth'
 // import { useSession } from 'next-auth/react'
 
@@ -11,18 +11,11 @@ const ClientCommons = () => {
   // const {status}=useLogin()
   const [token, setToken] = useState('')
   const pathName = usePathname()
-  // if((window.localStorage.getItem('token') || '')=='' && !(pathName=='/login' || pathName.startsWith('/signup')) ){
-  //   redirect('/login')
-  //   return
-  // }
-  // console.log('pathname:',usePathname())
-  // console.log('status:',status)
+  
   useThemeMode()
 
-  // const pathname = usePathname()
-  //  CUSTOM THEME STYLE
   useEffect(() => {
-    setToken(localStorage.getItem('token') || '')
+   
     if ((localStorage.getItem('token') || '') == '' && !(pathName == '/login' || pathName.startsWith('/signup'))) {
       redirect('/login')
       return
@@ -42,7 +35,7 @@ const ClientCommons = () => {
     }
   }, [pathName, token])
 
-  return <></>
+  return (<></>)
 }
 
 export default ClientCommons

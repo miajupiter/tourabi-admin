@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import SidebarLinkGroup from "./SidebarLinkGroup";
+import Logo from '../Logo'
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -67,7 +68,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <Link href="/">
+        {/* <Link href="/">
           <Image
             width={176}
             height={68}
@@ -75,8 +76,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             alt="Logo"
             priority
           />
-        </Link>
-
+        </Link> */}
+        <Logo width={176} />
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}

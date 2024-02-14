@@ -1,19 +1,22 @@
-import Calendar from "@/components/Calender";
-import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Calendar from "@/components/Calender"
+import { Metadata } from "next"
+// import DefaultLayout from "@/app/(panel)/layout";
 
 export const metadata: Metadata = {
   title: "Calender | TourAbi - Admin Panel",
   description:
     "This is Calender page for TourAbi Admin Panel",
-};
+}
 
 const CalendarPage = () => {
   return (
-    <DefaultLayout>
+    <>
+      <title>Calender | TourAbi - Admin Panel</title>
+      <meta name="description" content="This is Calender page for TourAbi Admin Panel" />
       <Calendar />
-    </DefaultLayout>
-  );
-};
+    </>
 
-export default CalendarPage;
+  )
+}
+
+export default CalendarPage
