@@ -6,6 +6,11 @@ tailwind nextjs typescript admin template
 
 [🚀 Visit Website](https://tourabi.net)
 
+Forked from [TailAdmin/free-nextjs-admin-dashboard](https://github.com/TailAdmin/free-nextjs-admin-dashboard)
+
+✈️ [TailAdmin Free Demo](https://nextjs-free-demo.tailadmin.com/)
+✈️ [TailAdmin Pro Demo](https://nextjs-demo.tailadmin.com/)
+
 ## Installation
 
 Here are the steps you need to follow to install the dependencies.
@@ -23,6 +28,23 @@ Here are the steps you need to follow to install the dependencies.
   yarn dev
   ```
 
+## X-Dama
+
+```bash
+⬜⬜⬜⬜⬜⬜⬜⬜
+🔵🔵🔵🔵🔵🔵🔵🔵
+🔵🔵🔵🔵🔵🔵⬜🔵
+⬜⬜⬜⬜⬜⬜⬜🔵
+⬜⬜⬜🔴⬜⬜🔴⬜
+🔴🔴🔴⬜🔴🔴⬜🔴
+🔴🔴🔴🔴🔴🔴🔴🔴
+⬜⬜⬜⬜⬜⬜⬜⬜
+```
+
 ## License
 
 We 💜 [MIT License](./LICENSE)
+
+---
+
+## 🙈🙉🙊📟📃📄🎊

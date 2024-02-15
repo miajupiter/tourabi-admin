@@ -1,15 +1,17 @@
 "use client"
 
+import "@fortawesome/fontawesome-free/css/all.min.css"
+import "jsvectormap/dist/css/jsvectormap.css"
 import "jsvectormap/dist/css/jsvectormap.css"
 import "flatpickr/dist/flatpickr.min.css"
 import "@/styles/css/satoshi.css"
 import "@/styles/css/style.css"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Viewport } from 'next'
-// import Loader from "@/components/common/Loader"
-import { useLogin } from "@/hooks/useLogin"
+// import { useLogin } from "@/hooks/useLogin"
 import ClientCommons from './ClientCommons'
-// import Head from 'next/head'
+import Head from 'next/head'
+import aliabiConfig from 'aliabi'
 
 export const viewport: Viewport = {
   themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#fff' }],
@@ -22,35 +24,38 @@ export const viewport: Viewport = {
   interactiveWidget: 'overlays-content'
 }
 
+// export const metadata: Metadata = {
+//   title: "TourAbi Admin Panel",
+//   description: "TourAbi Admin Panel - The world&apos;s best tour portal",
+//   icons: [{
+//     url: "/favicon.ico",
+//     rel: "icon",
+//     type: "image/x-icon",
+//     sizes: "48x48",
+//   }]
+// }
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   // const [sidebarOpen, setSidebarOpen] = useState(false)
-  // const [loading, setLoading] = useState<boolean>(true)
-  // const { token } = useLogin()
-  // const pathname = usePathname();
-
-  // useEffect(() => {
-  //   // setLoading(false)
-  //   // setTimeout(() => setLoading(false), 1000);
-  // }, [])
-
+ 
+ 
   return (
-    <html lang="en">
-      <head>
-        <title>TourAbi Admin Panel</title>
-        <meta name='description' content='TourAbi Admin Panel - The world&apos;s best tour portal' />
+    <html lang="en" className='dark'>
+      <Head>
+        <title>{aliabiConfig.title}</title>
+        <meta name='description' content={aliabiConfig.meta.description} />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48" />
-      </head>
-      <body suppressHydrationWarning={true} 
-        className='bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200'>
+      </Head>
+      <body suppressHydrationWarning={true}
+        className='bg-white dark:bg-neutral-900 text-base  text-neutral-900 dark:text-neutral-200'>
+        <main className="dark:bg-boxdark-2 dark:text-bodydark">
           <ClientCommons />
           {children}
-        {/* <div className="dark:bg-boxdark-2 dark:text-bodydark">
-          {loading ? <Loader /> : children}
-        </div> */}
+        </main>
       </body>
     </html>
   )

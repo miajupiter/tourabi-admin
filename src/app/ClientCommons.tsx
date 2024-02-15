@@ -1,23 +1,31 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { redirect, usePathname } from "next/navigation"
+import { RedirectType, redirect, usePathname } from "next/navigation"
 import { useThemeMode } from "@/hooks/useThemeMode"
-// import { useLogin } from '@/yeni_auth'
-// import { useSession } from 'next-auth/react'
+import { useLogin } from '@/hooks/useLogin'
+import aliabiConfig from 'aliabi'
 
 const ClientCommons = () => {
-  // const {data:session, status} = useSession()
-  // const {status}=useLogin()
-  const [token, setToken] = useState('')
+  // const { isLoggedIn,token } = useLogin()
   const pathName = usePathname()
-  
+
+
   useThemeMode()
 
   useEffect(() => {
-   
-    if ((localStorage.getItem('token') || '') == '' && !(pathName == '/login' || pathName.startsWith('/signup'))) {
-      redirect('/login')
+    // console.log('CliCom isLoggedIn:', isLoggedIn)
+    // console.log('CliCom token:', token)
+    // console.log('CliCom pathName:', pathName)
+    const isLoggedIn =localStorage.getItem('token')?true:false
+
+    if (!isLoggedIn && !(pathName == '/login' || pathName=='/signup')) {
+
+      redirect('/login',RedirectType.push)
+
+      return
+    } else if (isLoggedIn && (pathName == '/' || pathName=='/login' || pathName=='/signup')) {
+      redirect('/dashboard',RedirectType.push)
       return
     }
     const $body = document.querySelector("body")
@@ -25,17 +33,16 @@ const ClientCommons = () => {
 
     let newBodyClass = ""
 
-
     newBodyClass = "theme-purple-blueGrey"
-
 
     newBodyClass && $body.classList.add(newBodyClass)
     return () => {
       newBodyClass && $body.classList.remove(newBodyClass)
     }
-  }, [pathName, token])
+    
+  }, [pathName])
 
-  return (<></>)
+  return (<>{aliabiConfig.hiddenSignature()}</>)
 }
 
 export default ClientCommons

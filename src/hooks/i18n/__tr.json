@@ -39,5 +39,7 @@
   "swift_code":"Swift kod",
   "ethereum_wallet":"Ethereum cüzdan",
   "bitcoin_wallet":"Bitcoin cüzdan",
-  "email_already_exists":"E-posta zaten mevcut"
+  "email_already_exists":"E-posta zaten mevcut",
+  "login_page":"Giriş sayfası",
+  "access_denied":"Erişim engellendi"
 }

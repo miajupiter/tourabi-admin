@@ -1,4 +1,4 @@
-import ECommerce from "@/components/Dashboard/E-commerce"
+import ECommerce from "@/widgets/Dashboard/E-commerce"
 import { Metadata } from "next"
 import Head from 'next/head'
 // import DefaultLayout from "@/app/(panel)/layout";

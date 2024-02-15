@@ -41,7 +41,8 @@ const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(
       <>
         {id &&
           <div key={key || ('div-' + id)} className={`relative ${className}`}>
-            <input type={type} id={id} className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-[4px] border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer ${inputClassName}`}
+            {/* <input type={type} id={id} className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-[4px] border-1 border-neutral-600-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer ${inputClassName}`} */}
+            <input type={type} id={id} className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-white outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${inputClassName}`}
               placeholder={' '}
               onChange={onChange}
               {...args} />

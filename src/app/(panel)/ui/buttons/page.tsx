@@ -1,5 +1,5 @@
 import Link from "next/link"
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
+import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import { Metadata } from "next"
 import DefaultLayout from "@/app/(panel)/layout"
 

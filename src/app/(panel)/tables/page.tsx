@@ -1,7 +1,7 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
-import TableOne from "@/components/Tables/TableOne"
-import TableThree from "@/components/Tables/TableThree"
-import TableTwo from "@/components/Tables/TableTwo"
+import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
+import TableOne from "@/widgets/Tables/TableOne"
+import TableThree from "@/widgets/Tables/TableThree"
+import TableTwo from "@/widgets/Tables/TableTwo"
 
 import { Metadata } from "next"
 // import DefaultLayout from "@/app/(panel)/layout";

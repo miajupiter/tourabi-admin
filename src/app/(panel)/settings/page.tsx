@@ -1,4 +1,4 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import { Metadata } from "next";
 // import DefaultLayout from "@/app/(panel)/layout";

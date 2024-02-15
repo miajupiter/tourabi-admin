@@ -15,8 +15,17 @@ function useLocalStorage<T>(
       if (typeof window !== "undefined") {
         // browser code
         const item = window.localStorage.getItem(key)
-        // Parse stored json or if none return initialValue
-        return item ? JSON.parse(item) : initialValue
+        if (item == null) {
+          return initialValue
+        }
+
+        try {
+          const result = JSON.parse(item)
+          return result
+        } catch (err: any) {
+          return item
+        }
+        // return item ? JSON.parse(item) : initialValue
       }
     } catch (error) {
       // If error also return initialValue
@@ -35,8 +44,13 @@ function useLocalStorage<T>(
           : storedValue
       // Save state
       if (typeof window !== "undefined") {
-        // browser code
-        window.localStorage.setItem(key, JSON.stringify(valueToStore))
+        if (typeof valueToStore == 'string') {
+          window.localStorage.setItem(key, valueToStore)
+        } else if (typeof valueToStore == 'number' || typeof valueToStore == 'boolean') {
+          window.localStorage.setItem(key, valueToStore.toString())
+        } else {
+          window.localStorage.setItem(key, JSON.stringify(valueToStore))
+        }
       }
     } catch (error) {
       // A more advanced implementation would handle the error case

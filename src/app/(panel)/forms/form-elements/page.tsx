@@ -1,5 +1,5 @@
 import React from "react";
-import FormElements from "@/components/FormElements";
+import FormElements from "@/widgets/FormElements";
 import { Metadata } from "next";
 // import DefaultLayout from "@/app/(panel)/layout";
 

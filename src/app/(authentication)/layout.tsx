@@ -1,5 +1,5 @@
 "use client"
-import DarkModeSwitcher from '@/components/Header/DarkModeSwitcher'
+import DarkModeSwitcher from '@/components/DarkModeSwitcher'
 import React, { useState, ReactNode } from "react"
 
 export default function LoginLayout({
@@ -15,7 +15,7 @@ export default function LoginLayout({
             <DarkModeSwitcher />
           </div>
         </div>
-        <div className="mx-2 md:mx-auto max-w-screen-3xl my-auto p-4 md:p-6 2xl:p-10">
+        <div className="mx-2 md:mx-auto max-w-screen-3xl my-auto p-4 py-18">
           {children}
         </div>
       </main>
