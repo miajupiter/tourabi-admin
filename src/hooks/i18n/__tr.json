@@ -41,5 +41,9 @@
   "bitcoin_wallet":"Bitcoin cüzdan",
   "email_already_exists":"E-posta zaten mevcut",
   "login_page":"Giriş sayfası",
-  "access_denied":"Erişim engellendi"
+  "access_denied":"Erişim engellendi",
+  "users":"Kullanıcılar",
+  "new_item": "Yeni öğe",
+  "new_tour": "Yeni tur",
+  "edit_tour": "Turu düzelt"
 }

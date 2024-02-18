@@ -41,5 +41,9 @@
   "bitcoin_wallet":"Bitcoin wallet",
   "email_already_exists":"Email address already exists",
   "login_page":"Login page",
-  "access_denied":"Access denied"
+  "access_denied":"Access denied",
+  "users":"Users",
+  "new_item": "New item",
+  "new_tour": "New tour",
+  "edit_tour": "Edit tour"
 }

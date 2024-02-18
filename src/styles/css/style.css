@@ -10,18 +10,20 @@
     }
 }
 
-@layer components {
-}
+@layer components {}
 
 @layer utilities {
+
     /* Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
-        display: none;
+        display:none;
     }
 
     .no-scrollbar {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style:none;
+        /* IE and Edge */
+        scrollbar-width:none;
+        /* Firefox */
     }
 
     .chat-height {
@@ -35,11 +37,11 @@
 
 /* third-party libraries CSS */
 
-.tableCheckbox:checked ~ div span {
+.tableCheckbox:checked~div span {
     @apply opacity-100;
 }
 
-.tableCheckbox:checked ~ div {
+.tableCheckbox:checked~div {
     @apply border-primary bg-primary;
 }
 
@@ -142,7 +144,7 @@ span.flatpickr-weekday,
 }
 
 .flatpickr-day.inRange {
-    box-shadow: -5px 0 0 #f3f4f6, 5px 0 0 #f3f4f6 !important;
+    box-shadow:-5px 0 0 #f3f4f6, 5px 0 0 #f3f4f6 !important;
     @apply dark:!shadow-7;
 }
 
@@ -186,14 +188,14 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-    background: #3c50e0;
+    background:#3c50e0;
     @apply !border-primary !bg-primary hover:!border-primary hover:!bg-primary;
 }
 
-.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
-.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
-.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-    box-shadow: -10px 0 0 #3c50e0;
+.flatpickr-day.selected.startRange+.endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.startRange.startRange+.endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.endRange.startRange+.endRange:not(:nth-child(7n + 1)) {
+    box-shadow:-10px 0 0 #3c50e0;
 }
 
 .map-btn .jvm-zoom-btn {
@@ -212,20 +214,20 @@ span.flatpickr-weekday,
     @apply !right-0;
 }
 
-.taskCheckbox:checked ~ .box span {
+.taskCheckbox:checked~.box span {
     @apply opacity-100;
 }
 
-.taskCheckbox:checked ~ p {
+.taskCheckbox:checked~p {
     @apply line-through;
 }
 
-.taskCheckbox:checked ~ .box {
+.taskCheckbox:checked~.box {
     @apply border-primary bg-primary dark:border-primary;
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {
-    background: transparent;
+    background:transparent;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
@@ -233,11 +235,11 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 20px;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:20px;
 }
 
 [x-cloak] {
-    display: none !important;
+    display:none !important;
 }

@@ -1,7 +1,5 @@
 "use client"
-
 import "@fortawesome/fontawesome-free/css/all.min.css"
-import "jsvectormap/dist/css/jsvectormap.css"
 import "jsvectormap/dist/css/jsvectormap.css"
 import "flatpickr/dist/flatpickr.min.css"
 import "@/styles/css/satoshi.css"

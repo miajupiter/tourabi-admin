@@ -5,12 +5,15 @@ const config: Config = {
   content: [
     "./src/**/*.{ts,jsx,tsx,mdx}",
     // "./src/components/**/*.{ts,jsx,tsx,mdx}",
+    // "./src/widgets/**/*.{ts,jsx,tsx,mdx}",
     // "./src/app/**/*.{ts,jsx,tsx,mdx}",
   ],
   darkMode: "class",
+  
   theme: {
+    
     fontFamily: {
-      satoshi: ["Satoshi", "sans-serif"],
+      satoshi: ["Satoshi", "sans-serif"]
     },
     screens: {
       "2xsm": "375px",

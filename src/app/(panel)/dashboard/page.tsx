@@ -1,19 +1,20 @@
+"use client"
+import React, {useEffect} from 'react'
 import ECommerce from "@/widgets/Dashboard/E-commerce"
-import { Metadata } from "next"
 import Head from 'next/head'
-// import DefaultLayout from "@/app/(panel)/layout";
+import { useLanguage } from '@/hooks/i18n'
+import aliabiConfig from 'aliabi'
 
-// export const metadata: Metadata = {
-//   title: "Dashboard | TourAbi - Admin Panel",
-//   description:
-//     "This is  Dashboard page for TourAbi Admin Panel",
-// };
 
 const DashboardPage = () => {
+  const {t}=useLanguage()
+  useEffect(()=>{
+
+  },[t])
   return (
     <>
       <Head>
-        <title content='Dashboard | TourAbi - Admin Panel' />
+        <title content={`Dashboard | ${aliabiConfig.title}`} />
         <meta name='description' content='This is  Dashboard page for TourAbi Admin Panel' />
       </Head>
       <ECommerce />

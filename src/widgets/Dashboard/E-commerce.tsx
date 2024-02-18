@@ -7,6 +7,7 @@ import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import MapOne from "../Maps/MapOne";
+import TableTwo from '../Tables/TableTwo'
 
 const ECommerce: React.FC = () => {
   return (
@@ -102,9 +103,9 @@ const ECommerce: React.FC = () => {
         <ChartOne />
         <ChartTwo />
         <ChartThree />
-        <MapOne />
+        {/* <MapOne /> */}
         <div className="col-span-12 xl:col-span-8">
-          <TableOne />
+          <TableTwo />
         </div>
         <ChatCard />
       </div>
