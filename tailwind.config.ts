@@ -9,9 +9,7 @@ const config: Config = {
     // "./src/app/**/*.{ts,jsx,tsx,mdx}",
   ],
   darkMode: "class",
-  
   theme: {
-    
     fontFamily: {
       satoshi: ["Satoshi", "sans-serif"]
     },
@@ -333,6 +331,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography')
+  ],
 }
 export default config

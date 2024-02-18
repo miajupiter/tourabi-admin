@@ -1,0 +1,42 @@
+/* .mdxeditor h1 {
+  font-size: xx-large;
+}
+
+.mdxeditor h2 {
+  font-size: x-large;
+}
+
+.mdxeditor h3 {
+  font-size: large;
+} */
+
+.mdxeditor {
+  min-width: 100%;
+}
+.mdxeditor .mdxeditor-toolbar {
+  background: transparent;
+  border:thin solid cornflowerblue;
+  border-radius: 5px;
+}
+/* .mdxeditor .mdxeditor-rich-text-editor, */
+.mdxeditor .mdxeditor-root-contenteditable {
+  border-top:none;
+  border-left:thin solid cornflowerblue;
+  border-right:thin solid cornflowerblue;
+  border-bottom:thin solid cornflowerblue;
+  border-radius: 5px;
+}
+/*
+.mdxeditor .mdxeditor-root-contenteditable a{
+  color:blue;
+}
+
+.mdxeditor .mdxeditor-root-contenteditable a:hover{
+  color:rgba(0, 0, 255, 0.534);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mdxeditor .mdxeditor-root-contenteditable p::before{
+  white-space:pre-line ;
+} */

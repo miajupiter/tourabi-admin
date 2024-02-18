@@ -3,10 +3,18 @@
 const withMDX=require('@next/mdx')
 
 const nextConfig = {
+  transpilePackages: ['@mdxeditor/editor'],
   reactStrictMode: true,
   output: "standalone",
   poweredByHeader: false,
-  pageExtensions: ['ts', 'tsx', 'jsx', 'mdx']
+  pageExtensions: ['ts', 'tsx', 'jsx', 'mdx'],
+  webpack: (config) => {
+    // this will override the experiments
+    config.experiments = { ...config.experiments, topLevelAwait: true }
+    // this will just update topLevelAwait property of config.experiments
+    // config.experiments.topLevelAwait = true
+    return config
+  },
 }
 
 const withPWA = require("next-pwa")({

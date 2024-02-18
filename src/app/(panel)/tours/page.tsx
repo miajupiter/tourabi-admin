@@ -100,15 +100,19 @@ const ToursPage = () => {
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark">
                       <div className="flex justify-center items-center space-x-3.5">
-                        <button className="hover:text-primary">
+                      
+                        <Link className="hover:text-amber-700"
+                          title={t('view_tour')}
+                          href={`/tours/view/${item._id}`}
+                        >
                           <i className="fa-regular fa-eye"></i>
-                        </button>
+                        </Link>
                         <button className="hover:text-primary">
                           <i className="fa-regular fa-trash-can"></i>
                         </button>
                         <Link className="hover:text-primary"
                           title={t('edit_tour')}
-                          href={`/tours/${item._id}`}
+                          href={`/tours/edit/${item._id}`}
                         >
                           <i className="fa-regular fa-pen-to-square"></i>
                         </Link>
