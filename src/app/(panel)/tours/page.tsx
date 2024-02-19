@@ -100,7 +100,7 @@ const ToursPage = () => {
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark">
                       <div className="flex justify-center items-center space-x-3.5">
-                      
+
                         <Link className="hover:text-amber-700"
                           title={t('view_tour')}
                           href={`/tours/view/${item._id}`}
@@ -172,9 +172,9 @@ const ToursPage = () => {
         <meta name="description" content="This is Tours page for TourAbi Admin Panel" />
       </Head>
       <PageHeader pageTitle={t('Tours')} breadcrumbList={[
-        {href:'/dashboard',pageTitle:'Dashboard'},
-        {href:'/tours',pageTitle:'Tours'}
-      ]}  />
+        { href: '/dashboard', pageTitle: 'Dashboard' },
+        { href: '/tours', pageTitle: 'Tours' }
+      ]} />
       <div className="flex flex-col gap-10">
         {TourList()}
         <div className='flex mt-4 justify-center items-center'>

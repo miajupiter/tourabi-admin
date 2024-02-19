@@ -9,7 +9,7 @@ import { ChevronDown } from '@/components/ChevronDown'
 interface FormCardProps {
   id: string
   title: string
-  icon?: React.Component
+  icon?: any
   defaultOpen?: boolean
   // formCardOpen: boolean
   // setFormCardOpen?: (arg: boolean) => void
@@ -27,17 +27,17 @@ const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardPro
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [])
+  // }, [])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [])
+  // }, [])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [])
+  // }, [])
 
 
   return (
@@ -48,7 +48,7 @@ const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardPro
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <Link
                 href="#"
-                className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
+                className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-medium te11xt-bod11ydark1 duration-0 ease-in-out bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-meta-4`}
                 onClick={(e) => {
                   e.preventDefault()
                   handleClick()
@@ -56,10 +56,10 @@ const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardPro
                 }}
               >
 
-                <label className="mb-3 block text-xl font-medium text-black dark:text-white space-x-2">
-                  {!icon && <i className="fa-solid fa-circle"></i>}
+                <label className="block text-lg text-black dark:text-white space-x-3">
+                  {!icon && <><i className="fa-regular fa-circle"></i></>}
                   {icon && <>{icon}</>}
-                  {title}
+                  <span>{title}</span>
                 </label>
                 <ChevronDown open={open} />
               </Link>

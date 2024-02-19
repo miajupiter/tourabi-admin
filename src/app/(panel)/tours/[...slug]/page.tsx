@@ -9,6 +9,9 @@ import PageHeader from '@/app/(panel)/PageHeader'
 import { AliAbiMDXEditor } from '@/widgets/Editor/AliAbiMDXEditor'
 import Link from 'next/link'
 import FormCard from '@/components/FormCard'
+import "./TourPageDetail.css"
+import useNcId from '@/hooks/useNcId'
+import { v4 } from 'uuid'
 
 export interface TourPageDetailProps {
   params: { slug: string[] }
@@ -49,12 +52,13 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
 
   const [item, setItem] = useState<TourItemType>()
-  const [itemOld, setItemOld] = useState<TourItemType>()
+  // const [itemOld, setItemOld] = useState<TourItemType>()
   const [pullData, setPullData] = useState(false)
   const [formStatus, setFormStatus] = useState(FormStatus.new)
   const [formTitle, setFormTitle] = useState('')
   const [focusText, setFocusText] = useState('')
   const [focusMarkDown, setFocusMarkDown] = useState('')
+  const [deletingIndex, setDeletingIndex] = useState(-1)
 
   const getItem = (itemId: string) => {
     const token = localStorage.getItem('token') || ''
@@ -83,7 +87,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
             images: res.images,
           } as TourItemType
           setItem(tour)
-          setItemOld(item)
+          // setItemOld(item)
         }
       }).catch(console.error)
 
@@ -113,7 +117,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       if (params.slug[0] == 'new') {
         setFormStatus(FormStatus.new)
         setItem({ ...item, title: '' } as TourItemType)
-        setItemOld(item)
+        // setItemOld(item)
         setFormTitle(t('New tour'))
       } else if (params.slug[0] == 'edit') {
         setFormStatus(FormStatus.edit)
@@ -125,9 +129,14 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t, item, itemOld, pullData, formStatus, formTitle])
+  }, [t, item])
+
+  // }, [t, item, pullData, formStatus, formTitle, deletingIndex])
   // }, [t, item, pullData, formStatus, formTitle, partialData,countDown,sayac])
-  const { } = useRef()
+
+  useEffect(() => {
+  }, [deletingIndex])
+
   return (
     <>
 
@@ -140,73 +149,8 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       {item &&
         <div className="grid grid-cols-1 gap-9 ">
           <div className="flex flex-col gap-9">
-            <FormCard id="tours-travelplan" title={t('Travel plan')} defaultOpen={true}>
-              <div className="grid grid-cols-1 gap-5.5 p-5">
-                  <div >
-                    {
-                      item.travelPlan && item.travelPlan.map((plan: any, index) =>
-                        <div key={index} className={`w-full mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'}`}>
-                          <div className='flex items-start'>
-                            <label className="w-20 mt-2 text-base">
-                              Day {index + 1}:
-                            </label>
-                            <div className='w-full'>
-                              <input
-                                type="text"
-                                placeholder={t('Title')}
-                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-transparent dark:text-white dark:focus:border-primary"
-                                defaultValue={plan.title}
-                                onFocus={(e) => setFocusText(e.target.value)}
-                                onChange={(e) => {
-                                  if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].title != undefined) {
-                                    item.travelPlan[index].title = e.target.value
-                                    setItem(item)
-                                  }
-                                }}
-                                onBlur={(e) => {
-                                  if (focusText != e.target.value) {
-                                    // setItemOld(item)
-                                    saveItem({ travelPlan: item.travelPlan })
-                                  }
-                                }}
-                              />
-                              <textarea
-                                rows={4}
-                                placeholder={t('Description')}
-                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
-                                defaultValue={plan.description}
-                                onFocus={(e) => setFocusText(e.target.value)}
-                                onChange={(e) => {
-                                  if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].description != undefined) {
-                                    item.travelPlan[index].description = e.target.value
-                                    setItem(item)
-                                  }
-                                }}
-                                onBlur={(e) => {
 
-                                  if (focusText != e.target.value) {
-                                    // setItemOld(item)
-                                    saveItem({ travelPlan: item.travelPlan })
-                                  }
-                                }}
-                              ></textarea>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                  </div>
-                <div>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center justify-center bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-                    onClick={(e) => alert('Yeni gezi adımı')}
-                  >
-                    {t('Add Travel Plan')}
-                  </Link>
-                </div>
-              </div>
 
-            </FormCard>
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex flex-col gap-5.5 p-5">
                 <div>
@@ -243,15 +187,11 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                       if (e.target.value != focusText) {
                         saveItem({ places: item.places })
                       }
-                      // if (item.places != itemOld?.places) {
-                      //   setItemOld({ ...itemOld, places: item.places })
-                      //   saveItem({ places: item.places })
-                      // }
                     }}
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     {t('Description')}
                   </label>
@@ -265,67 +205,202 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                         saveItem({ description: item.description })
                       }
                     }}
-                  // onChange={(markdown) => setItem({ ...item, description: markdown })}
-                  // onBlur={(e) => {
-                  //   if (item.description != itemOld?.description) {
-                  //     setItemOld({ ...itemOld, description: item.description })
-                  //     saveItem({ description: item.description })
-                  //   }
-                  // }}
                   />
 
-                </div>
+                </div> */}
 
 
               </div>
             </div>
+            <FormCard id="tours-description" title={t('Description')}
+              defaultOpen={false}
+            >
+              <div className="grid grid-cols-1  gap-5.5 p-5">
+                {/* <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                  {t('Description')}
+                </label> */}
+                <AliAbiMDXEditor markdown={item.description || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={(e) => {
+                    if (focusMarkDown != item?.description) {
+                      setItem({ ...item, description: focusMarkDown })
+                      setFocusMarkDown('')
+                      saveItem({ description: item.description })
+                    }
+                  }}
+                />
+              </div>
+            </FormCard>
 
-            <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 p-5">
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    {t('inclusions')}
-                  </label>
-                  <AliAbiMDXEditor markdown={item.inclusions || ''}
-                    readOnly={formStatus == FormStatus.view}
-                    onChange={(markdown) => setFocusMarkDown(markdown)}
-                    onBlur={(e) => {
-                      // if (item.inclusions != itemOld?.inclusions) {
-                      if (focusMarkDown != item?.inclusions) {
-                        setItem({ ...item, inclusions: focusMarkDown })
-                        // setItemOld({ ...itemOld, inclusions: item.inclusions })
-                        setFocusMarkDown('')
-                        saveItem({ inclusions: item.inclusions })
-                      }
-                    }}
-                  />
-                </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    {t('exclusions')}
-                  </label>
-                  <AliAbiMDXEditor markdown={item.exclusions || ''}
-                    readOnly={formStatus == FormStatus.view}
-                    onChange={(markdown) => setFocusMarkDown(markdown)}
-                    onBlur={(e) => {
-                      if (focusMarkDown != item?.exclusions) {
-                        setItem({ ...item, exclusions: focusMarkDown })
-                        setFocusMarkDown('')
-                        saveItem({ inclusions: item.exclusions })
-                      }
-                      // if (item.exclusions != itemOld?.exclusions) {
-                      //   setItemOld({ ...itemOld, exclusions: item.exclusions })
-                      //   saveItem({ exclusions: item.exclusions })
-                      // }
-                    }}
-                  />
+            <FormCard id="tours-travelplan" title={t('Travel plan')}
+              defaultOpen={false}
+              icon={(<i className="fa-solid fa-list-ol"></i>)}
+            >
+              <div className="grid grid-cols-1 gap-5.5 p-5">
+                <div >
+                  {item.travelPlan && item.travelPlan.map((plan: any, index: number) =>
+                    <div key={'tours-travel-plan' + v4()} className={`w-full mt-3   rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'}
+                      ${deletingIndex == index ? 'rotate-6' : ''}
+                      `}>
+                      <div className='relative flex items-start'>
+                        <div className='flex flex-col w-24 mt-3 space-y-4'>
+                          <label className="flex items-center">
+                            <span className='text-2xl me-2'> {index + 1}. </span>
+                            <span className='text-sm'>{t('day')}</span>
+                          </label>
 
+                          <button className={`:not(:disabled):hover:text-primary disabled:text-neutral-600 text-xl ms-auto me-2 w-10 `} title={t('Move up')}
+                            disabled={index == 0}
+                          >
+                            <i className="fa-solid fa-arrow-up "></i>
+                          </button>
+                          <button className={`:not(:disabled):hover:text-primary disabled:text-neutral-600 text-xl ms-auto me-2 w-10 `} title={t('Move down')}
+                            disabled={index == (item.travelPlan || []).length - 1}
+                          >
+                            <i className="fa-solid fa-arrow-down"></i>
+                          </button>
+                        </div>
+                        <button className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
+                          // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
+                          onClick={(e) => {
+                            if (confirm(t(`do you want delete?\n\n${plan.title}`))) {
+                              if (item.travelPlan && item.travelPlan[index]) {
+                                setDeletingIndex(index)
+                                console.log('item.travelPlan.length1:', item.travelPlan.length)
+                                // delete item.travelPlan[index]
+                                item.travelPlan.splice(index, 1)
+                                setItem(item)
+                                saveItem({ travelPlan: item.travelPlan })
+                                // setPullData(false)
+                                setDeletingIndex(-1)
+                              }
+                            }
+                            // setDeletingIndex(index)
+                            // setTimeout(() => {
+                            //   if (confirm(t('do you want delete?'))) {
+                            //     let copyList=item.travelPlan || [];
+                            //     copyList.splice(index, 1)
+
+                            //     setItem({...item, travelPlan:copyList})
+                            //     setTimeout(()=>{
+                            //       saveItem({ travelPlan: item.travelPlan })
+                            //       setDeletingIndex(-1)
+                            //     },10)
+                            //   }else{
+                            //     setDeletingIndex(-1)
+                            //   }
+                            // }, 10)
+                          }}
+                        >
+                          <i className="fa-regular fa-trash-can"></i>
+                        </button>
+                        <div className='w-full'>
+                          <input
+                            type="text"
+                            placeholder={t('Title')}
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-transparent dark:text-white dark:focus:border-primary"
+                            defaultValue={plan.title}
+                            onFocus={(e) => setFocusText(e.target.value)}
+                            onChange={(e) => {
+                              if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].title != undefined) {
+                                item.travelPlan[index].title = e.target.value
+                                setItem(item)
+                              }
+                            }}
+                            onBlur={(e) => {
+                              if (focusText != e.target.value) {
+                                // setItemOld(item)
+                                saveItem({ travelPlan: item.travelPlan })
+                              }
+                            }}
+                          />
+                          <textarea
+                            rows={4}
+                            placeholder={t('Description')}
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
+                            defaultValue={plan.description}
+                            onFocus={(e) => setFocusText(e.target.value)}
+                            onChange={(e) => {
+                              if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].description != undefined) {
+                                item.travelPlan[index].description = e.target.value
+                                setItem(item)
+                              }
+                            }}
+                            onBlur={(e) => {
+
+                              if (focusText != e.target.value) {
+                                // setItemOld(item)
+                                saveItem({ travelPlan: item.travelPlan })
+                              }
+                            }}
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
+                <div className='text-center'>
+                  <Link
+                    href="#"
+                    className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
+                    onClick={(e) => {
+                      if (!item.travelPlan)
+                        item.travelPlan = []
+                      item.travelPlan.push({
+                        title: `New plan title ${item.travelPlan.length + 1}`,
+                        description: ''
+                      })
+                      setItem({ ...item, travelPlan: item.travelPlan })
+                    }}
+                  >
+                    {t('Add Travel Plan')}
+                  </Link>
+                </div>
+              </div>
+            </FormCard>
+
+            <FormCard id="tours-inclusions" title={t('Inclusions')}
+              defaultOpen={false}
+              icon={(<i className="fa-regular fa-square-plus"></i>)}
+            >
+              <div className="grid grid-cols-1  gap-5.5 p-5">
+
+                <AliAbiMDXEditor markdown={item.exclusions || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={(e) => {
+                    if (focusMarkDown != item?.exclusions) {
+                      setItem({ ...item, exclusions: focusMarkDown })
+                      setFocusMarkDown('')
+                      saveItem({ inclusions: item.exclusions })
+                    }
+                  }}
+                />
+              </div>
+            </FormCard>
+
+            <FormCard id="tours-exclusions" title={t('Exclusions')}
+              defaultOpen={false}
+              icon={(<i className="fa-regular fa-square-minus"></i>)}
+            >
+              <div className="grid grid-cols-1 gap-5.5 p-5">
+
+                <AliAbiMDXEditor markdown={item.exclusions || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={(e) => {
+                    if (focusMarkDown != item?.exclusions) {
+                      setItem({ ...item, exclusions: focusMarkDown })
+                      setFocusMarkDown('')
+                      saveItem({ inclusions: item.exclusions })
+                    }
+                  }}
+                />
+
 
               </div>
-
-            </div>
-
+            </FormCard>
 
           </div>
 

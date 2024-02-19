@@ -45,5 +45,12 @@
   "users":"Users",
   "new_item": "New item",
   "new_tour": "New tour",
-  "edit_tour": "Edit tour"
+  "edit_tour": "Edit tour",
+  "day":"Day",
+  "destinations":"Destinations",
+  "tours":"Tours",
+  "Title":"Title",
+  "Description":"Description",
+  "Travel plan":"Travel plan",
+  "Places":"Places"
 }

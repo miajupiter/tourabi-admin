@@ -45,5 +45,12 @@
   "users":"Kullanıcılar",
   "new_item": "Yeni öğe",
   "new_tour": "Yeni tur",
-  "edit_tour": "Turu düzelt"
+  "edit_tour": "Turu düzelt",
+  "day":"Gün",
+  "destinations":"Destinasyonlar",
+  "tours":"Turlar",
+  "Title":"Başlık",
+  "Description":"Açıklama",
+  "Travel plan":"Gezi planı",
+  "Places":"Yerler"
 }
