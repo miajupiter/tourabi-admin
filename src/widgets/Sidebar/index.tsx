@@ -7,6 +7,8 @@ import Image from "next/image"
 import SidebarLinkGroup from "./SidebarLinkGroup"
 import Logo from '../Logo'
 import { useLanguage } from '@/hooks/i18n'
+import {ChevronDown} from '@/components/ChevronDown'
+
 interface SidebarProps {
   sidebarOpen: boolean
   setSidebarOpen: (arg: boolean) => void
@@ -41,9 +43,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     return () => document.removeEventListener("click", clickHandler)
   })
 
-  const ChevronDown = ({ open = false }) => {
-    return (<i className={`fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"}`}></i>)
-  }
+  
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ key }: KeyboardEvent) => {
