@@ -52,5 +52,7 @@
   "Title":"Başlık",
   "Description":"Açıklama",
   "Travel plan":"Gezi planı",
-  "Places":"Yerler"
+  "Places":"Yerler",
+  "Inclusions":"Dahil edilenler",
+  "Exclusions":"Hariç tutulanlar"
 }

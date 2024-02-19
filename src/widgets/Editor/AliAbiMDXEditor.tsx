@@ -147,27 +147,37 @@ export const ALL_PLUGINS = [
   // toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar  /> }),
   toolbarPlugin({
     toolbarContents: () => <>
-      <UndoRedo />
-      <BlockTypeSelect />
-      <BoldItalicUnderlineToggles />
-      <Separator />
-      <InsertThematicBreak />
-      <InsertTable />
-      <CodeToggle />
-      <CreateLink />
-      <ListsToggle />
-      <InsertImage />
-      <InsertCodeBlock />
+      <DiffSourceToggleWrapper options={['rich-text','source','diff']}>
+        <UndoRedo />
+        <Separator />
+        <BlockTypeSelect />
+        <BoldItalicUnderlineToggles />
+        <Separator />
+        <InsertThematicBreak />
+        <InsertTable />
+        <CodeToggle />
+        <CreateLink />
+        <Separator />
+        <ListsToggle />
+        <InsertImage />
+        <InsertCodeBlock />
+      </DiffSourceToggleWrapper>
     </>
   }),
   listsPlugin(),
   quotePlugin(),
-  headingsPlugin({ allowedHeadingLevels: [1, 2, 3, 4, 5] }),
+  headingsPlugin({ allowedHeadingLevels: [1, 2, 3, 4] }),
   linkPlugin(),
   linkDialogPlugin(),
   imagePlugin({
+    async imagePreviewHandler(imageSource) {
+      return new Promise((resolve, reject) => {
+        console.log('imagePreviewHandler imageSource', imageSource)
+        resolve(imageSource)
+      })
+    },
     // imageAutocompleteSuggestions: ['https://via.placeholder.com/150', 'https://via.placeholder.com/150'],
-    imageUploadHandler: async (file: File) => {
+    async imageUploadHandler(file: File) {
       return new Promise((resolve, reject) => {
         uploadToS3Bucket(file, `mdximages/${file.name}`)
           .then(fileUrl => {
@@ -188,8 +198,8 @@ export const ALL_PLUGINS = [
 
   // // sandpackPlugin({ sandpackConfig: virtuosoSampleSandpackConfig }),
   codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'Plain Text', tsx: 'TypeScript', '': 'Unspecified' } }),
-  // directivesPlugin({ directiveDescriptors: [YoutubeDirectiveDescriptor, AdmonitionDirectiveDescriptor] }),
-  // diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: 'boo' }),
+  directivesPlugin({ directiveDescriptors: [] }),
+  diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown: 'boo' }),
   markdownShortcutPlugin()
 ]
 
@@ -198,8 +208,8 @@ export const AliAbiMDXEditor = ({
   editorRef,
   ...props
 }: { editorRef?: ForwardedRef<MDXEditorMethods> | null } & MDXEditorProps) => {
-  const { isDarkMode } = useThemeMode()
 
+  const { isDarkMode } = useThemeMode()
 
   return (
     <>
@@ -208,7 +218,8 @@ export const AliAbiMDXEditor = ({
         className={`${isDarkMode ? 'dark-theme ' : ''} prose lg:prose-xl dark:prose-invert w-full prose-img:rounded-[4px] prose-a:text-blue-600`}
         plugins={ALL_PLUGINS}
         toMarkdownOptions={{
-          resourceLink: true
+          tightDefinitions: true,
+          resourceLink: false
         }}
         {...props}
       />

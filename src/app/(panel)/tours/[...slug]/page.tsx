@@ -38,11 +38,7 @@ export interface TourItemType {
 
 }
 
-
-export function manipulateMDX(text: string) {
-  return text
-  // return text.replace(/\n\n/g,'\n')
-}
+const mdxKod = '--1--1'
 
 const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const { t } = useLanguage()
@@ -90,6 +86,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   }
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
+    console.log('saveItem data:', data)
     const token = localStorage.getItem('token') || ''
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${item?.id}?partial=true`, {
       method: 'PUT',
@@ -98,6 +95,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
     })
       .then(ret => ret.json())
       .then(result => {
+        console.log('saveItem result:\n', result)
         if (result.success && result.data) {
           setItem({ ...item, ...result.data })
           resolve(item)
@@ -161,7 +159,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       setPullData(true)
       if (params.slug[0] == 'new') {
         setFormStatus(FormStatus.new)
-        setItem({ ...item, title: '' } as TourItemType)
+        setItem({ ...item, title: '', id: '' } as TourItemType)
         // setItemOld(item)
         setFormTitle(t('New tour'))
       } else if (params.slug[0] == 'edit') {
@@ -174,7 +172,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t])
+  }, [t, item, pullData])
 
   // }, [t, item, pullData, formStatus, formTitle, deletingIndex])
   // }, [t, item, pullData, formStatus, formTitle, partialData,countDown,sayac])
@@ -194,8 +192,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       {item &&
         <div className="grid grid-cols-1 gap-9 ">
           <div className="flex flex-col gap-9">
-
-
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex flex-col gap-5.5 p-5">
                 <div>
@@ -209,10 +205,10 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     defaultValue={item.title}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, title: e.target.value })}
-                    onBlur={(e) => {
+                    onBlur={async (e) => {
                       if (e.target.value != focusText) {
                         // setItemOld({ ...itemOld, title: item.title })
-                        saveItem({ title: item.title })
+                        await saveItem({ title: item.title })
                       }
                     }}
                   />
@@ -228,50 +224,38 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     defaultValue={item.places}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, places: e.target.value })}
-                    onBlur={(e) => {
+                    onBlur={async (e) => {
                       if (e.target.value != focusText) {
-                        saveItem({ places: item.places })
+                        await saveItem({ places: item.places })
                       }
                     }}
                   />
                 </div>
 
-                {/* <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    {t('Description')}
-                  </label>
-                  <AliAbiMDXEditor markdown={item.description || ''}
-                    readOnly={formStatus == FormStatus.view}
-                    onChange={(markdown) => setFocusMarkDown(markdown)}
-                    onBlur={(e) => {
-                      if (focusMarkDown != item?.description) {
-                        setItem({ ...item, description: focusMarkDown })
-                        setFocusMarkDown('')
-                        saveItem({ description: item.description })
-                      }
-                    }}
-                  />
-
-                </div> */}
-
-
               </div>
             </div>
+            <FormCard id="debug-console" title={t('debug-console')}
+              defaultOpen={false}
+            >
+              <h3 className='text-2xl w-full'>focusMarkDown</h3>
+              <p>{focusMarkDown}</p>
+              <hr />
+              <h3 className='text-2xl w-full'>focusText</h3>
+              <p>{focusText}</p>
+            </FormCard>
             <FormCard id="tours-description" title={t('Description')}
               defaultOpen={false}
             >
               <div className="grid grid-cols-1  gap-5.5 p-5">
-                {/* <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                  {t('Description')}
-                </label> */}
                 <AliAbiMDXEditor markdown={item.description || ''}
                   readOnly={formStatus == FormStatus.view}
                   onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={(e) => {
-                    if (focusMarkDown != item?.description) {
-                      setItem({ ...item, description: focusMarkDown })
-                      setFocusMarkDown('')
-                      saveItem({ description: item.description })
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
+                      item.description = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ description: item.description })
                     }
                   }}
                 />
@@ -288,95 +272,95 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     <div key={'tours-travel-plan' + v4()} className={`w-full mt-3   rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'}
                       ${deletingIndex == index ? 'rotate-6' : ''}
                       `}>
-                      <div className='relative flex items-start'>
-                        <div className=' flex flex-col  items-start w-24 mt-3 space-y-4'>
-                          <div className="flex items-center">
-                            <span className='text-2xl me-2'> {index + 1}. </span>
-                            <span className='text-sm'>{t('day')}</span>
+                      {plan && <>
+                        <div className='relative flex items-start'>
+                          <div className=' flex flex-col  items-start w-24 mt-3 space-y-4'>
+                            <div className="flex items-center">
+                              <span className='text-2xl me-2'> {index + 1}. </span>
+                              <span className='text-sm'>{t('day')}</span>
+                            </div>
+
+                            <div className='ms-auto me-2 h-12 w-10'>
+                              {` `}
+                              {item.travelPlan && index > 0 &&
+                                <Link className={`hover:text-primary text-xl `} title={t('Move up')}
+                                  href="#"
+                                  onClick={(e => {
+                                    e.preventDefault()
+                                    moveTravelPlan(index, -1)
+                                  })}
+                                >
+                                  <i className="fa-solid fa-arrow-up"></i>
+                                </Link>
+                              }
+                            </div>
+                            <div className='ms-auto me-2 h-12 w-10'>
+                              {` `}
+                              {item.travelPlan && index < item.travelPlan.length - 1 &&
+                                <Link className={`hover:text-primary text-xl`} title={t('Move down')}
+                                  href="#"
+                                  onClick={(e => {
+                                    e.preventDefault()
+                                    moveTravelPlan(index, 1)
+                                  })}
+                                >
+                                  <i className="fa-solid fa-arrow-down"></i>
+                                </Link>
+                              }
+                            </div>
+                            <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
+                              // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                deleteTravelPlan(index)
+                              }}
+                            >
+                              <i className="fa-regular fa-trash-can"></i>
+                            </Link>
                           </div>
 
-                          <div className='ms-auto me-2 h-12 w-10'>
-                            {` `}
-                            {item.travelPlan && index > 0 &&
-                              <Link className={`hover:text-primary text-xl `} title={t('Move up')}
-                                href="#"
-                                onClick={(e => {
-                                  e.preventDefault()
-                                  moveTravelPlan(index, -1)
-                                })}
-                              >
-                                <i className="fa-solid fa-arrow-up"></i>
-                              </Link>
-                            }
+                          <div className='w-full'>
+                            <input
+                              type="text"
+                              placeholder={t('Title')}
+                              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-transparent dark:text-white dark:focus:border-primary"
+                              defaultValue={plan.title}
+                              onFocus={(e) => setFocusText(e.target.value)}
+                              onChange={(e) => {
+                                if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].title != undefined) {
+                                  item.travelPlan[index].title = e.target.value
+                                  setItem(item)
+                                }
+                              }}
+                              onBlur={(e) => {
+                                if (focusText != e.target.value) {
+                                  saveItem({ travelPlan: item.travelPlan })
+                                }
+                              }}
+                            />
+                            <textarea
+                              rows={5}
+                              placeholder={t('Description')}
+                              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
+                              defaultValue={plan.description || ''}
+                              onFocus={(e) => setFocusText(e.target.value)}
+                              onChange={(e) => {
+                                if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].description != undefined) {
+                                  item.travelPlan[index].description = e.target.value
+                                  setItem(item)
+                                }
+                              }}
+                              onBlur={(e) => {
+
+                                if (focusText != e.target.value) {
+                                  saveItem({ travelPlan: item.travelPlan })
+                                }
+                              }}
+                            ></textarea>
                           </div>
-                          <div className='ms-auto me-2 h-12 w-10'>
-                            {` `}
-                            {item.travelPlan && index < item.travelPlan.length - 1 &&
-                              <Link className={`hover:text-primary text-xl`} title={t('Move down')}
-                                href="#"
-                                onClick={(e => {
-                                  e.preventDefault()
-                                  moveTravelPlan(index, 1)
-                                })}
-                              >
-                                <i className="fa-solid fa-arrow-down"></i>
-                              </Link>
-                            }
-                          </div>
-                          <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
-                            // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              deleteTravelPlan(index)
-                            }}
-                          >
-                            <i className="fa-regular fa-trash-can"></i>
-                          </Link>
                         </div>
-
-                        <div className='w-full'>
-                          <input
-                            type="text"
-                            placeholder={t('Title')}
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-transparent dark:text-white dark:focus:border-primary"
-                            defaultValue={plan.title}
-                            onFocus={(e) => setFocusText(e.target.value)}
-                            onChange={(e) => {
-                              if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].title != undefined) {
-                                item.travelPlan[index].title = e.target.value
-                                setItem(item)
-                              }
-                            }}
-                            onBlur={(e) => {
-                              if (focusText != e.target.value) {
-                                // setItemOld(item)
-                                saveItem({ travelPlan: item.travelPlan })
-                              }
-                            }}
-                          />
-                          <textarea
-                            rows={4}
-                            placeholder={t('Description')}
-                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
-                            defaultValue={plan.description}
-                            onFocus={(e) => setFocusText(e.target.value)}
-                            onChange={(e) => {
-                              if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].description != undefined) {
-                                item.travelPlan[index].description = e.target.value
-                                setItem(item)
-                              }
-                            }}
-                            onBlur={(e) => {
-
-                              if (focusText != e.target.value) {
-                                // setItemOld(item)
-                                saveItem({ travelPlan: item.travelPlan })
-                              }
-                            }}
-                          ></textarea>
-                        </div>
-                      </div>
+                      </>}
                     </div>
                   )}
                 </div>
@@ -384,14 +368,14 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                   <Link
                     href="#"
                     className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
-                    onClick={(e) => {
-                      if (!item.travelPlan)
-                        item.travelPlan = []
+                    onClick={async (e) => {
+                      if (!item.travelPlan) item.travelPlan = []
                       item.travelPlan.push({
                         title: `New plan title ${item.travelPlan.length + 1}`,
                         description: ''
                       })
-                      setItem({ ...item, travelPlan: item.travelPlan })
+                      setItem(item)
+                      await saveItem({ travelPlan: item.travelPlan })
                     }}
                   >
                     {t('Add Travel Plan')}
@@ -402,43 +386,42 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
             <FormCard id="tours-inclusions" title={t('Inclusions')}
               defaultOpen={false}
-              icon={(<i className="fa-regular fa-square-plus"></i>)}
+              icon={(<i className="fa-solid fa-file-circle-plus"></i>)}
             >
               <div className="grid grid-cols-1  gap-5.5 p-5">
-
-                <AliAbiMDXEditor markdown={item.exclusions || ''}
+                <AliAbiMDXEditor markdown={item.inclusions || ''}
                   readOnly={formStatus == FormStatus.view}
                   onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={(e) => {
-                    if (focusMarkDown != item?.exclusions) {
-                      setItem({ ...item, exclusions: focusMarkDown })
-                      setFocusMarkDown('')
-                      saveItem({ inclusions: item.exclusions })
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.inclusions) {
+                      item.inclusions = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ inclusions: item.inclusions })
                     }
                   }}
                 />
+
               </div>
             </FormCard>
 
             <FormCard id="tours-exclusions" title={t('Exclusions')}
               defaultOpen={false}
-              icon={(<i className="fa-regular fa-square-minus"></i>)}
+              icon={(<i className="fa-solid fa-file-circle-minus"></i>)}
             >
               <div className="grid grid-cols-1 gap-5.5 p-5">
-
                 <AliAbiMDXEditor markdown={item.exclusions || ''}
                   readOnly={formStatus == FormStatus.view}
                   onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={(e) => {
-                    if (focusMarkDown != item?.exclusions) {
-                      setItem({ ...item, exclusions: focusMarkDown })
-                      setFocusMarkDown('')
-                      saveItem({ inclusions: item.exclusions })
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.exclusions) {
+                      item.exclusions = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ exclusions: item.exclusions })
                     }
                   }}
                 />
-
-
               </div>
             </FormCard>
 

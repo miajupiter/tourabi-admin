@@ -52,5 +52,7 @@
   "Title":"Title",
   "Description":"Description",
   "Travel plan":"Travel plan",
-  "Places":"Places"
+  "Places":"Places",
+  "Inclusions":"Inclusions",
+  "Exclusions":"Exclusions"
 }
