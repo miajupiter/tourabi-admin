@@ -2,7 +2,6 @@
 
 import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
 
-import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
 import PageHeader from '@/app/(panel)/PageHeader'
@@ -10,7 +9,6 @@ import { AliAbiMDXEditor } from '@/widgets/Editor/AliAbiMDXEditor'
 import Link from 'next/link'
 import FormCard from '@/components/FormCard'
 import "./TourPageDetail.css"
-import useNcId from '@/hooks/useNcId'
 import { v4 } from 'uuid'
 
 export interface TourPageDetailProps {
@@ -63,9 +61,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const getItem = (itemId: string) => {
     const token = localStorage.getItem('token') || ''
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${itemId}`, {
-      headers: {
-        'Content-Type': 'application/json', token: token
-      }
+      headers: { 'Content-Type': 'application/json', token: token },
     })
       .then(ret => ret.json())
       .then(result => {
@@ -93,7 +89,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
   }
 
-  const saveItem = (data: any) => {
+  const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
     const token = localStorage.getItem('token') || ''
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${item?.id}?partial=true`, {
       method: 'PUT',
@@ -102,13 +98,62 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
     })
       .then(ret => ret.json())
       .then(result => {
-        console.log('saveItem result:', result)
         if (result.success && result.data) {
-
+          setItem({ ...item, ...result.data })
+          resolve(item)
+        } else if (result.error) {
+          reject(result.error)
+        } else {
+          reject('error: saveItem')
         }
-      }).catch(err => {
+      }).catch((err: any) => {
         console.error(err)
+        reject(err.message || err)
       })
+  })
+
+  const deleteTravelPlan = (index: number) => {
+    if (item && item.travelPlan && index > -1 && index < item.travelPlan.length) {
+      setDeletingIndex(index)
+
+      if (confirm(t(`do you want delete?`))) {
+        setDeletingIndex(-1)
+        item.travelPlan.splice(index, 1)
+        setItem(item)
+        saveItem({ travelPlan: item.travelPlan }).then(resp => {
+          console.log('moveTravelPlan resp:', resp)
+        })
+          .catch(err => console.log('moveTravelPlan err:', err))
+
+      } else {
+        setDeletingIndex(-1)
+      }
+
+    }
+    return <></>
+  }
+
+  const moveTravelPlan = (fromIndex: number, count: number) => {
+    if (item && item.travelPlan && item.travelPlan.length > 0) {
+      const toIndex = fromIndex + count
+
+      if (toIndex >= 0 || toIndex < item.travelPlan.length) {
+
+        // const element = item.travelPlan[fromIndex]
+        const element = item.travelPlan.splice(fromIndex, 1)[0]
+        item.travelPlan.splice(toIndex, 0, element)
+
+        setItem(item)
+        saveItem({ travelPlan: item.travelPlan })
+          .then(resp => {
+            console.log('moveTravelPlan resp:', resp)
+          })
+          .catch(err => console.log('moveTravelPlan err:', err))
+
+      }
+
+    }
+    return <></>
   }
 
   useEffect(() => {
@@ -129,13 +174,13 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t, item])
+  }, [t])
 
   // }, [t, item, pullData, formStatus, formTitle, deletingIndex])
   // }, [t, item, pullData, formStatus, formTitle, partialData,countDown,sayac])
 
-  useEffect(() => {
-  }, [deletingIndex])
+  // useEffect(() => {
+  // }, [])
 
   return (
     <>
@@ -244,57 +289,52 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                       ${deletingIndex == index ? 'rotate-6' : ''}
                       `}>
                       <div className='relative flex items-start'>
-                        <div className='flex flex-col w-24 mt-3 space-y-4'>
-                          <label className="flex items-center">
+                        <div className=' flex flex-col  items-start w-24 mt-3 space-y-4'>
+                          <div className="flex items-center">
                             <span className='text-2xl me-2'> {index + 1}. </span>
                             <span className='text-sm'>{t('day')}</span>
-                          </label>
+                          </div>
 
-                          <button className={`:not(:disabled):hover:text-primary disabled:text-neutral-600 text-xl ms-auto me-2 w-10 `} title={t('Move up')}
-                            disabled={index == 0}
-                          >
-                            <i className="fa-solid fa-arrow-up "></i>
-                          </button>
-                          <button className={`:not(:disabled):hover:text-primary disabled:text-neutral-600 text-xl ms-auto me-2 w-10 `} title={t('Move down')}
-                            disabled={index == (item.travelPlan || []).length - 1}
-                          >
-                            <i className="fa-solid fa-arrow-down"></i>
-                          </button>
-                        </div>
-                        <button className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
-                          // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
-                          onClick={(e) => {
-                            if (confirm(t(`do you want delete?\n\n${plan.title}`))) {
-                              if (item.travelPlan && item.travelPlan[index]) {
-                                setDeletingIndex(index)
-                                console.log('item.travelPlan.length1:', item.travelPlan.length)
-                                // delete item.travelPlan[index]
-                                item.travelPlan.splice(index, 1)
-                                setItem(item)
-                                saveItem({ travelPlan: item.travelPlan })
-                                // setPullData(false)
-                                setDeletingIndex(-1)
-                              }
+                          <div className='ms-auto me-2 h-12 w-10'>
+                            {` `}
+                            {item.travelPlan && index > 0 &&
+                              <Link className={`hover:text-primary text-xl `} title={t('Move up')}
+                                href="#"
+                                onClick={(e => {
+                                  e.preventDefault()
+                                  moveTravelPlan(index, -1)
+                                })}
+                              >
+                                <i className="fa-solid fa-arrow-up"></i>
+                              </Link>
                             }
-                            // setDeletingIndex(index)
-                            // setTimeout(() => {
-                            //   if (confirm(t('do you want delete?'))) {
-                            //     let copyList=item.travelPlan || [];
-                            //     copyList.splice(index, 1)
+                          </div>
+                          <div className='ms-auto me-2 h-12 w-10'>
+                            {` `}
+                            {item.travelPlan && index < item.travelPlan.length - 1 &&
+                              <Link className={`hover:text-primary text-xl`} title={t('Move down')}
+                                href="#"
+                                onClick={(e => {
+                                  e.preventDefault()
+                                  moveTravelPlan(index, 1)
+                                })}
+                              >
+                                <i className="fa-solid fa-arrow-down"></i>
+                              </Link>
+                            }
+                          </div>
+                          <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
+                            // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              deleteTravelPlan(index)
+                            }}
+                          >
+                            <i className="fa-regular fa-trash-can"></i>
+                          </Link>
+                        </div>
 
-                            //     setItem({...item, travelPlan:copyList})
-                            //     setTimeout(()=>{
-                            //       saveItem({ travelPlan: item.travelPlan })
-                            //       setDeletingIndex(-1)
-                            //     },10)
-                            //   }else{
-                            //     setDeletingIndex(-1)
-                            //   }
-                            // }, 10)
-                          }}
-                        >
-                          <i className="fa-regular fa-trash-can"></i>
-                        </button>
                         <div className='w-full'>
                           <input
                             type="text"
