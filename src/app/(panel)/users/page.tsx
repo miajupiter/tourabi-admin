@@ -7,6 +7,7 @@ import aliabiConfig from 'aliabi'
 import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
 import { useEffect } from 'react'
+import PageHeader from '../PageHeader'
 
 
 const UsersPage = () => {
@@ -20,7 +21,10 @@ const UsersPage = () => {
         <title>{`${t('Users')} | ${aliabiConfig.title}`}</title>
         <meta name="description" content="This is Users page for TourAbi Admin Panel" />
       </Head>
-      <Breadcrumb pageName={t('Users')} />
+      <PageHeader pageTitle={t('Users')} breadcrumbList={[
+        { href: '/dashboard', pageTitle: t('Dashboard') },
+        { href: '/users', pageTitle: t('Users') }
+      ]} />
       <div className="flex flex-col gap-10">
         <UserList />
       </div>

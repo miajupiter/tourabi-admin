@@ -3,7 +3,7 @@ import FormCard from '@/components/FormCard'
 import { v4 } from 'uuid'
 import { useLanguage } from '@/hooks/i18n'
 import Link from 'next/link'
-import { TourItemType } from './page'
+import { DestinationItemType } from './page'
 import { useState, useEffect } from 'react'
 import { uploadToS3Bucket } from '@/lib/s3bucketHepler'
 import { ShowError, ShowMessage } from '@/widgets/Alerts'
@@ -17,20 +17,20 @@ export interface ImageItemProps {
   index: number
 
 }
-export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | any, setItem: any, saveItem: any }) => {
+export const DestinationImages = ({ item, setItem, saveItem }: { item: DestinationItemType | any, setItem: any, saveItem: any }) => {
   const { t } = useLanguage()
   const [uploading, setUploading] = useState(false)
 
-  const deleteTourImages = (index: number) => {
+  const deleteDestinationImages = (index: number) => {
     if (item && item.images && index > -1 && index < item.images.length) {
 
       if (confirm(t(`do you want delete?`))) {
         item.images.splice(index, 1)
         setItem(item)
         saveItem({ images: item.images }).then((resp: any) => {
-          console.log('moveTourImages resp:', resp)
+          console.log('moveDestinationImages resp:', resp)
         })
-          .catch((err: any) => console.log('moveTourImages err:', err))
+          .catch((err: any) => console.log('moveDestinationImages err:', err))
 
       }
 
@@ -38,7 +38,7 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
     return <></>
   }
 
-  const moveTourImages = (fromIndex: number, count: number) => {
+  const moveDestinationImages = (fromIndex: number, count: number) => {
     if (item && item.images && item.images.length > 0) {
       const toIndex = fromIndex + count
 
@@ -51,9 +51,9 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
         setItem(item)
         saveItem({ images: item.images })
           .then((resp: any) => {
-            console.log('moveTourImages resp:', resp)
+            console.log('moveDestinationImages resp:', resp)
           })
-          .catch((err: any) => console.log('moveTourImages err:', err))
+          .catch((err: any) => console.log('moveDestinationImages err:', err))
 
       }
 
@@ -73,7 +73,7 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
                 href="#"
                 onClick={(e => {
                   e.preventDefault()
-                  moveTourImages(index, -1)
+                  moveDestinationImages(index, -1)
                 })}
               >
                 <i className="fa-solid fa-arrow-up"></i>
@@ -87,7 +87,7 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
                 href="#"
                 onClick={(e => {
                   e.preventDefault()
-                  moveTourImages(index, 1)
+                  moveDestinationImages(index, 1)
                 })}
               >
                 <i className="fa-solid fa-arrow-down"></i>
@@ -99,7 +99,7 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
             href="#"
             onClick={(e) => {
               e.preventDefault()
-              deleteTourImages(index)
+              deleteDestinationImages(index)
             }}
           >
             <i className="fa-regular fa-trash-can"></i>
@@ -155,10 +155,11 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
   }, [])
 
   useEffect(() => {
+
   }, [])
 
   return (
-    <FormCard id="tour-images" title={t('Tour images')}
+    <FormCard id="destination-images" title={t('Destination images')}
       defaultOpen={false}
       icon={(<i className="fa-regular fa-images"></i>)}
     >
@@ -166,7 +167,7 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
         <div className="grid grid-cols-1 gap-5.5 p-5">
           <div >
             {item.images && item.images.map((imgItem: any, index: number) => {
-              return (<div key={'tour-images-' + v4()}
+              return (<div key={'destination-images-' + v4()}
                 className={`w-full mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
 
                 {imgItem && imgItem.image &&
@@ -202,4 +203,4 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
   )
 }
 
-export default TourImages
+export default DestinationImages

@@ -141,14 +141,14 @@ const ToursPage = () => {
           if (no == pageNo) {
             return <span
               key={no}
-              className={`inline-flex w-11 h-11 items-center justify-center rounded-full bg-primary-6000 text-white`}
+              className={`inline-flex w-11 h-11 items-center justify-center rounded-full bg-primary text-neutral-100 dark:text-neutral-100`}
             >
               {no}
             </span>
           } else {
             return <button
               key={no}
-              className={`inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700`}
+              className={`inline-flex w-11 h-11 items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-300 border border-neutral-900 text-neutral-600 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700`}
               onClick={() => getList(no)}
             >{no}</button>
           }
@@ -164,6 +164,12 @@ const ToursPage = () => {
     }
   }, [t, pullData, pageNo, pageSize, pageCount, totalDocs, docs])
 
+  useEffect(() => {
+  }, [])
+
+  useEffect(() => {
+  }, [])
+
 
   return (
     <>
@@ -172,8 +178,8 @@ const ToursPage = () => {
         <meta name="description" content="This is Tours page for TourAbi Admin Panel" />
       </Head>
       <PageHeader pageTitle={t('Tours')} breadcrumbList={[
-        { href: '/dashboard', pageTitle: 'Dashboard' },
-        { href: '/tours', pageTitle: 'Tours' }
+        { href: '/dashboard', pageTitle: t('Dashboard') },
+        { href: '/tours', pageTitle: t('Tours') }
       ]} />
       <div className="flex flex-col gap-10">
         {TourList()}

@@ -8,10 +8,9 @@ import PageHeader from '@/app/(panel)/PageHeader'
 import { AliAbiMDXEditor } from '@/components/Editor/AliAbiMDXEditor'
 import Link from 'next/link'
 import FormCard from '@/components/FormCard'
-import { TravelPlan } from './TravelPlan'
-import { TourImages } from './TourImages'
+import { DestinationImages } from './DestinationImages'
 
-export interface TourPageDetailProps {
+export interface DestinationPageDetailProps {
   params: { slug: string[] }
 }
 
@@ -21,33 +20,27 @@ export enum FormStatus {
   view = 'view',
 }
 
-export interface TourItemType {
+export interface DestinationItemType {
   _id?: string
   title?: string
   description?: string
-  duration?: number
-  places?: string
+
+  country?: string
   images?: StaticImageData[] | []
   // tempImages?: StaticImageData[] | []
   priceTable?: any[]
-  travelPlan?: any[]
-  currency?: string
-  price?: number
-  singleSupplement?: number
-  inclusions?: string
-  exclusions?: string
 
 }
 
 const mdxKod = '--1--1'
 
-const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
+const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
   const { t } = useLanguage()
 
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
 
-  const [item, setItem] = useState<TourItemType>()
-  // const [itemOld, setItemOld] = useState<TourItemType>()
+  const [item, setItem] = useState<DestinationItemType>()
+  // const [itemOld, setItemOld] = useState<DestinationItemType>()
   const [pullData, setPullData] = useState(false)
   const [formStatus, setFormStatus] = useState(FormStatus.new)
   // const [formTitle, setFormTitle] = useState('')
@@ -57,30 +50,21 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
   const getItem = (itemId: string) => {
     const token = localStorage.getItem('token') || ''
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${itemId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/destinations/${itemId}`, {
       headers: { 'Content-Type': 'application/json', token: token },
     })
       .then(ret => ret.json())
       .then(result => {
         if (result.success && result.data) {
-          var res = result.data as TourItemType
-          var tour = {
+          var res = result.data as DestinationItemType
+          var destination = {
             _id: res._id,
             title: res.title,
             description: res.description,
-            duration: res.duration,
-            places: res.places,
-            currency: res.currency,
-            price: res.price,
-            singleSupplement: res.singleSupplement,
-            priceTable: res.priceTable,
-            travelPlan: res.travelPlan,
-            inclusions: res.inclusions,
-            exclusions: res.exclusions,
+            country: res.country,
             images: res.images,
-          } as TourItemType
-          setItem(tour)
-          // setItemOld(item)
+          } as DestinationItemType
+          setItem(destination)
         }
       }).catch(console.error)
 
@@ -88,7 +72,8 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
     const token = localStorage.getItem('token') || ''
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${item?._id}?partial=true`, {
+    console.log(`${process.env.NEXT_PUBLIC_API_URI}/admin/destinations/${item?._id}?partial=true`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/destinations/${item?._id}?partial=true`, {
       method: item?._id ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json', token: token },
       body: JSON.stringify(data)
@@ -116,29 +101,26 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const formTitle = () => {
     switch (formStatus) {
       case FormStatus.new:
-        return t('New tour')
+        return t('New destination')
       case FormStatus.edit:
-        return t('Edit tour')
+        return t('Edit destination')
       case FormStatus.view:
-        return t('View tour')
+        return t('View destination')
     }
     return ''
   }
+
   useEffect(() => {
     if (!pullData) {
       setPullData(true)
       if (params.slug[0] == 'new') {
         setFormStatus(FormStatus.new)
-        setItem({ ...item, title: '', _id: '' } as TourItemType)
-
-
+        setItem({ ...item, title: '', _id: '' } as DestinationItemType)
       } else if (params.slug[0] == 'edit') {
         setFormStatus(FormStatus.edit)
-
         getItem(params.slug[1])
       } else if (params.slug[0] == 'view') {
         setFormStatus(FormStatus.view)
-
         getItem(params.slug[1])
       }
     }
@@ -147,16 +129,19 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   // }, [t, item, pullData, formStatus, formTitle, deletingIndex])
   // }, [t, item, pullData, formStatus, formTitle, partialData,countDown,sayac])
 
-  // useEffect(() => {
-  // }, [])
+  useEffect(() => {
+  }, [])
+
+  useEffect(() => {
+  }, [])
 
   return (
     <>
 
       <PageHeader pageTitle={formTitle()} breadcrumbList={[
         { href: '/', pageTitle: 'Dashboard' },
-        { href: '/tours', pageTitle: 'Tours' },
-        params.slug.length >= 2 && { href: `/tours/` + params.slug[1], pageTitle: 'Tour Item' }
+        { href: '/destinations', pageTitle: 'Destinations' },
+        params.slug.length >= 2 && { href: `/destinations/` + params.slug[1], pageTitle: 'Destination Item' }
       ]} />
 
       {item &&
@@ -185,109 +170,51 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    {t('Places')}
+                    {t('Country')}
                   </label>
                   <input
                     type="text"
-                    placeholder={t('Places')}
+                    placeholder={t('Country')}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    defaultValue={item.places}
+                    defaultValue={item.country}
                     onFocus={(e) => setFocusText(e.target.value)}
-                    onChange={(e) => setItem({ ...item, places: e.target.value })}
+                    onChange={(e) => setItem({ ...item, country: e.target.value })}
                     onBlur={async (e) => {
                       if (e.target.value != focusText) {
-                        await saveItem({ places: item.places })
+                        await saveItem({ country: item.country })
                       }
                     }}
                   />
                 </div>
-
               </div>
             </div>
-            {item._id &&
-              <>
-                {/* Travel Image List */}
-                <TourImages item={item} setItem={setItem} saveItem={saveItem} />
-                {/* ./Travel Image List */}
-                <FormCard id="debug-console" title={t('debug-console')}
-                  defaultOpen={false}
-                >
-                  <h3 className='text-2xl w-full'>focusMarkDown</h3>
-                  <p>{focusMarkDown}</p>
-                  <hr />
-                  <h3 className='text-2xl w-full'>focusText</h3>
-                  <p>{focusText}</p>
-                </FormCard>
+            {item._id && <>
+              <DestinationImages item={item} setItem={setItem} saveItem={saveItem} />
 
-                <FormCard id="tours-description" title={t('Description')}
-                  defaultOpen={false}
-                >
-                  <div className="grid grid-cols-1  gap-5.5 p-5">
-                    <AliAbiMDXEditor markdown={item.description || ''}
-                      readOnly={formStatus == FormStatus.view}
-                      onChange={(markdown) => setFocusMarkDown(markdown)}
-                      onBlur={async (e) => {
-                        if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
-                          item.description = focusMarkDown
-                          setItem(item)
-                          setFocusMarkDown(mdxKod)
-                          await saveItem({ description: item.description })
-                        }
-                      }}
-                    />
-                  </div>
-                </FormCard>
-
-                {/* Travel Plan List */}
-                <TravelPlan item={item} setItem={setItem} saveItem={saveItem} />
-                {/* ./Travel Plan List */}
-                <FormCard id="tours-inclusions" title={t('Inclusions')}
-                  defaultOpen={false}
-                  icon={(<i className="fa-solid fa-file-circle-plus"></i>)}
-                >
-                  <div className="grid grid-cols-1  gap-5.5 p-5">
-                    <AliAbiMDXEditor markdown={item.inclusions || ''}
-                      readOnly={formStatus == FormStatus.view}
-                      onChange={(markdown) => setFocusMarkDown(markdown)}
-                      onBlur={async (e) => {
-                        if (focusMarkDown != mdxKod && focusMarkDown != item.inclusions) {
-                          item.inclusions = focusMarkDown
-                          setItem(item)
-                          setFocusMarkDown(mdxKod)
-                          await saveItem({ inclusions: item.inclusions })
-                        }
-                      }}
-                    />
-
-                  </div>
-                </FormCard>
-
-                <FormCard id="tours-exclusions" title={t('Exclusions')}
-                  defaultOpen={false}
-                  icon={(<i className="fa-solid fa-file-circle-minus"></i>)}
-                >
-                  <div className="grid grid-cols-1 gap-5.5 p-5">
-                    <AliAbiMDXEditor markdown={item.exclusions || ''}
-                      readOnly={formStatus == FormStatus.view}
-                      onChange={(markdown) => setFocusMarkDown(markdown)}
-                      onBlur={async (e) => {
-                        if (focusMarkDown != mdxKod && focusMarkDown != item.exclusions) {
-                          item.exclusions = focusMarkDown
-                          setItem(item)
-                          setFocusMarkDown(mdxKod)
-                          await saveItem({ exclusions: item.exclusions })
-                        }
-                      }}
-                    />
-                  </div>
-                </FormCard>
-              </>}
+              <FormCard id="destination-description" title={t('Description')}
+                defaultOpen={false}
+              >
+                <div className="grid grid-cols-1  gap-5.5 p-5">
+                  <AliAbiMDXEditor markdown={item.description || ''}
+                    readOnly={formStatus == FormStatus.view}
+                    onChange={(markdown) => setFocusMarkDown(markdown)}
+                    onBlur={async (e) => {
+                      if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
+                        item.description = focusMarkDown
+                        setItem(item)
+                        setFocusMarkDown(mdxKod)
+                        await saveItem({ description: item.description })
+                      }
+                    }}
+                  />
+                </div>
+              </FormCard>
+            </>}
           </div>
-
         </div>
       }
     </>
   )
 }
 
-export default TourPageDetail
+export default DestinationPageDetail
