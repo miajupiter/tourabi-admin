@@ -1,56 +1,68 @@
 {
-  "name": "admin-panel",
+  "name": "tourabi-admin",
   "version": "0.1.0",
-  "private": true,
+  "description": "TourAbi the world's best tour portal",
   "scripts": {
     "dev": "next dev -p 3004",
     "build": "next build",
     "start": "next start -p 3004",
     "lint": "next lint"
   },
+  "license": "MIT",
+  "author": {
+    "email": "alitek@gmail.com",
+    "name": "Ali TEK",
+    "url": "https://github.com/thisisalitek"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miajupiter/tourabi-admin.git"
+  },
+  "keywords": [
+    "nextjs",
+    "tailwind",
+    "mongodb",
+    "restful",
+    "aws",
+    "s3",
+    "admin",
+    "adminpanel",
+    "dashboard"
+  ],
+  "bugs": {
+    "url": "https://github.com/miajupiter/tourabi-admin/issues"
+  },
+  "homepage": "https://github.com/miajupiter/tourabi-admin#readme",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.515.0",
     "@aws-sdk/s3-presigned-post": "^3.515.0",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@mdxeditor/editor": "^2.8.3",
-    "@next/mdx": "^14.1.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/lodash": "^4.14.202",
-    "@types/node": "^20.11.17",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",
     "apexcharts": "^3.45.2",
-    "client-only": "^0.0.1",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.1.0",
-    "eslint-plugin-react-hooks": "^5.0.0-canary-98b8359f6-20240223",
     "flatpickr": "^4.6.13",
     "jsvectormap": "^1.5.3",
-    "lodash": "^4.17.21",
     "mdast-util-directive": "^3.0.0",
-    "mdast-util-from-markdown": "^2.0.0",
-    "mdast-util-gfm": "^3.0.0",
-    "mdast-util-to-markdown": "^2.1.0",
-    "micromark-extension-gfm": "^3.0.0",
     "next": "14.1.0",
-    "next-pwa": "^5.6.0",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
-    "react-hooks": "^1.0.1",
     "react-hooks-global-state": "^2.1.0",
-    "react-jvectormap": "^0.0.16",
-    "server-only": "^0.0.1",
     "sharp": "^0.33.2",
-    "typescript": "^5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

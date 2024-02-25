@@ -136,7 +136,7 @@ const ChartOne: React.FC = () => {
       },
     ],
   })
-
+  const {}=<ReactApexChart></ReactApexChart>
   const handleReset = () => {
     setState((prevState) => ({
       ...prevState,

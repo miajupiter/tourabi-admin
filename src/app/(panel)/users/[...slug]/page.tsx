@@ -15,6 +15,7 @@ import Select from '@/components/Select'
 import DateInput from '@/components/DateInput'
 import UserRole from '../UserRole'
 import { FormStatus } from '@/types/formStatus'
+import InputWithLabel from '@/components/InputWithLabel'
 export interface UserPageDetailProps {
   params: { slug: string[] }
 }
@@ -140,6 +141,9 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
+    // // // /* eslint-disable react-hooks/exhaustive-deps */
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, item, pullData])
 
 
@@ -214,44 +218,35 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                   </div>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                  <div>
-                    <label className="ms-2 mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Email')}
-                    </label>
-                    <input
-                      readOnly={formStatus == FormStatus.view}
-                      type="text"
-                      placeholder={t('Email')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.email}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, email: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ email: item.email })
-                        }
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label className="ms-2 mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Password')}
-                    </label>
-                    <input
-                      readOnly={formStatus == FormStatus.view}
-                      type="text"
-                      placeholder={t('Password')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.password}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, password: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ password: item.password })
-                        }
-                      }}
-                    />
-                  </div>
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type="email"
+                    label={t('Email')}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    defaultValue={item.email}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, email: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ email: item.email })
+                      }
+                    }}
+                  />
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type="text"
+                    label={t('Password')}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    defaultValue={item.password}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, password: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ password: item.password })
+                      }
+                    }}
+                  />
+
                   <div className="flex flex-col">
                     <label className="ms-2 mb-3 block text-sm font-medium text-black dark:text-white">
                       {t('Role')}
@@ -298,45 +293,36 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
 
                     />
                   </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Phone number')}
-                    </label>
-                    <input
-                      readOnly={formStatus == FormStatus.view}
-                      type="tel"
-                      placeholder={t('Phone number')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.phoneNumber}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, phoneNumber: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ phoneNumber: item.phoneNumber })
-                        }
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Gender')}
-                    </label>
-                    <Select
-                      defaultValue={item.gender}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, gender: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ gender: item.gender })
-                        }
-                      }}
-                    >
-                      <option value={''}>{'--'}</option>
-                      <option value={'female'}>{t('Female')}</option>
-                      <option value={'male'}>{t('Male')}</option>
-                      <option value={'other'}>{t('Other')}</option>
-                    </Select>
-                  </div>
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type="tel"
+                    label={t('Phone number')}
+                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    defaultValue={item.phoneNumber}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, phoneNumber: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ phoneNumber: item.phoneNumber })
+                      }
+                    }}
+                  />
+                  <SelectWithLabel
+                    label={t('Gender')}
+                    defaultValue={item.gender}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, gender: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ gender: item.gender })
+                      }
+                    }}
+                  >
+                    <option value={''}>{'--'}</option>
+                    <option value={'female'}>{t('Female')}</option>
+                    <option value={'male'}>{t('Male')}</option>
+                    <option value={'other'}>{t('Other')}</option>
+                  </SelectWithLabel>
                 </div>
                 <div className="grid grid-cols-1 gap-4 p-5">
                   <div>
@@ -350,12 +336,6 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
                       defaultValue={item.bio || ''}
                       onFocus={(e) => { e.preventDefault(); setFocusText(e.target.value) }}
-                      // onChange={(e) => {
-                      //   if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].description != undefined) {
-                      //     item.travelPlan[index].description = e.target.value
-                      //     setItem(item)
-                      //   }
-                      // }}
                       onBlur={async (e) => {
 
                         if (focusText != e.target.value) {

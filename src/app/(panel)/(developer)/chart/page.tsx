@@ -14,7 +14,8 @@ const BasicChartPage: React.FC = () => {
       <title>{`${t('Chart')} | ${aliabiConfig.title}`}</title>
       <meta name="description" content="This is Chart page for TourAbi Admin Panel" />
     </Head>
-    <Chart />
+    {/* <Chart /> */}
+    <p>chart compoenent</p>
   </>
   )
 }

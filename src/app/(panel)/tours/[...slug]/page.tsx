@@ -134,7 +134,8 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t, formStatus,slug])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, formStatus, slug])
 
 
   return (

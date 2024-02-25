@@ -1,4 +1,3 @@
-"use client"
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import ChartOne from "@/widgets/Charts/ChartOne"
 import ChartTwo from "@/widgets/Charts/ChartTwo"

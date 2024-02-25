@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 // import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
@@ -103,7 +104,7 @@ const DestinationsPage = () => {
                         {item.images.map((imgObj: any, index: number) => <>
                           {index < 3 && (imgObj.thumbnail || imgObj.image) &&
                             <div key={index} className='mx-1'>
-                              <Image fill className='aspect-auto h-18 max-w-26' src={imgObj.thumbnail || imgObj.image} alt="alt" />
+                              <Image className='aspect-square rounded' src={imgObj.thumbnail || imgObj.image} alt="alt" width={72} height={72} />
                             </div>
                           }
                         </>)}
@@ -151,6 +152,7 @@ const DestinationsPage = () => {
       setPullData(true)
       getList(1)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, pullData, getList])
 
 

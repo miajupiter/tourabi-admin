@@ -102,8 +102,8 @@ const ToursPage: FC<ToursPageProps> = ({ }) => {
                       {item.images && <div className='flex justify-start mt-2'>
                         {item.images.map((imgObj: any, index: number) => <>
                           {index < 3 && (imgObj.thumbnail || imgObj.image) &&
-                            <div key={index} className='mx-1'>
-                              <Image fill className='aspect-auto h-18 max-w-26' src={imgObj.thumbnail || imgObj.image} alt="alt" />
+                            <div key={index} className='h-18 max-w-26 mx-1'>
+                              <Image className='aspect-square rounded' src={imgObj.thumbnail || imgObj.image} alt="alt" width={72} height={72} />
                             </div>
                           }
                         </>)}
@@ -153,6 +153,7 @@ const ToursPage: FC<ToursPageProps> = ({ }) => {
         // .then(console.log)
         // .catch(console.error)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, pullData])
 
   return (

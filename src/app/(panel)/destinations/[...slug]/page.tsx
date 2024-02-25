@@ -121,7 +121,8 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t, item, pullData,getItem])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, item, pullData, getItem])
 
 
   return (

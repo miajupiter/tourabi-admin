@@ -25,12 +25,7 @@ const Header = (props: {
           </button>
 
           <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
-              width={32}
-              height={32}
-              src={"/img/web-icon.png"}
-              alt="Logo"
-            />
+            <Image src={"/img/web-icon.png"} alt="Logo" width={32} height={32} />
           </Link>
         </div>
 

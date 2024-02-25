@@ -108,7 +108,7 @@ const UsersPage = () => {
                       {item.image &&
                         <div className='flex justify-start mt-2'>
                           <div className='mx-1'>
-                            <Image fill className='w-14 h-14 rounded-full' src={item.image} alt="alt" />
+                            <Image className='aspect-square rounded-full' src={item.image} alt="alt" width={72} height={72} />
                           </div>
                         </div>
                       }
@@ -128,13 +128,6 @@ const UsersPage = () => {
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark font-medium text-center">
                       <p className="text-black dark:text-white uppercase">
                         <UserRole role={item.role} />
-                        {/* <span className='text-2xl'>
-                          {item.role == 'user' && <>🙍🏻‍♂️</>}
-                          {item.role == 'manager' && <>👨🏻‍💼</>}
-                          {item.role == 'admin' && <>👑</>}
-                          {item.role == 'sysadmin' && <>😎</>}
-                        </span>
-                        {` `} {item.role} */}
                       </p>
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark font-medium text-center">
@@ -172,6 +165,7 @@ const UsersPage = () => {
       setPullData(true)
       getList(1)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, pullData, getList])
 
 
@@ -189,7 +183,7 @@ const UsersPage = () => {
         {ItemList()}
         <div className='flex mt-4 justify-center items-center'>
           <Pagination pageNo={pageNo} pageCount={pageCount}
-            onPageClick={(no:number) => getList(no)}
+            onPageClick={(no: number) => getList(no)}
           />
         </div>
       </div>
