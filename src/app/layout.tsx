@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "jsvectormap/dist/css/jsvectormap.css"
 import "flatpickr/dist/flatpickr.min.css"
@@ -39,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   // const [sidebarOpen, setSidebarOpen] = useState(false)
- 
- 
+
+
   return (
     <html lang="en" className='dark'>
       <Head>
@@ -48,7 +48,7 @@ export default function RootLayout({
         <meta name='description' content={aliabiConfig.meta.description} />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48" />
       </Head>
-      <body suppressHydrationWarning={true}
+      <body suppressHydrationWarning={true} 
         className='bg-white dark:bg-neutral-900 text-base  text-neutral-900 dark:text-neutral-200'>
         <main className="dark:bg-boxdark-2 dark:text-bodydark">
           <ClientCommons />

@@ -11,7 +11,7 @@ export interface PlanItemProps {
   description: string
   index: number
 }
-export const TravelPlan = ({ item, setItem, saveItem }: { item: TourItemType | any, setItem: any, saveItem: any }) => {
+export const TravelPlan = ({ item, setItem, saveItem, readOnly }: { item: TourItemType | any, setItem: any, saveItem: any, readOnly?: boolean }) => {
   const { t } = useLanguage()
   const [deletingIndex, setDeletingIndex] = useState(-1)
   const [focusText, setFocusText] = useState('')
@@ -70,54 +70,57 @@ export const TravelPlan = ({ item, setItem, saveItem }: { item: TourItemType | a
             <span className='text-2xl me-2'> {index + 1}. </span>
             <span className='text-sm'>{t('day')}</span>
           </div>
-
-          <div className='ms-auto me-2 h-12 w-10'>
-            {` `}
-            {index > 0 &&
-              <Link className={`hover:text-primary text-xl `} title={t('Move up')}
+          {!readOnly &&
+            <>
+              <div className='ms-auto me-2 h-12 w-10'>
+                {` `}
+                {index > 0 &&
+                  <Link className={`hover:text-primary text-xl `} title={t('Move up')}
+                    href="#"
+                    onClick={(e => {
+                      e.preventDefault()
+                      moveTravelPlan(index, -1)
+                    })}
+                  >
+                    <i className="fa-solid fa-arrow-up"></i>
+                  </Link>
+                }
+              </div>
+              <div className='ms-auto me-2 h-12 w-10'>
+                {` `}
+                {index < item.travelPlan.length - 1 &&
+                  <Link className={`hover:text-primary text-xl`} title={t('Move down')}
+                    href="#"
+                    onClick={(e => {
+                      e.preventDefault()
+                      moveTravelPlan(index, 1)
+                    })}
+                  >
+                    <i className="fa-solid fa-arrow-down"></i>
+                  </Link>
+                }
+              </div>
+              <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
+                // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
                 href="#"
-                onClick={(e => {
+                onClick={(e) => {
                   e.preventDefault()
-                  moveTravelPlan(index, -1)
-                })}
+                  deleteTravelPlan(index)
+                }}
               >
-                <i className="fa-solid fa-arrow-up"></i>
+                <i className="fa-regular fa-trash-can"></i>
               </Link>
-            }
-          </div>
-          <div className='ms-auto me-2 h-12 w-10'>
-            {` `}
-            {index < item.travelPlan.length - 1 &&
-              <Link className={`hover:text-primary text-xl`} title={t('Move down')}
-                href="#"
-                onClick={(e => {
-                  e.preventDefault()
-                  moveTravelPlan(index, 1)
-                })}
-              >
-                <i className="fa-solid fa-arrow-down"></i>
-              </Link>
-            }
-          </div>
-          <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
-            // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              deleteTravelPlan(index)
-            }}
-          >
-            <i className="fa-regular fa-trash-can"></i>
-          </Link>
+            </>}
         </div>
 
         <div className='w-full'>
           <input
+            readOnly={readOnly}
             type="text"
             placeholder={t('Title')}
             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-transparent dark:text-white dark:focus:border-primary"
             defaultValue={title || ''}
-            onFocus={(e) =>{e.preventDefault(); setFocusText(e.target.value)}}
+            onFocus={(e) => { e.preventDefault(); setFocusText(e.target.value) }}
             onChange={(e) => {
               if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].title != undefined) {
                 item.travelPlan[index].title = e.target.value
@@ -131,11 +134,12 @@ export const TravelPlan = ({ item, setItem, saveItem }: { item: TourItemType | a
             }}
           />
           <textarea
+            readOnly={readOnly}
             rows={5}
             placeholder={t('Description')}
             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
             defaultValue={description || ''}
-            onFocus={(e) =>{e.preventDefault(); setFocusText(e.target.value)}}
+            onFocus={(e) => { e.preventDefault(); setFocusText(e.target.value) }}
             onChange={(e) => {
               if (item.travelPlan && item.travelPlan[index] && item.travelPlan[index].description != undefined) {
                 item.travelPlan[index].description = e.target.value
@@ -179,23 +183,27 @@ export const TravelPlan = ({ item, setItem, saveItem }: { item: TourItemType | a
               </div>
             )}
           </div>
-          <div className='text-center'>
-            <Link
-              href="#"
-              className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
-              onClick={async (e) => {
-                if (!item.travelPlan) item.travelPlan = []
-                item.travelPlan.push({
-                  title: `New plan title ${item.travelPlan.length + 1}`,
-                  description: ''
-                })
-                setItem(item)
-                await saveItem({ travelPlan: item.travelPlan })
-              }}
-            >
-              {t('Add Travel Plan')}
-            </Link>
-          </div>
+          {!readOnly &&
+            <>
+              <div className='text-center'>
+                <Link
+                  href="#"
+                  className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
+                  onClick={async (e) => {
+                    if (!item.travelPlan) item.travelPlan = []
+                    item.travelPlan.push({
+                      title: `New plan title ${item.travelPlan.length + 1}`,
+                      description: ''
+                    })
+                    setItem(item)
+                    await saveItem({ travelPlan: item.travelPlan })
+                  }}
+                >
+                  {t('Add Travel Plan')}
+                </Link>
+              </div>
+            </>
+          }
         </div>
       </>}
     </FormCard>

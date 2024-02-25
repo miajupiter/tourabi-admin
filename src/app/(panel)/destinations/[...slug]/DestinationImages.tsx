@@ -15,9 +15,9 @@ export interface ImageItemProps {
   title?: string
   alt?: string
   index: number
-
+  readOnly?: boolean
 }
-export const DestinationImages = ({ item, setItem, saveItem }: { item: DestinationItemType | any, setItem: any, saveItem: any }) => {
+export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }: { item: DestinationItemType | any, setItem: any, saveItem: any, readOnly?: boolean }) => {
   const { t } = useLanguage()
   const [uploading, setUploading] = useState(false)
 
@@ -61,11 +61,11 @@ export const DestinationImages = ({ item, setItem, saveItem }: { item: Destinati
     return <></>
   }
 
-  const ImageItem: React.FC<ImageItemProps> = ({ src, width, height, title, alt, index }) => {
+  const ImageItem: React.FC<ImageItemProps> = ({ src, width, height, title, alt, index, readOnly = false }) => {
 
     return (<>
       <div key={index} className='relative flex items-start'>
-        <div className=' flex flex-col  items-start w-16 mt-3 space-y-4'>
+        {!readOnly && <div className=' flex flex-col  items-start w-16 mt-3 space-y-4'>
           <div className='ms-auto me-2 h-12 w-10'>
             {` `}
             {index > 0 &&
@@ -105,7 +105,7 @@ export const DestinationImages = ({ item, setItem, saveItem }: { item: Destinati
             <i className="fa-regular fa-trash-can"></i>
           </Link>
         </div>
-
+        }
         <div className='w-full'>
           <img className='aspect-auto rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} />
         </div>
@@ -172,7 +172,7 @@ export const DestinationImages = ({ item, setItem, saveItem }: { item: Destinati
 
                 {imgItem && imgItem.image &&
                   <>
-                    {ImageItem({ src: imgItem.image, width: 300, height: 300, index: index, title: 'title', alt: 'alt' })}
+                    {ImageItem({ src: imgItem.image, width: 300, height: 300, index: index, title: 'title', alt: 'alt', readOnly: readOnly })}
                   </>
                 }
 
@@ -180,23 +180,25 @@ export const DestinationImages = ({ item, setItem, saveItem }: { item: Destinati
             }
             )}
           </div>
-          <div className='text-center'>
-            <input
-              disabled={uploading}
-              type="file"
-              //className="absolute inset-0 opacity-0 cursor-pointer"
-              className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
-              accept="image/*"
-              onChange={(e) => {
-                const files = e.target.files
-                if (files) {
-                  handleUpload(files[0])
+          {!readOnly &&
+            <div className='text-center'>
+              <input
+                disabled={uploading}
+                type="file"
+                //className="absolute inset-0 opacity-0 cursor-pointer"
+                className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
+                accept="image/*"
+                onChange={(e) => {
+                  const files = e.target.files
+                  if (files) {
+                    handleUpload(files[0])
 
-                }
-              }}
-            />
+                  }
+                }}
+              />
 
-          </div>
+            </div>
+          }
         </div>
       </>}
     </FormCard>

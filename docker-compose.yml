@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  # WEB APP
+  webapp:
+    container_name: tourabi-admin
+    build: .
+    ports:
+      - 8513:3004
+    environment:
+      NODE_ENV: production
+      HTTP_PORT: 3004
+      API_URI: https://api.tourabi.net/api/v1
+
+# volumes:

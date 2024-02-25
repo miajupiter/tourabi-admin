@@ -1,6 +1,6 @@
-import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
-import ReactApexChart from "react-apexcharts";
+import { ApexOptions } from "apexcharts"
+import React, { useState } from "react"
+import ReactApexChart from "react-apexcharts"
 
 const options: ApexOptions = {
   colors: ["#3C50E0", "#80CAEE"],
@@ -60,13 +60,13 @@ const options: ApexOptions = {
   fill: {
     opacity: 1,
   },
-};
+}
 
 interface ChartTwoState {
   series: {
-    name: string;
-    data: number[];
-  }[];
+    name: string
+    data: number[]
+  }[]
 }
 
 const ChartTwo: React.FC = () => {
@@ -81,14 +81,14 @@ const ChartTwo: React.FC = () => {
         data: [13, 23, 20, 8, 13, 27, 15],
       },
     ],
-  });
+  })
 
   const handleReset = () => {
     setState((prevState) => ({
       ...prevState,
-    }));
-  };
-  handleReset;
+    }))
+  }
+  handleReset
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -148,7 +148,7 @@ const ChartTwo: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChartTwo;
+export default ChartTwo

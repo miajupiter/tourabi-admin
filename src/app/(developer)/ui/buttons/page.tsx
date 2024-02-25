@@ -1,18 +1,18 @@
 import Link from "next/link"
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
-import { Metadata } from "next"
-import DefaultLayout from "@/app/(panel)/layout"
+import Head from 'next/head'
+import { aliabiConfig } from 'aliabi'
+import { useLanguage } from '@/hooks/i18n'
 
-export const metadata: Metadata = {
-  title: "Buttons | TourAbi - Admin Panel",
-  description:
-    "This is Buttons page for TourAbi Admin Panel",
-}
 
 const Buttons = () => {
+  const { t } = useLanguage()
   return (
-    // <DefaultLayout>
     <>
+      <Head>
+        <title>{`${t('Chart')} | ${aliabiConfig.title}`}</title>
+        <meta name="description" content="This is Chart page for TourAbi Admin Panel" />
+      </Head>
       <Breadcrumb pageName="Buttons" />
 
       {/* <!-- Normal Button Items --> */}
@@ -473,7 +473,6 @@ const Buttons = () => {
         </div>
       </div>
     </>
-    // </DefaultLayout> 
   )
 }
 

@@ -63,7 +63,8 @@ const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardPro
                 </div>
                 <ChevronDown open={open} />
               </Link>
-              <div className={`translate transform overflow-hidden ${!open && "hidden"}`}>
+              {/* <div className={`translate transform overflow-hidden ${!open && "hidden"}`}> */}
+              <div className={` ${!open && "hidden"}`}>
                 {children}
               </div>
             </div>

@@ -1,18 +1,17 @@
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
-import { Metadata } from "next"
-import DefaultLayout from "@/app/(panel)/layout"
+import Head from 'next/head'
+import { aliabiConfig } from 'aliabi'
+import { useLanguage } from '@/hooks/i18n'
 
-export const metadata: Metadata = {
-  title: "Alerts | TourAbi - Admin Panel",
-  description:
-    "This is Alerts page for TourAbi Admin Panel",
-  // other metadata
-}
 
 const Alerts = () => {
+  const { t } = useLanguage()
   return (
-    // <DefaultLayout>
     <>
+      <Head>
+        <title>{`${t('Alerts')} | ${aliabiConfig.title}`}</title>
+        <meta name="description" content="This is Alerts page for TourAbi Admin Panel" />
+      </Head>
       <Breadcrumb pageName="Alerts" />
 
       <div className="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">
@@ -102,7 +101,6 @@ const Alerts = () => {
         </div>
       </div>
     </>
-    // </DefaultLayout>
   )
 }
 

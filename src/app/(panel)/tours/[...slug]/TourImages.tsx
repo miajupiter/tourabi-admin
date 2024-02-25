@@ -17,7 +17,7 @@ export interface ImageItemProps {
   index: number
 
 }
-export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | any, setItem: any, saveItem: any }) => {
+export const TourImages = ({ item, setItem, saveItem, readOnly }: { item: TourItemType | any, setItem: any, saveItem: any, readOnly?: boolean }) => {
   const { t } = useLanguage()
   const [uploading, setUploading] = useState(false)
 
@@ -65,47 +65,48 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
 
     return (<>
       <div key={index} className='relative flex items-start'>
-        <div className=' flex flex-col  items-start w-16 mt-3 space-y-4'>
-          <div className='ms-auto me-2 h-12 w-10'>
-            {` `}
-            {index > 0 &&
-              <Link className={`hover:text-primary text-xl `} title={t('Move up')}
-                href="#"
-                onClick={(e => {
-                  e.preventDefault()
-                  moveTourImages(index, -1)
-                })}
-              >
-                <i className="fa-solid fa-arrow-up"></i>
-              </Link>
-            }
+        {!readOnly &&
+          <div className=' flex flex-col  items-start w-16 mt-3 space-y-4'>
+            <div className='ms-auto me-2 h-12 w-10'>
+              {` `}
+              {index > 0 &&
+                <Link className={`hover:text-primary text-xl `} title={t('Move up')}
+                  href="#"
+                  onClick={(e => {
+                    e.preventDefault()
+                    moveTourImages(index, -1)
+                  })}
+                >
+                  <i className="fa-solid fa-arrow-up"></i>
+                </Link>
+              }
+            </div>
+            <div className='ms-auto me-2 h-12 w-10'>
+              {` `}
+              {index < item.images.length - 1 &&
+                <Link className={`hover:text-primary text-xl`} title={t('Move down')}
+                  href="#"
+                  onClick={(e => {
+                    e.preventDefault()
+                    moveTourImages(index, 1)
+                  })}
+                >
+                  <i className="fa-solid fa-arrow-down"></i>
+                </Link>
+              }
+            </div>
+            <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
+              // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
+              href="#"
+              onClick={(e) => {
+                e.preventDefault()
+                deleteTourImages(index)
+              }}
+            >
+              <i className="fa-regular fa-trash-can"></i>
+            </Link>
           </div>
-          <div className='ms-auto me-2 h-12 w-10'>
-            {` `}
-            {index < item.images.length - 1 &&
-              <Link className={`hover:text-primary text-xl`} title={t('Move down')}
-                href="#"
-                onClick={(e => {
-                  e.preventDefault()
-                  moveTourImages(index, 1)
-                })}
-              >
-                <i className="fa-solid fa-arrow-down"></i>
-              </Link>
-            }
-          </div>
-          <Link className="absolute bottom-0 start-0 text-red disabled:text-opacity-25 :not(:disabled):hover:text-primary" title={t('Delete')}
-            // disabled={!((plan.title || '').trim() == '' && (plan.destination || '').trim() == '')}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              deleteTourImages(index)
-            }}
-          >
-            <i className="fa-regular fa-trash-can"></i>
-          </Link>
-        </div>
-
+        }
         <div className='w-full'>
           <img className='aspect-auto rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} />
         </div>
@@ -113,7 +114,7 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
     </>)
   }
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = (file: File) => {
 
     if (!file) {
       ShowError('Please select a file to upload.')
@@ -179,26 +180,27 @@ export const TourImages = ({ item, setItem, saveItem }: { item: TourItemType | a
             }
             )}
           </div>
-          <div className='text-center'>
-            <input
-              disabled={uploading}
-              type="file"
-              //className="absolute inset-0 opacity-0 cursor-pointer"
-              className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
-              accept="image/*"
-              onChange={(e) => {
-                const files = e.target.files
-                if (files) {
-                  handleUpload(files[0])
+          {!readOnly &&
+            <div className='text-center'>
+              <input
+                disabled={uploading}
+                type="file"
+                //className="absolute inset-0 opacity-0 cursor-pointer"
+                className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
+                accept="image/*"
+                onChange={(e) => {
+                  const files = e.target.files
+                  if (files) {
+                    handleUpload(files[0])
 
-                }
-              }}
-            />
-
-          </div>
+                  }
+                }}
+              />
+            </div>
+          }
         </div>
       </>}
-    </FormCard>
+    </FormCard >
   )
 }
 

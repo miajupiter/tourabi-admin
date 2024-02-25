@@ -1,20 +1,20 @@
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 
-import { Metadata } from "next"
-// import DefaultLayout from "@/app/(panel)/layout";
 import SelectGroupOne from "@/widgets/SelectGroup/SelectGroupOne"
 import Link from "next/link"
+import Head from 'next/head'
+import { aliabiConfig } from 'aliabi'
+import { useLanguage } from '@/hooks/i18n'
 
-export const metadata: Metadata = {
-  title: "Form Layout | TourAbi - Admin Panel",
-  description:
-    "This is Form Layout page for TourAbi Admin Panel",
-}
 
 const FormLayout = () => {
+  const { t } = useLanguage()
   return (
-    // <DefaultLayout>
     <>
+      <Head>
+        <title>{`${t('Form Layout')} | ${aliabiConfig.title}`}</title>
+        <meta name="description" content="This is Form Layout page for TourAbi Admin Panel" />
+      </Head>
       <Breadcrumb pageName="FormLayout" />
 
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -235,7 +235,6 @@ const FormLayout = () => {
         </div>
       </div>
     </>
-    // </DefaultLayout>
   )
 }
 

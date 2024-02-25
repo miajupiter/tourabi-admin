@@ -55,20 +55,12 @@ const Header = (props: {
             {/* <!-- Dark Mode Toggler --> */}
             <li><DarkModeSwitcher /></li>
 
-            {/* <!-- Dark Mode Toggler --> */}
 
-            {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification />
-            {/* <!-- Notification Menu Area --> */}
-
-            {/* <!-- Chat Notification Area --> */}
-            <DropdownMessage />
-            {/* <!-- Chat Notification Area --> */}
+            {/* <DropdownNotification />
+            <DropdownMessage /> */}
           </ul>
 
-          {/* <!-- User Area --> */}
           <DropdownUser />
-          {/* <!-- User Area --> */}
         </div>
       </div>
     </header>

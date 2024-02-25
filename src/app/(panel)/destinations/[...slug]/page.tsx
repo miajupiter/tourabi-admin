@@ -4,21 +4,20 @@ import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
 
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
-import PageHeader from '@/app/(panel)/PageHeader'
+import PageHeader from '@/components/PageHeader'
 import { AliAbiMDXEditor } from '@/components/Editor/AliAbiMDXEditor'
 import Link from 'next/link'
 import FormCard from '@/components/FormCard'
 import { DestinationImages } from './DestinationImages'
+import Switch from '@/components/Switch'
+import SwitchPassive from '@/components/SwitchPassive'
+import { FormStatus } from '@/types/formStatus'
 
 export interface DestinationPageDetailProps {
   params: { slug: string[] }
 }
 
-export enum FormStatus {
-  new = 'new',
-  edit = 'edit',
-  view = 'view',
-}
+
 
 export interface DestinationItemType {
   _id?: string
@@ -27,9 +26,8 @@ export interface DestinationItemType {
 
   country?: string
   images?: StaticImageData[] | []
-  // tempImages?: StaticImageData[] | []
-  priceTable?: any[]
 
+  passive?: boolean
 }
 
 const mdxKod = '--1--1'
@@ -40,10 +38,8 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
 
   const [item, setItem] = useState<DestinationItemType>()
-  // const [itemOld, setItemOld] = useState<DestinationItemType>()
   const [pullData, setPullData] = useState(false)
-  const [formStatus, setFormStatus] = useState(FormStatus.new)
-  // const [formTitle, setFormTitle] = useState('')
+  const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.new)
   const [focusText, setFocusText] = useState('')
   const [focusMarkDown, setFocusMarkDown] = useState('')
 
@@ -63,6 +59,7 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
             description: res.description,
             country: res.country,
             images: res.images,
+            passive: res.passive
           } as DestinationItemType
           setItem(destination)
         }
@@ -126,14 +123,6 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
     }
   }, [t, item, pullData])
 
-  // }, [t, item, pullData, formStatus, formTitle, deletingIndex])
-  // }, [t, item, pullData, formStatus, formTitle, partialData,countDown,sayac])
-
-  useEffect(() => {
-  }, [])
-
-  useEffect(() => {
-  }, [])
 
   return (
     <>
@@ -149,30 +138,48 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
           <div className="flex flex-col gap-9">
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex flex-col gap-5.5 p-5">
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    {t('Title')}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={t('Title')}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    defaultValue={item.title}
-                    onFocus={(e) => setFocusText(e.target.value)}
-                    onChange={(e) => setItem({ ...item, title: e.target.value })}
-                    onBlur={async (e) => {
-                      if (e.target.value != focusText) {
-                        // setItemOld({ ...itemOld, title: item.title })
-                        await saveItem({ title: item.title })
-                      }
-                    }}
-                  />
+                <div className='flex'>
+                  <div className='flex-auto'>
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      {t('Title')}
+                    </label>
+                    <input
+                      readOnly={formStatus == FormStatus.view}
+                      type="text"
+                      placeholder={t('Title')}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      defaultValue={item.title}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onChange={(e) => setItem({ ...item, title: e.target.value })}
+                      onBlur={async (e) => {
+                        if (e.target.value != focusText) {
+                          await saveItem({ title: item.title })
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className='flex-none w-24 md:w-64'>
+                    <label className="mb-3 block text-sm text-center font-medium text-black dark:text-white">
+                      {t('Active/Passive?')}
+                    </label>
+                    <div className='flex w-full h-full justify-center'>
+                      <SwitchPassive
+                        showSmiles={false}
+                        defaultValue={item.passive}
+                        onSwitch={async (e) => {
+                          setItem({ ...item, passive: e })
+                          await saveItem({ passive: e })
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                     {t('Country')}
                   </label>
                   <input
+                    readOnly={formStatus == FormStatus.view}
                     type="text"
                     placeholder={t('Country')}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -189,7 +196,7 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
               </div>
             </div>
             {item._id && <>
-              <DestinationImages item={item} setItem={setItem} saveItem={saveItem} />
+              <DestinationImages item={item} setItem={setItem} saveItem={saveItem} readOnly={formStatus == FormStatus.view} />
 
               <FormCard id="destination-description" title={t('Description')}
                 defaultOpen={false}

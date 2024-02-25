@@ -1,9 +1,9 @@
 
 
-export function generateS3FileName(prefix: string) {
-  let fileName = new Date().toISOString().replace(/\:/g, '').replace(/\-/g, '').replace(/\T/g, '_').split('.')[0]
-  fileName = prefix + fileName
-}
+// export function generateS3FileName(prefix: string) {
+//   let fileName = new Date().toISOString().replace(/\:/g, '').replace(/\-/g, '').replace(/\T/g, '_').split('.')[0]
+//   fileName = prefix + fileName
+// }
 
 
 export const uploadToS3Bucket = async (file: File, s3FilePath: string) =>

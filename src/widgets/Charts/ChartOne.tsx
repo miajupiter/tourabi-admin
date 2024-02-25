@@ -1,6 +1,6 @@
-import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
-import ReactApexChart from "react-apexcharts";
+import { ApexOptions } from "apexcharts"
+import React, { useState } from "react"
+import ReactApexChart from "react-apexcharts"
 
 const options: ApexOptions = {
   legend: {
@@ -113,13 +113,13 @@ const options: ApexOptions = {
     min: 0,
     max: 100,
   },
-};
+}
 
 interface ChartOneState {
   series: {
-    name: string;
-    data: number[];
-  }[];
+    name: string
+    data: number[]
+  }[]
 }
 
 const ChartOne: React.FC = () => {
@@ -135,14 +135,14 @@ const ChartOne: React.FC = () => {
         data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
       },
     ],
-  });
+  })
 
   const handleReset = () => {
     setState((prevState) => ({
       ...prevState,
-    }));
-  };
-  handleReset;
+    }))
+  }
+  handleReset
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
@@ -194,7 +194,7 @@ const ChartOne: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChartOne;
+export default ChartOne

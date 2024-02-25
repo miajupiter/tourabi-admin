@@ -8,9 +8,7 @@ import aliabiConfig from 'aliabi'
 
 const DashboardPage = () => {
   const {t}=useLanguage()
-  useEffect(()=>{
-
-  },[t])
+ 
   return (
     <>
       <Head>

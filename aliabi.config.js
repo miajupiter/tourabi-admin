@@ -5,7 +5,7 @@
  * Another explanation: We fuck this project and get more babies.
 */
 
-const aliabiConfig = {
+export const aliabiConfig = {
   name: "TourAbi",
   title: "TourAbi Admin Panel", // page title and project long name
   meta: {

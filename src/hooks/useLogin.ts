@@ -7,15 +7,14 @@ import { createGlobalState } from "react-hooks-global-state"
 import { ShowError, ShowMessage } from '@/widgets/Alerts'
 import { useRouter } from 'next/navigation'
 import { useLanguage } from '@/hooks/i18n'
-import { set } from 'lodash'
 
 const initialState = { isLoggedIn: false }
 const { useGlobalState } = createGlobalState(initialState)
 
 export const useLogin = () => {
   const { t } = useLanguage()
-  const [token, setToken] = useLocalStorage('token', null)
-  const [user, setUser] = useLocalStorage('user', null)
+  const [token, setToken] = useLocalStorage('token', '')
+  const [user, setUser] = useLocalStorage<any>('user',undefined)
   const [deviceId, setDeviceId] = useLocalStorage('deviceId', uuid())
   const [isLoggedIn, setIsLoggedIn] = useGlobalState("isLoggedIn")
 
@@ -25,15 +24,16 @@ export const useLogin = () => {
   const logoutUser = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-    localStorage.removeItem('deviceId')
+    // localStorage.removeItem('deviceId')
     location.href = '/login'
   }
 
   const loginUser = (email: string, password: string, redirectTo?: string) => {
+
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/auth/login?adminPanel=true`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, password: password, deviceId: deviceId })
+      body: JSON.stringify({ email: email, password: password, deviceId:localStorage.getItem('deviceId') || deviceId || '' })
     })
       .then(ret => ret.json())
       .then(result => {
@@ -41,19 +41,22 @@ export const useLogin = () => {
           console.log(`loginUser result:`, result)
           if (!['manager', 'admin', 'sysadmin'].includes(result.data.user.role)) {
             ShowError(t('access denied'))
+            return
           }
           setToken(result.data.token)
           setUser(result.data.user)
-          if (result.data.user) {
-            setIsLoggedIn(true)
-          } else {
-            setIsLoggedIn(false)
-          }
+          // if (result.data.user) {
+          //   setIsLoggedIn(true)
+          // } else {
+          //   setIsLoggedIn(false)
+          // }
 
           if (redirectTo) {
-            // router.push(redirectTo)
-
-            location.href = redirectTo
+            if (window != undefined) {
+              window.location.href = redirectTo
+            } else {
+              router.push(redirectTo)
+            }
           }
 
         } else {

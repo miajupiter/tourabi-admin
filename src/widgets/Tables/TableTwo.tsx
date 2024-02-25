@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { Product } from "@/types/product";
+import Image from "next/image"
+import { Product } from "@/types/product"
 
 const productData: Product[] = [
   {
@@ -34,7 +34,7 @@ const productData: Product[] = [
     sold: 72,
     profit: 103,
   },
-];
+]
 
 const TableTwo = () => {
   return (
@@ -102,7 +102,7 @@ const TableTwo = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default TableTwo;
+export default TableTwo

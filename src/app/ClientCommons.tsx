@@ -8,23 +8,18 @@ import aliabiConfig from 'aliabi'
 
 const ClientCommons = () => {
   // const { isLoggedIn,token } = useLogin()
+  const [token, setToken] = useState('')
   const pathName = usePathname()
 
 
   useThemeMode()
 
   useEffect(() => {
-    // console.log('CliCom isLoggedIn:', isLoggedIn)
-    // console.log('CliCom token:', token)
-    // console.log('CliCom pathName:', pathName)
-    const isLoggedIn =localStorage.getItem('token')?true:false
-
-    if (!isLoggedIn && !(pathName == '/login' || pathName=='/signup')) {
-
-      redirect('/login',RedirectType.push)
-
+    setToken(localStorage.getItem('token') || '')
+    if ((localStorage.getItem('token') || '') == '' && !(pathName == '/login' || pathName.startsWith('/signup'))) {
+      redirect('/login')
       return
-    } else if (isLoggedIn && (pathName == '/' || pathName=='/login' || pathName=='/signup')) {
+    } else if ((localStorage.getItem('token') || '')!='' && (pathName == '/' || pathName=='/login' || pathName=='/signup')) {
       redirect('/dashboard',RedirectType.push)
       return
     }
@@ -40,7 +35,7 @@ const ClientCommons = () => {
       newBodyClass && $body.classList.remove(newBodyClass)
     }
     
-  }, [pathName])
+  }, [token,pathName])
 
   return (<>{aliabiConfig.hiddenSignature()}</>)
 }

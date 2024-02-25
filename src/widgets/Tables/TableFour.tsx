@@ -1,6 +1,6 @@
-import { BRAND } from "@/types/brand";
-import Image from "next/image";
-import DropdownDefault from "../Dropdowns/DropdownDefault";
+import { BRAND } from "@/types/brand"
+import Image from "next/image"
+import DropdownDefault from "../Dropdowns/DropdownDefault"
 
 const brandData: BRAND[] = [
   {
@@ -43,7 +43,7 @@ const brandData: BRAND[] = [
     sales: 390,
     conversion: 4.2,
   },
-];
+]
 
 const TableFour: React.FC = () => {
   return (
@@ -84,11 +84,10 @@ const TableFour: React.FC = () => {
 
           {brandData.map((brand, key) => (
             <div
-              className={`grid grid-cols-3 sm:grid-cols-4 ${
-                key === brandData.length - 1
+              className={`grid grid-cols-3 sm:grid-cols-4 ${key === brandData.length - 1
                   ? ""
                   : "border-b border-stroke dark:border-strokedark"
-              }`}
+                }`}
               key={key}
             >
               <div className="flex items-center gap-3 p-2.5 xl:p-5">
@@ -118,7 +117,7 @@ const TableFour: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TableFour;
+export default TableFour

@@ -1,12 +1,8 @@
 "use client"
 
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb";
-
-import { Metadata } from "next";
-// import DefaultLayout from "@/app/(panel)/layout";
+import React from "react"
+import Link from "next/link"
+import Image from "next/image"
 
 
 const SignUp: React.FC = () => {
@@ -27,13 +23,7 @@ const SignUp: React.FC = () => {
                   width={176}
                   height={68}
                 />
-                {/* <Image
-                  className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                /> */}
+               
               </Link>
               <p className="2xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -368,7 +358,7 @@ const SignUp: React.FC = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp
