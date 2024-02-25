@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, ReactNode } from "react"
-import Sidebar from "@/widgets/Sidebar"
+import Sidebar from "./Sidebar"
 import Header from "@/widgets/Header"
 
 export default function DefaultLayout({

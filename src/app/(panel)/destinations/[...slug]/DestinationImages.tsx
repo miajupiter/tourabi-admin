@@ -151,12 +151,6 @@ export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }:
   useEffect(() => {
   }, [t, item])
 
-  useEffect(() => {
-  }, [])
-
-  useEffect(() => {
-
-  }, [])
 
   return (
     <FormCard id="destination-images" title={t('Destination images')}

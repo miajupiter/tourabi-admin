@@ -41,6 +41,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/uuid": "^9.0.8",
     "apexcharts": "^3.45.2",
+    "country-list-json": "^1.1.0",
     "flatpickr": "^4.6.13",
     "jsvectormap": "^1.5.3",
     "mdast-util-directive": "^3.0.0",
