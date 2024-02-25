@@ -8,7 +8,7 @@ import aliabiConfig from 'aliabi'
 
 import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Pagination from '@/components/Pagination'
@@ -67,7 +67,7 @@ const UsersPage = () => {
       }).catch(console.error)
   }
 
-  const ItemList = () => {
+  const ItemList:FC<{}> = ({}) => {
     return (
       <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full ">

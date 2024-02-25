@@ -10,6 +10,7 @@ import { TravelPlan } from './TravelPlan'
 import { TourImages } from './TourImages'
 import SwitchPassive from '@/components/SwitchPassive'
 import { FormStatus } from '@/types/formStatus'
+import InputWithLabel from '@/components/InputWithLabel'
 
 export interface TourPageDetailProps {
   params: { slug: string | [] }
@@ -151,27 +152,21 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         <div className="grid grid-cols-1 gap-9 ">
           <div className="flex flex-col gap-9">
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="flex flex-col gap-5.5 p-5">
+              <div className="grid grid-cols gap-5.5 p-5">
                 <div className='flex'>
-                  <div className='flex-auto'>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Title')}
-                    </label>
-                    <input
-                      readOnly={formStatus == FormStatus.view}
-                      type="text"
-                      placeholder={t('Title')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.title}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, title: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ title: item.title })
-                        }
-                      }}
-                    />
-                  </div>
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type="text"
+                    label={t('Title')}
+                    defaultValue={item.title}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, title: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ title: item.title })
+                      }
+                    }}
+                  />
                   <div className='flex-none w-24 md:w-64'>
                     <label className="mb-3 block text-sm text-center font-medium text-black dark:text-white">
                       {t('Active/Passive?')}
@@ -188,15 +183,9 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     </div>
                   </div>
                 </div>
-                <div>
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    {t('Places')}
-                  </label>
-                  <input
+                <InputWithLabel
                     readOnly={formStatus == FormStatus.view}
-                    type="text"
                     placeholder={t('Places')}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     defaultValue={item.places}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, places: e.target.value })}
@@ -206,7 +195,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                       }
                     }}
                   />
-                </div>
 
               </div>
             </div>

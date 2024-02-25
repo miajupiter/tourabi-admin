@@ -1,3 +1,4 @@
+"user client"
 
 import FormCard from '@/components/FormCard'
 import { v4 } from 'uuid'
@@ -109,13 +110,13 @@ export const TourImages = ({ item, setItem, saveItem, readOnly }: { item: TourIt
           </div>
         }
         <div className='w-full'>
-          <Image fill className='aspect-auto rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} />
+          <Image className='aspect-square rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} width={width} height={height} />
         </div>
       </div>
     </>)
   }
 
-  const handleUpload = (file: File) => {
+  const handleUpload = async (file: File) => {
 
     if (!file) {
       ShowError('Please select a file to upload.')
@@ -150,14 +151,8 @@ export const TourImages = ({ item, setItem, saveItem, readOnly }: { item: TourIt
 
   }
 
-  useEffect(() => {
-  }, [t, item])
-
-  useEffect(() => {
-  }, [])
-
-  useEffect(() => {
-  }, [])
+  // useEffect(() => {
+  // }, [t, item])
 
   return (
     <FormCard id="tour-images" title={t('Tour images')}
@@ -169,11 +164,11 @@ export const TourImages = ({ item, setItem, saveItem, readOnly }: { item: TourIt
           <div >
             {item.images && item.images.map((imgItem: any, index: number) => {
               return (<div key={'tour-images-' + v4()}
-                className={`w-full mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
+                className={`w-full max-w-screen-2xl mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
 
                 {imgItem && imgItem.image &&
                   <>
-                    {ImageItem({ src: imgItem.image, width: 300, height: 300, index: index, title: 'title', alt: 'alt' })}
+                    {ImageItem({ src: imgItem.image, width: 300, height: 300, index, title: 'title', alt: 'alt' })}
                   </>
                 }
 
@@ -189,6 +184,7 @@ export const TourImages = ({ item, setItem, saveItem, readOnly }: { item: TourIt
                 //className="absolute inset-0 opacity-0 cursor-pointer"
                 className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
                 accept="image/*"
+
                 onChange={(e) => {
                   const files = e.target.files
                   if (files) {

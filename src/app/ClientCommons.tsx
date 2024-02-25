@@ -11,7 +11,6 @@ const ClientCommons = () => {
   const [token, setToken] = useState('')
   const pathName = usePathname()
 
-
   useThemeMode()
 
   useEffect(() => {

@@ -16,7 +16,6 @@ export interface ImageItemProps {
   title?: string
   alt?: string
   index: number
-  readOnly?: boolean
 }
 export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }: { item: DestinationItemType | any, setItem: any, saveItem: any, readOnly?: boolean }) => {
   const { t } = useLanguage()
@@ -62,7 +61,7 @@ export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }:
     return <></>
   }
 
-  const ImageItem: React.FC<ImageItemProps> = ({ src, width, height, title, alt, index, readOnly = false }) => {
+  const ImageItem: React.FC<ImageItemProps> = ({ src, width, height, title, alt, index }) => {
 
     return (<>
       <div key={index} className='relative flex items-start'>
@@ -108,7 +107,7 @@ export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }:
         </div>
         }
         <div className='w-full'>
-          <Image fill className='aspect-auto rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} />
+          <Image className='aspect-square rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} width={width} height={height} />
         </div>
       </div>
     </>)
@@ -169,11 +168,11 @@ export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }:
           <div >
             {item.images && item.images.map((imgItem: any, index: number) => {
               return (<div key={'destination-images-' + v4()}
-                className={`w-full mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
+                className={`w-full max-w-screen-2xl mt-3 rounded-[4px]p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
 
                 {imgItem && imgItem.image &&
                   <>
-                    {ImageItem({ src: imgItem.image, width: 300, height: 300, index: index, title: 'title', alt: 'alt', readOnly: readOnly })}
+                    {ImageItem({ src: imgItem.image, width: 300, height: 300,  index, title: 'title', alt: 'alt' })}
                   </>
                 }
 

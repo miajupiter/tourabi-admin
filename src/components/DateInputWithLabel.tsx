@@ -1,31 +1,29 @@
 import React, { InputHTMLAttributes, useState } from "react"
-import Input from './Input'
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+import DateInput from './DateInput'
+export interface DateInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
   label?: string
-  placeholder?: string
   className?: string
   inputClassName?: string
   labelClassName?: string
 
 }
 
-export const InputWithLabel: React.FC<InputProps> = ({
+export const DateInputWithLabel: React.FC<DateInputProps> = ({
   className = "",
   inputClassName = "",
   labelClassName = "",
   type = "text",
-  label,
-  placeholder,
+  label = "label",
   ...args
 }) => {
 
   return (
     <div className={`${className}`}>
       <label className={`mb-3 block text-sm font-medium text-black dark:text-white ${labelClassName}`}>
-        {label || placeholder}
+        {label}
       </label>
-      <Input type={type} placeholder={placeholder || label || ""}
+      <DateInput type={type} placeholder={label}
         {...args}
       />
     </div>
@@ -33,4 +31,4 @@ export const InputWithLabel: React.FC<InputProps> = ({
 }
 
 
-export default InputWithLabel
+export default DateInputWithLabel

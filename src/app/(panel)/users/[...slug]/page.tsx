@@ -16,6 +16,8 @@ import DateInput from '@/components/DateInput'
 import UserRole from '../UserRole'
 import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
+import DateInputWithLabel from '@/components/DateInputWithLabel'
+import TextareaWithLabel from '@/components/TextareaWithLabel'
 export interface UserPageDetailProps {
   params: { slug: string[] }
 }
@@ -163,44 +165,32 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex flex-col gap-5.5 p-5">
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                  <div className="">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('First name')}
-                    </label>
-                    <input
-                      readOnly={formStatus == FormStatus.view}
-                      type="text"
-                      placeholder={t('First name')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.firstName}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, firstName: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ firstName: item.firstName })
-                        }
-                      }}
-                    />
-                  </div>
-                  <div className="">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Last name')}
-                    </label>
-                    <input
-                      readOnly={formStatus == FormStatus.view}
-                      type="text"
-                      placeholder={t('Last name')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.lastName}
-                      onFocus={(e) => setFocusText(e.target.value)}
-                      onChange={(e) => setItem({ ...item, lastName: e.target.value })}
-                      onBlur={async (e) => {
-                        if (e.target.value != focusText) {
-                          await saveItem({ lastName: item.lastName })
-                        }
-                      }}
-                    />
-                  </div>
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    label={t('First name')}
+                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    defaultValue={item.firstName}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, firstName: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ firstName: item.firstName })
+                      }
+                    }}
+                  />
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    label={t('Last name')}
+                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    defaultValue={item.lastName}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onChange={(e) => setItem({ ...item, lastName: e.target.value })}
+                    onBlur={async (e) => {
+                      if (e.target.value != focusText) {
+                        await saveItem({ lastName: item.lastName })
+                      }
+                    }}
+                  />
                   <div className="w-24 md:w-32">
                     <label className="ms-2 mb-3 block text-sm text-center font-medium text-black dark:text-white">
                       {t('Active/Passive?')}
@@ -222,7 +212,6 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                     readOnly={formStatus == FormStatus.view}
                     type="email"
                     label={t('Email')}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     defaultValue={item.email}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, email: e.target.value })}
@@ -236,7 +225,6 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                     readOnly={formStatus == FormStatus.view}
                     type="text"
                     label={t('Password')}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     defaultValue={item.password}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, password: e.target.value })}
@@ -274,25 +262,18 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                 icon={(<i className="fa-regular fa-file-lines"></i>)}
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4 p-5">
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Date of birth')}
-                    </label>
-                    <DateInput
-                      readOnly={formStatus == FormStatus.view}
-                      placeholder={t('Date of birth')}
-                      // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      defaultValue={item.dateOfBirth}
-                      onInput={async (e) => {
-                        console.log('onInput', e.currentTarget.value)
-                        if (e.currentTarget.value != item.dateOfBirth) {
-                          setItem({ ...item, dateOfBirth: e.currentTarget.value })
-                          await saveItem({ dateOfBirth: e.currentTarget.value })
-                        }
-                      }}
+                  <DateInputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    label={t('Date of birth')}
+                    defaultValue={item.dateOfBirth}
+                    onInput={async (e) => {
+                      if (e.currentTarget.value != item.dateOfBirth) {
+                        setItem({ ...item, dateOfBirth: e.currentTarget.value })
+                        await saveItem({ dateOfBirth: e.currentTarget.value })
+                      }
+                    }}
+                  />
 
-                    />
-                  </div>
                   <InputWithLabel
                     readOnly={formStatus == FormStatus.view}
                     type="tel"
@@ -326,24 +307,20 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                 </div>
                 <div className="grid grid-cols-1 gap-4 p-5">
                   <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Biography')}
-                    </label>
-                    <textarea
+                    <TextareaWithLabel
                       readOnly={formStatus == FormStatus.view}
                       rows={5}
-                      placeholder={t('Biography')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-slate-500 dark:bg-transparent dark:text-white dark:focus:border-primary"
+                      label={t('Bio')}
                       defaultValue={item.bio || ''}
                       onFocus={(e) => { e.preventDefault(); setFocusText(e.target.value) }}
                       onBlur={async (e) => {
-
                         if (focusText != e.target.value) {
                           setItem({ ...item, bio: e.target.value })
                           await saveItem({ bio: e.target.value })
                         }
                       }}
-                    ></textarea>
+                    ></TextareaWithLabel>
+
                   </div>
                 </div>
               </FormCard>
