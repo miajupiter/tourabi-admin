@@ -1,9 +1,9 @@
-"use client";
-import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb";
-import ChartOne from "@/widgets/Charts/ChartOne";
-import ChartTwo from "@/widgets/Charts/ChartTwo";
-import ChartThree from "@/widgets/Charts/ChartThree";
-import React from "react";
+"use client"
+import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
+import ChartOne from "@/widgets/Charts/ChartOne"
+import ChartTwo from "@/widgets/Charts/ChartTwo"
+import ChartThree from "@/widgets/Charts/ChartThree"
+import React from "react"
 
 const Chart: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const Chart: React.FC = () => {
         <ChartThree />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Chart;
+export default Chart

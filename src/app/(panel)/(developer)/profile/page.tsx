@@ -1,3 +1,5 @@
+"use client"
+
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import Image from "next/image"
 import Link from "next/link"

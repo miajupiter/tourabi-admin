@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 
 const Page404 = () => {
   const { t } = useLanguage()
-
+  const { back}=useRouter()
   return (
     <main className='flex h-screen flex-col w-full'>
 
@@ -21,7 +21,7 @@ const Page404 = () => {
             {t('Page not found')}
           </div>
           <div className="w-full text-center pt-8">
-            <Link href="#" onClick={() => useRouter().back} className='text-4xl' >⬅️</Link>
+            <Link href="#" onClick={() => back()} className='text-4xl' >⬅️</Link>
           </div>
 
         </div>

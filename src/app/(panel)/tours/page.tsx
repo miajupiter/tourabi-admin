@@ -1,30 +1,30 @@
 "use client"
 
-// import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
-// import TourList from "./TourList"
+import React, { FC, useState, useEffect } from 'react'
 import PageHeader from '@/components/PageHeader'
-import {aliabiConfig} from 'aliabi'
-
+import { aliabiConfig } from 'aliabi'
 import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import TableRowActionButtons from '@/components/TableRowActionButtons'
 import Pagination from '@/components/Pagination'
 
+export interface ToursPageProps { }
 
-const ToursPage = () => {
-
+const ToursPage: FC<ToursPageProps> = ({ }) => {
+  const { t } = useLanguage()
   const [pullData, setPullData] = useState(false)
   const [pageNo, setPageNo] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [pageCount, setPageCount] = useState(1)
   const [totalDocs, setTotalDocs] = useState(0)
   const [docs, setDocs] = useState([])
-  const { t } = useLanguage()
 
+
+  // const getList =({sayfaNo}:{sayfaNo?: number}) => {
   const getList = (sayfaNo: number) => {
-    setPageNo(sayfaNo)
+    setPageNo(sayfaNo || 1)
     const token = localStorage.getItem('token') || ''
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours?page=${sayfaNo}&pageSize=${pageSize}`, {
       headers: {
@@ -101,9 +101,9 @@ const ToursPage = () => {
                       </h5>
                       {item.images && <div className='flex justify-start mt-2'>
                         {item.images.map((imgObj: any, index: number) => <>
-                          {index<3 && (imgObj.thumbnail || imgObj.image) &&
+                          {index < 3 && (imgObj.thumbnail || imgObj.image) &&
                             <div key={index} className='mx-1'>
-                              <img className='aspect-auto h-18 max-w-26' src={imgObj.thumbnail || imgObj.image} alt="alt" />
+                              <Image fill className='aspect-auto h-18 max-w-26' src={imgObj.thumbnail || imgObj.image} alt="alt" />
                             </div>
                           }
                         </>)}
@@ -126,12 +126,13 @@ const ToursPage = () => {
                       }
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark">
-                    <TableRowActionButtons
+                      <TableRowActionButtons
                         viewButton={{ href: `/tours/view/${item._id}` }}
-                        removeButton={{ 
+                        removeButton={{
                           onClick(e) {
-                          removeTour(item)
-                        }}}
+                            removeTour(item)
+                          }
+                        }}
                         editButton={{ href: `/tours/edit/${item._id}` }}
                       />
                     </td>
@@ -149,10 +150,10 @@ const ToursPage = () => {
     if (!pullData) {
       setPullData(true)
       getList(1)
+        // .then(console.log)
+        // .catch(console.error)
     }
-  }, [t, pullData, pageNo, pageSize, pageCount, totalDocs, docs])
-
-
+  }, [t, pullData])
 
   return (
     <>
@@ -167,8 +168,8 @@ const ToursPage = () => {
       <div className="flex flex-col gap-10">
         {TourList()}
         <div className='flex mt-4 justify-center items-center'>
-        <Pagination pageNo={pageNo} pageCount={pageCount}
-            onPageClick={(no) => getList(no)}
+          <Pagination pageNo={pageNo} pageCount={pageCount}
+            onPageClick={(no: number) => getList(no)}
           />
         </div>
       </div>

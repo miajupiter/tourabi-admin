@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import FormElements from "@/widgets/FormElements"
 import Head from 'next/head'

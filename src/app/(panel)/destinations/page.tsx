@@ -4,10 +4,10 @@
 // import DestinationList from "./DestinationList"
 import PageHeader from '@/components/PageHeader'
 import aliabiConfig from 'aliabi'
-
+import Image from "next/image"
 import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Pagination from '@/components/Pagination'
 import TableRowActionButtons, { TableRowActionButtonsProps } from '../../../components/TableRowActionButtons'
@@ -103,7 +103,7 @@ const DestinationsPage = () => {
                         {item.images.map((imgObj: any, index: number) => <>
                           {index < 3 && (imgObj.thumbnail || imgObj.image) &&
                             <div key={index} className='mx-1'>
-                              <img className='aspect-auto h-18 max-w-26' src={imgObj.thumbnail || imgObj.image} alt="alt" />
+                              <Image fill className='aspect-auto h-18 max-w-26' src={imgObj.thumbnail || imgObj.image} alt="alt" />
                             </div>
                           }
                         </>)}
@@ -151,7 +151,7 @@ const DestinationsPage = () => {
       setPullData(true)
       getList(1)
     }
-  }, [t, pullData, pageNo, pageSize, pageCount, totalDocs, docs])
+  }, [t, pullData, getList])
 
 
   return (
@@ -168,7 +168,7 @@ const DestinationsPage = () => {
         {DestinationList()}
         <div className='flex mt-4 justify-center items-center'>
           <Pagination pageNo={pageNo} pageCount={pageCount}
-            onPageClick={(no) => getList(no)}
+            onPageClick={(no:number) => getList(no)}
           />
         </div>
       </div>

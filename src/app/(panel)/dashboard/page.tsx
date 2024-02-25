@@ -1,4 +1,5 @@
 "use client"
+
 import React, {useEffect} from 'react'
 import ECommerce from "@/widgets/Dashboard/E-commerce"
 import Head from 'next/head'

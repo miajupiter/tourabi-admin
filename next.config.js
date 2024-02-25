@@ -3,11 +3,16 @@
 // const withMDX=require('@next/mdx')
 
 const nextConfig = {
-  transpilePackages: ['@mdxeditor/editor'],
+  // transpilePackages: ['@mdxeditor/editor'],
   reactStrictMode: true,
   output: "standalone",
   poweredByHeader: false,
   images: {
+    unoptimized:true,
+    disableStaticImages:true,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 768],
+    // dangerouslyAllowSVG:true,
     remotePatterns: [
       {
         protocol: "https",

@@ -1,3 +1,5 @@
+"use client"
+
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import TableOne from "@/widgets/Tables/TableOne"
 import TableThree from "@/widgets/Tables/TableThree"

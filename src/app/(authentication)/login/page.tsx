@@ -47,7 +47,7 @@ const LogInPage: FC = () => {
           <div className="hidden w-full md:block xl:w-1/2">
             <div className="px-12 py-12 text-center">
               <span className="mt-15 inline-block">
-                <img className={`aspect-auto w-full h-full`} src={'/img/security-abi.png'} alt="security abi"  />
+                <Image fill src={'/img/security-abi.png'} alt="security abi"   />
               </span>
             </div>
           </div>

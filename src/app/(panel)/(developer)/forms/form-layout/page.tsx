@@ -1,5 +1,6 @@
-import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
+"use client"
 
+import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import SelectGroupOne from "@/widgets/SelectGroup/SelectGroupOne"
 import Link from "next/link"
 import Head from 'next/head'

@@ -3,6 +3,7 @@ import FormCard from '@/components/FormCard'
 import { v4 } from 'uuid'
 import { useLanguage } from '@/hooks/i18n'
 import Link from 'next/link'
+import Image from 'next/image'
 import { DestinationItemType } from './page'
 import { useState, useEffect } from 'react'
 import { uploadToS3Bucket } from '@/lib/s3bucketHepler'
@@ -107,7 +108,7 @@ export const DestinationImages = ({ item, setItem, saveItem, readOnly = false }:
         </div>
         }
         <div className='w-full'>
-          <img className='aspect-auto rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} />
+          <Image fill className='aspect-auto rounded-lg' src={src || ''} alt={alt || ''} title={title || ''} />
         </div>
       </div>
     </>)

@@ -1,12 +1,10 @@
 "use client"
 
-import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
-
+import React, { FC, useState, useEffect } from 'react'
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
 import PageHeader from '@/components/PageHeader'
 import { AliAbiMDXEditor } from '@/components/Editor/AliAbiMDXEditor'
-import Link from 'next/link'
 import FormCard from '@/components/FormCard'
 import { TravelPlan } from './TravelPlan'
 import { TourImages } from './TourImages'
@@ -14,7 +12,7 @@ import SwitchPassive from '@/components/SwitchPassive'
 import { FormStatus } from '@/types/formStatus'
 
 export interface TourPageDetailProps {
-  params: { slug: string[] }
+  params: { slug: string | [] }
 }
 
 export interface TourItemType {
@@ -32,7 +30,7 @@ export interface TourItemType {
   singleSupplement?: number
   inclusions?: string
   exclusions?: string
-  passive?:boolean
+  passive?: boolean
 
 }
 
@@ -40,7 +38,7 @@ const mdxKod = '--1--1'
 
 const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const { t } = useLanguage()
-
+  const { slug } = params
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
 
   const [item, setItem] = useState<TourItemType>()
@@ -50,7 +48,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const [focusMarkDown, setFocusMarkDown] = useState('')
 
 
-  const getItem = (itemId: string) => {
+  function getItem(itemId: string) {
     const token = localStorage.getItem('token') || ''
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${itemId}`, {
       headers: { 'Content-Type': 'application/json', token: token },
@@ -73,10 +71,9 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
             inclusions: res.inclusions,
             exclusions: res.exclusions,
             images: res.images,
-            passive:res.passive
+            passive: res.passive
           } as TourItemType
           setItem(tour)
-          // setItemOld(item)
         }
       }).catch(console.error)
 
@@ -91,7 +88,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
     })
       .then(ret => ret.json())
       .then(result => {
-        console.log('saveItem result:\n', result)
+        console.log('saveItem result:', result)
         if (result.success && result.data) {
           setItem({ ...item, ...result.data })
           if (formStatus == FormStatus.new && item?._id) {
@@ -137,7 +134,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t, item, pullData])
+  }, [t, formStatus,slug])
 
 
   return (
@@ -154,7 +151,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
           <div className="flex flex-col gap-9">
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex flex-col gap-5.5 p-5">
-              <div className='flex'>
+                <div className='flex'>
                   <div className='flex-auto'>
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       {t('Title')}
@@ -195,7 +192,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     {t('Places')}
                   </label>
                   <input
-                    readOnly={formStatus==FormStatus.view}
+                    readOnly={formStatus == FormStatus.view}
                     type="text"
                     placeholder={t('Places')}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -215,7 +212,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
             {item._id &&
               <>
                 {/* Travel Image List */}
-                <TourImages item={item} setItem={setItem} saveItem={saveItem} readOnly={formStatus==FormStatus.view} />
+                <TourImages item={item} setItem={setItem} saveItem={saveItem} readOnly={formStatus == FormStatus.view} />
                 {/* ./Travel Image List */}
                 <FormCard id="debug-console" title={t('debug-console')}
                   defaultOpen={false}

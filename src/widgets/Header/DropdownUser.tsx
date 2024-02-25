@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-// import Image from "next/image";
+import Image from "next/image"
 import { useLogin } from '@/hooks/useLogin'
 import { useLanguage } from '@/hooks/i18n'
 
@@ -56,7 +56,7 @@ const DropdownUser = () => {
         <span className="h-12 w-12 rounded-full">
           {user && user.image &&
             <>
-              <img src={user.image} className='w-full h-full aspect-auto rounded-full' alt="user image" />
+              <Image fill src={user.image} className='w-full h-full aspect-auto rounded-full' alt="user image" />
             </>}
         </span>
         <span className='hidden fill-current sm:block'>

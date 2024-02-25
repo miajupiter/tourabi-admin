@@ -1,3 +1,5 @@
+"use client"
+
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import Head from 'next/head'
 import { aliabiConfig } from 'aliabi'

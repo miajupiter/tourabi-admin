@@ -121,7 +121,7 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
         getItem(params.slug[1])
       }
     }
-  }, [t, item, pullData])
+  }, [t, item, pullData,getItem])
 
 
   return (

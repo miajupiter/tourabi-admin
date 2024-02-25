@@ -1,7 +1,9 @@
+"use client"
+
 import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 import Image from "next/image"
 import Head from 'next/head'
-import {aliabiConfig} from 'aliabi'
+import { aliabiConfig } from 'aliabi'
 import { useLanguage } from '@/hooks/i18n'
 
 const Settings = () => {

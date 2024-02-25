@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 // import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
@@ -9,20 +10,21 @@ import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Pagination from '@/components/Pagination'
 import TableRowActionButtons, { TableRowActionButtonsProps } from '../../../components/TableRowActionButtons'
 import UserRole from './UserRole'
 
 
 const UsersPage = () => {
-
+  const { t } = useLanguage()
   const [pullData, setPullData] = useState(false)
   const [pageNo, setPageNo] = useState(1)
   const [pageSize, setPageSize] = useState(8)
   const [pageCount, setPageCount] = useState(1)
   const [totalDocs, setTotalDocs] = useState(0)
   const [docs, setDocs] = useState([])
-  const { t } = useLanguage()
+
 
   const getList = (sayfaNo: number) => {
     setPageNo(sayfaNo)
@@ -106,7 +108,7 @@ const UsersPage = () => {
                       {item.image &&
                         <div className='flex justify-start mt-2'>
                           <div className='mx-1'>
-                            <img className='w-14 h-14 rounded-full' src={item.image} alt="alt" />
+                            <Image fill className='w-14 h-14 rounded-full' src={item.image} alt="alt" />
                           </div>
                         </div>
                       }
@@ -119,7 +121,7 @@ const UsersPage = () => {
                       <div className='grid grid-cols-3 gap-3 font-medium'>
                         <div className="text-sm uppercase">{item.gender}</div>
                         {/* qwerty */}
-                        <div className="text-sm">💰%{item.discount && item.discount.rate || 5}{key%2==0?" + $40":""}</div>
+                        <div className="text-sm">💰%{item.discount && item.discount.rate || 5}{key % 2 == 0 ? " + $40" : ""}</div>
                       </div>
 
                     </td>
@@ -170,7 +172,7 @@ const UsersPage = () => {
       setPullData(true)
       getList(1)
     }
-  }, [t, pullData, pageNo, pageSize, pageCount, totalDocs, docs])
+  }, [t, pullData, getList])
 
 
   return (
@@ -187,7 +189,7 @@ const UsersPage = () => {
         {ItemList()}
         <div className='flex mt-4 justify-center items-center'>
           <Pagination pageNo={pageNo} pageCount={pageCount}
-            onPageClick={(no) => getList(no)}
+            onPageClick={(no:number) => getList(no)}
           />
         </div>
       </div>

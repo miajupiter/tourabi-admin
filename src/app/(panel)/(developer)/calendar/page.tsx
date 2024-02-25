@@ -1,3 +1,5 @@
+"use client"
+
 import Calendar from "@/widgets/Calender"
 import Head from 'next/head'
 import { aliabiConfig } from 'aliabi'
