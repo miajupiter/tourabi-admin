@@ -1,5 +1,6 @@
 "use client"
 import DarkModeSwitcher from '@/components/DarkModeSwitcher'
+import Logo from '@/widgets/Logo'
 import React, { useState, ReactNode } from "react"
 
 export default function LoginLayout({
@@ -11,6 +12,9 @@ export default function LoginLayout({
     <>
       <main className='flex h-screen flex-col w-full'>
         <div className='relative w-full'>
+          <div className='absolute top-2 start-5'>
+            <Logo width={176} className='' />
+          </div>
           <div className='absolute top-5 end-5'>
             <DarkModeSwitcher />
           </div>

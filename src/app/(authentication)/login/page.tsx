@@ -42,48 +42,36 @@ const LogInPage: FC = () => {
         <title>{`${t('Login page')} | ${aliabi}`}</title>
         <meta name="description" content="This is Login Page for TourAbi Admin Panel" />
       </Head>
-      <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
-          <div className="hidden w-full md:block xl:w-1/2">
-            <div className="px-12 py-12 text-center">
-              <span className="mt-15 inline-block">
-                <Image fill src={'/img/security-abi.png'} alt="security abi"   />
-              </span>
+      <div className="max-w-[600px] rounded-[8px] border border-slate-400 bg-slate-100 shadow-md shadow-slate-800 dark:border-strokedark dark:bg-boxdark p-2">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="hidden w-full md:block ">
+            <div className="h-full my-auto p-8 ">
+                <Image className='aspect-auto' src={'/img/security-abi.png'} alt="security abi" width={558} height={832} />
             </div>
           </div>
 
-          <div className="w-full  border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full  border-stroke dark:border-strokedark  xl:border-l-2">
             <div className="w-full p-4 ">
-              <Logo width={176} className='hidden sm:block' />
+              
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                {t('Login')}
+                {t('Admin Panel')}
               </h2>
 
-              <form onSubmit={handleSubmit}>
-                <div className='grid grid-cols-1 gap-4'>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Email')}
-                    </label>
-                    <input
-                      type="email"
-                      placeholder={t('Email')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      {t('Password')}
-                    </label>
-                    <input
-                      type="password"
-                      placeholder={t('Password')}
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      onChange={(e) => setPassword(e.target.value)}
+              <form onSubmit={handleSubmit} className='w-full'>
+                <div className='grid grid-cols-1 gap-4 '>
+                  <InputWithLabel
+                    type="email"
+                    label={t('Email')}
+                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
 
-                    />
-                  </div>
+                  <InputWithLabel
+                    type="password"
+                    label={t('Password')}
+                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                   <div >
                     <ButtonPrimary type="submit"
                       className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90">
@@ -92,11 +80,6 @@ const LogInPage: FC = () => {
 
                   </div>
                 </div>
-
-
-
-
-
               </form>
             </div>
           </div>
