@@ -7,10 +7,10 @@ import PageHeader from '@/components/PageHeader'
 import { AliAbiMDXEditor } from '@/components/Editor/AliAbiMDXEditor'
 import FormCard from '@/components/FormCard'
 import { TravelPlan } from './TravelPlan'
-import { TourImages } from './TourImages'
 import SwitchPassive from '@/components/SwitchPassive'
 import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
+import ImageListWidget, { ImageItemProps } from '@/widgets/ImageListWidget'
 
 export interface TourPageDetailProps {
   params: { slug: string | [] }
@@ -200,9 +200,17 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
             </div>
             {item._id &&
               <>
-                {/* Travel Image List */}
-                <TourImages item={item} setItem={setItem} saveItem={saveItem} readOnly={formStatus == FormStatus.view} />
-                {/* ./Travel Image List */}
+                <ImageListWidget
+                title={t('Images')}
+                images={item.images as ImageItemProps[]}
+                saveImages={(imgList: any) => {
+                  item.images = imgList
+                  setItem(item)
+                  saveItem({ images: imgList })
+                }}
+                uploadFolder={'destinations/'}
+                readOnly={formStatus == FormStatus.view}
+              />
                 <FormCard id="debug-console" title={t('debug-console')}
                   defaultOpen={false}
                 >

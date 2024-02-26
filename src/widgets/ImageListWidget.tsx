@@ -4,7 +4,6 @@ import { v4 } from 'uuid'
 import { useLanguage } from '@/hooks/i18n'
 import Link from 'next/link'
 import Image from 'next/image'
-// import { DestinationItemType } from './page'
 import { useState, useEffect } from 'react'
 import { uploadToS3Bucket } from '@/lib/s3bucketHepler'
 import { ShowError, ShowMessage } from '@/widgets/Alerts'
@@ -165,7 +164,7 @@ export const ImageListWidget = ({ images, saveImages, uploadFolder, title, id = 
       icon={(<i className="fa-regular fa-images"></i>)}
     >
       <div className="grid grid-cols-1 gap-5.5 p-5">
-        <div className='grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5.5 p-5' >
+        <div className='grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' >
           {(images || []).map((imgItem: ImageItemProps, index: number) => <>
             <div key={'image-' + v4()}
               className={`w-full max-w-screen-2xl mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>

@@ -9,8 +9,8 @@ import { useLanguage } from '@/hooks/i18n'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Pagination from '@/components/Pagination'
-import TableRowActionButtons, { TableRowActionButtonsProps } from '../../../components/TableRowActionButtons'
-import { ImageItemProps } from './[...slug]/ImageListWidget'
+import TableRowActionButtons, { TableRowActionButtonsProps } from '@/components/TableRowActionButtons'
+import { ImageItemProps } from '@/widgets/ImageListWidget'
 
 
 const AccommodationsPage = () => {
