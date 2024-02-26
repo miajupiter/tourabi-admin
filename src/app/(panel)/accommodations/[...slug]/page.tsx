@@ -15,24 +15,11 @@ import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import { countries } from 'country-list-json'
+import Input from '@/components/Input'
 
 export interface AccommodationPageDetailProps {
   params: { slug: string[] }
 }
-
-export const AccommodationPropertyTypes = [
-  'hotel', 'hostel', 'guesthouse', 'lodging', 'tent', 'caravan', 'comping', 'boat', 'housing', 'residence'
-]
-
-export const AccommodationRoomTypes = [
-  'Single',
-  'Double',
-  'Double / Twin',
-  'Double single use',
-  'Dormitory bed',
-  'Deluxe Single',
-  'Deluxe Double'
-]
 
 export interface DistanceFromProps {
   location: string
@@ -64,6 +51,21 @@ export interface AccommodationItemType {
   roomTypes: string[]
   passive?: boolean
 }
+
+
+const PROPERTY_TYPES = [
+  'hotel', 'hostel', 'guesthouse', 'lodging', 'tent', 'caravan', 'comping', 'boat', 'housing', 'residence'
+]
+
+const ROOM_TYPES = [
+  'Single',
+  'Double',
+  'Double / Twin',
+  'Double single use',
+  'Dormitory bed',
+  'Deluxe Single',
+  'Deluxe Double'
+]
 
 const mdxKod = '--1--1'
 
@@ -155,16 +157,16 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
 
       <PageHeader pageTitle={formTitle()} breadcrumbList={[
         { href: '/', pageTitle: 'Dashboard' },
-        { href: '/accommodations', pageTitle: 'Accommodations' },
-        params.slug.length >= 2 && { href: `/accommodations/` + params.slug[1], pageTitle: 'Accommodation Item' }
+        { href: '/accommodations', pageTitle: 'Hotels' },
+        params.slug.length >= 2 && { href: `/accommodations/` + params.slug[1], pageTitle: 'Hotel' }
       ]} />
 
       {item &&
-        <div className="grid grid-cols-1 gap-9 ">
-          <div className="flex flex-col gap-9">
-            <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="grid grid-cols-1 gap-5.5 p-5">
-                <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+        <div className="grid grid-cols-1 gap-6 ">
+          <div className="flex flex-col gap-6">
+            <FormCard id="accommodation-head" title={item.title || '...'} defaultOpen={true}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className='col-span-full grid grid-cols-1 md:grid-cols-4 gap-4'>
                   <div className='col-span-3'>
                     <InputWithLabel
                       readOnly={formStatus == FormStatus.view}
@@ -195,35 +197,23 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
                     </div>
                   </div>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-5.5 p-5'>
+                <div className='col-span-full grid grid-cols-1 md:grid-cols-3 gap-4'>
                   <SelectWithLabel
-                    className='col-end-2 col-span-1'
+                    selectClassName='capitalize'
                     readOnly={formStatus == FormStatus.view}
-                    label={t('Country')}
+                    label={t('Property type')}
                     onBlur={async (e) => {
-                      if (item.country != e.target.value) {
-                        setItem({ ...item, country: e.target.value })
-                        await saveItem({ country: e.target.value })
+                      if (item.propertyType != e.target.value) {
+                        setItem({ ...item, propertyType: e.target.value })
+                        await saveItem({ propertyType: e.target.value })
                       }
                     }}
                   >
-                    {countries.map((ulke, index) => (
-                      <option key={index} value={ulke.code}>{ulke.name}</option>
+                    {PROPERTY_TYPES.map((propertyType:string, index:number) => (
+                      <option key={index} value={propertyType}>{t(propertyType)}</option>
                     ))}
                   </SelectWithLabel>
-                  <InputWithLabel
-                    className='col-span-2'
-                    readOnly={formStatus == FormStatus.view}
-                    label={t('Address')}
-                    defaultValue={item.addressText}
-                    onFocus={(e) => setFocusText(e.target.value)}
-                    onBlur={async (e) => {
-                      if (e.target.value != item.addressText) {
-                        setItem({ ...item, addressText: e.target.value })
-                        await saveItem({ addressText: e.target.value })
-                      }
-                    }}
-                  />
+
                   <InputWithLabel
                     type={'number'}
                     readOnly={formStatus == FormStatus.view}
@@ -256,41 +246,134 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
                     <option key={4} value={5}>⭐⭐⭐⭐⭐</option>
                   </SelectWithLabel>
                 </div>
-              </div>
-            </div>
-            {item._id && <>
-              <ImageListWidget
-                title={t('Images')}
-                images={item.images as ImageItemProps[]}
-                saveImages={(imgList: any) => {
-                  item.images = imgList
-                  setItem(item)
-                  saveItem({ images: imgList })
-                }}
-                uploadFolder={'hotel-images/'}
-                readOnly={formStatus == FormStatus.view}
-              />
-
-              <FormCard id="accommodation-description" title={t('Description')}
-                defaultOpen={false}
-              >
-                <div className="grid grid-cols-1  gap-5.5 p-5">
-                  <AliAbiMDXEditor markdown={item.description || ''}
+                <div className='col-span-full grid grid-cols-1 md:grid-cols-6 gap-4'>
+                  <SelectWithLabel
+                    className='col-span-2'
                     readOnly={formStatus == FormStatus.view}
-                    onChange={(markdown) => setFocusMarkDown(markdown)}
+                    label={t('Country')}
                     onBlur={async (e) => {
-                      if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
-                        item.description = focusMarkDown
-                        setItem(item)
-                        setFocusMarkDown(mdxKod)
-                        await saveItem({ description: item.description })
+                      if (item.country != e.target.value) {
+                        setItem({ ...item, country: e.target.value })
+                        await saveItem({ country: e.target.value })
+                      }
+                    }}
+                  >
+                    {countries.map((ulke, index) => (
+                      <option key={index} value={ulke.code}>{ulke.name}</option>
+                    ))}
+                  </SelectWithLabel>
+                  <InputWithLabel
+                    className='col-span-4'
+                    readOnly={formStatus == FormStatus.view}
+                    label={t('Address')}
+                    defaultValue={item.addressText}
+                    onFocus={(e) => setFocusText(e.target.value)}
+                    onBlur={async (e) => {
+                      if (e.target.value != item.addressText) {
+                        setItem({ ...item, addressText: e.target.value })
+                        await saveItem({ addressText: e.target.value })
                       }
                     }}
                   />
                 </div>
-              </FormCard>
-            </>}
+              </div>
+            </FormCard>
           </div>
+          {item._id && <>
+            <ImageListWidget
+              title={t('Images')}
+              images={item.images as ImageItemProps[]}
+              saveImages={(imgList: any) => {
+                item.images = imgList
+                setItem(item)
+                saveItem({ images: imgList })
+              }}
+              uploadFolder={'hotel-images/'}
+              readOnly={formStatus == FormStatus.view}
+            />
+
+            <FormCard id="accommodation-description" title={t('Description')} defaultOpen={false}>
+              <div className="grid grid-cols-1 gap-4">
+                <AliAbiMDXEditor markdown={item.description || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
+                      item.description = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ description: item.description })
+                    }
+                  }}
+                />
+              </div>
+            </FormCard>
+            <FormCard id="accommodation-features" title={t('Features')} defaultOpen={false}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3  gap-4">
+                <FormCard id="accommodation-distance-from" title={t('Distance from')} defaultOpen={false}>
+                  <div className="grid grid-cols-3 gap-4">
+                    <Input
+                      className='text-sm'
+                      placeholder={t('Location')}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={(e) => {
+                        if (e.target.value != focusText) {
+
+                        }
+                      }} />
+                    <Input
+                      className='text-sm'
+                      placeholder={t('Kilometers')}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={(e) => {
+                        if (e.target.value != focusText) {
+
+                        }
+                      }} />
+                      <Input
+                      className='text-sm'
+                      placeholder={t('Minutes')}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={(e) => {
+                        if (e.target.value != focusText) {
+
+                        }
+                      }} />
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <Input
+                      className='text-sm'
+                      placeholder={t('Location')}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={(e) => {
+                        if (e.target.value != focusText) {
+
+                        }
+                      }} />
+                    <Input
+                      className='text-sm'
+                      placeholder={t('Kilometers')}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={(e) => {
+                        if (e.target.value != focusText) {
+
+                        }
+                      }} />
+                      <Input
+                      className='text-sm'
+                      placeholder={t('Minutes')}
+                      onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={(e) => {
+                        if (e.target.value != focusText) {
+
+                        }
+                      }} />
+                  </div>
+                </FormCard>
+              </div>
+            </FormCard>
+          </>}
         </div>
       }
     </>

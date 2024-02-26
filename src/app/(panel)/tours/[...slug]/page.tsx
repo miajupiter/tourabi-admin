@@ -153,21 +153,22 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
           <div className="flex flex-col gap-9">
             <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="grid grid-cols gap-5.5 p-5">
-                <div className='flex'>
-                  <InputWithLabel
-                    readOnly={formStatus == FormStatus.view}
-                    type="text"
-                    label={t('Title')}
-                    defaultValue={item.title}
-                    onFocus={(e) => setFocusText(e.target.value)}
-                    onChange={(e) => setItem({ ...item, title: e.target.value })}
-                    onBlur={async (e) => {
-                      if (e.target.value != focusText) {
-                        await saveItem({ title: item.title })
-                      }
-                    }}
-                  />
-                  <div className='flex-none w-24 md:w-64'>
+                <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+                  <div className='col-span-3'>
+                    <InputWithLabel
+                      readOnly={formStatus == FormStatus.view}
+                      label={t('Title')}
+                      defaultValue={item.title}
+                      // onFocus={(e) => setFocusText(e.target.value)}
+                      onBlur={async (e) => {
+                        if (e.target.value != item.title) {
+                          setItem({ ...item, title: e.target.value })
+                          await saveItem({ title: e.target.value })
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className='col-span-1'>
                     <label className="mb-3 block text-sm text-center font-medium text-black dark:text-white">
                       {t('Active/Passive?')}
                     </label>
@@ -184,33 +185,33 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                   </div>
                 </div>
                 <InputWithLabel
-                    readOnly={formStatus == FormStatus.view}
-                    placeholder={t('Places')}
-                    defaultValue={item.places}
-                    onFocus={(e) => setFocusText(e.target.value)}
-                    onChange={(e) => setItem({ ...item, places: e.target.value })}
-                    onBlur={async (e) => {
-                      if (e.target.value != focusText) {
-                        await saveItem({ places: item.places })
-                      }
-                    }}
-                  />
+                  readOnly={formStatus == FormStatus.view}
+                  placeholder={t('Places')}
+                  defaultValue={item.places}
+                  onFocus={(e) => setFocusText(e.target.value)}
+                  onChange={(e) => setItem({ ...item, places: e.target.value })}
+                  onBlur={async (e) => {
+                    if (e.target.value != focusText) {
+                      await saveItem({ places: item.places })
+                    }
+                  }}
+                />
 
               </div>
             </div>
             {item._id &&
               <>
                 <ImageListWidget
-                title={t('Images')}
-                images={item.images as ImageItemProps[]}
-                saveImages={(imgList: any) => {
-                  item.images = imgList
-                  setItem(item)
-                  saveItem({ images: imgList })
-                }}
-                uploadFolder={'destinations/'}
-                readOnly={formStatus == FormStatus.view}
-              />
+                  title={t('Images')}
+                  images={item.images as ImageItemProps[]}
+                  saveImages={(imgList: any) => {
+                    item.images = imgList
+                    setItem(item)
+                    saveItem({ images: imgList })
+                  }}
+                  uploadFolder={'destinations/'}
+                  readOnly={formStatus == FormStatus.view}
+                />
                 <FormCard id="debug-console" title={t('debug-console')}
                   defaultOpen={false}
                 >

@@ -3,11 +3,15 @@
 import Link from 'next/link'
 import React from "react"
 import { useLanguage } from '@/hooks/i18n'
-import { useRouter } from 'next/navigation'
+
 
 const Page404 = () => {
   const { t } = useLanguage()
-  const { back}=useRouter()
+
+  // if (typeof window !== "undefined") {
+
+  // }
+
   return (
     <main className='flex h-screen flex-col w-full'>
 
@@ -20,10 +24,14 @@ const Page404 = () => {
           <div className="w-full text-center text-2xl  text-neutral-800 dark:text-neutral-200  ">
             {t('Page not found')}
           </div>
-          <div className="w-full text-center pt-8">
-            <Link href="#" onClick={() => back()} className='text-4xl' >⬅️</Link>
-          </div>
 
+          <div className="w-full text-center pt-8">
+            <Link href="javascript:history.back(1)" className='text-4xl' >⬅️</Link>
+            {/* <Link href="#" onClick={(e) =>{
+                e.preventDefault()
+                window.history.back()
+              }} className='text-4xl' >⬅️</Link> */}
+          </div>
         </div>
       </div>
     </main>

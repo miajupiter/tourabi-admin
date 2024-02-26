@@ -107,10 +107,6 @@ export const ImageListWidget = ({ images, saveImages, uploadFolder, title, id = 
   }
 
   const handleUpload = (files: FileList) => {
-    // if (!files) {
-    //   ShowError('Please select a file to upload.')
-    //   return
-    // }
     if (files.length == 0) return
     if (!images) {
       images = []

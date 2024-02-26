@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import Chart from "@/widgets/Charts/page"
 import Head from 'next/head'
 import {aliabiConfig} from 'aliabi'
 import { useLanguage } from '@/hooks/i18n'
@@ -15,7 +14,7 @@ const BasicChartPage: React.FC = () => {
       <meta name="description" content="This is Chart page for TourAbi Admin Panel" />
     </Head>
     {/* <Chart /> */}
-    <p>chart compoenent</p>
+    <p>chart compoenent qwerty</p>
   </>
   )
 }

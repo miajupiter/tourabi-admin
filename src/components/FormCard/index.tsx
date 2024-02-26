@@ -7,17 +7,20 @@ import FormCardGroup from "./FormCardGroup"
 import { ChevronDown } from '@/components/ChevronDown'
 
 interface FormCardProps {
+
   id: string
   title: string
   icon?: any
   defaultOpen?: boolean
+  headerClassName?: string
+  bodyClassName?: string
   // formCardOpen: boolean
   // setFormCardOpen?: (arg: boolean) => void
 
   children?: React.ReactNode
 }
 
-const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardProps) => {
+const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName,bodyClassName, children }: FormCardProps) => {
   // const pathname = usePathname()
 
 
@@ -26,26 +29,12 @@ const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardPro
   const [formCardExpanded, setFormCardExpanded] = useState((localStorage.getItem(storageKey) || '') != 'true' ? false : true)
 
 
-
-  // useEffect(() => {
-
-  // }, [])
-
-  // useEffect(() => {
-
-  // }, [])
-
-  // useEffect(() => {
-
-  // }, [])
-
-
   return (
     <FormCardGroup activeCondition={formCardExpanded} id={id}>
       {(handleClick, open) => {
         return (
           <React.Fragment>
-            <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className={`rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${headerClassName}`}>
               <Link
                 href="#"
                 className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-medium te11xt-bod11ydark1 duration-0 ease-in-out bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-meta-4`}
@@ -56,15 +45,15 @@ const FormCard = ({ id, title, icon, defaultOpen = true, children }: FormCardPro
                 }}
               >
 
-                <div className="block text-lg text-black dark:text-white space-x-3">
-                  {!icon && <><i className="fa-regular fa-circle"></i></>}
+                <div className="block text-lg text-black dark:text-white space-x-3 rounded-tl rounded-tr">
+                  {!icon && <><i className="fa-regular fa-rectangle-list"></i></>}
                   {icon && <>{icon}</>}
                   <span>{title}</span>
                 </div>
                 <ChevronDown open={open} />
               </Link>
               {/* <div className={`translate transform overflow-hidden ${!open && "hidden"}`}> */}
-              <div className={` ${!open && "hidden"}`}>
+              <div className={` ${!open && "hidden"} p-4 ${bodyClassName}`}>
                 {children}
               </div>
             </div>
