@@ -1,8 +1,7 @@
 version: '3.9'
 
 services:
-  # WEB APP
-  admin-app:
+  admin:
     container_name: tourabi-admin
     build: .
     ports:
