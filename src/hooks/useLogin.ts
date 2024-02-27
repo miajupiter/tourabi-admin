@@ -11,6 +11,13 @@ import { useLanguage } from '@/hooks/i18n'
 const initialState = { isLoggedIn: false }
 const { useGlobalState } = createGlobalState(initialState)
 
+export enum UserRole {
+  USER = "user",
+  MANAGER = "manager",
+  ADMIN = "admin",
+  SYSADMIN = "sysadmin",
+}
+
 export const useLogin = () => {
   const { t } = useLanguage()
   const [token, setToken] = useLocalStorage('token', '')
@@ -52,7 +59,7 @@ export const useLogin = () => {
           // }
 
           if (redirectTo) {
-            if (window != undefined) {
+            if (typeof window != "undefined") {
               window.location.href = redirectTo
             } else {
               router.push(redirectTo)
@@ -76,7 +83,7 @@ export const useLogin = () => {
       setIsLoggedIn(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, token, user, deviceId, isLoggedIn])
+  }, [token])
 
 
   return {
@@ -85,5 +92,6 @@ export const useLogin = () => {
     user,
     logoutUser,
     loginUser,
+    UserRole
   }
 }

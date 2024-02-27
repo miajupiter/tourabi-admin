@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  devIndicators:{
+    buildActivity:true,
+    buildActivityPosition:'bottom-right'
+  },
   output: "standalone",
   basePath:"",
+
   images: {
     unoptimized: true,
     disableStaticImages: true,

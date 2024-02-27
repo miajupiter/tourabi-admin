@@ -15,8 +15,8 @@ const Page404 = () => {
   return (
     <main className='flex h-screen flex-col w-full'>
 
-      <div className="mx-2 md:mx-auto max-w-screen-3xl my-auto p-4 py-18">
-        <div className="flex-col align-top border rounded-[4px] w-[300px] max-w-screen-3xl space-y-6 p-6">
+      <div className="mx-2 md:mx-auto max-w-scre11en-3xl my-auto p-4 py-4">
+        <div className="flex-col align-top border rounded-[4px] w-full md:w-100 space-y-6 p-6">
           <div className="w-full text-center  text-4xl">🙈🙉🙊</div>
           <div className="w-full text-center text-5xl  text-neutral-800 dark:text-neutral-200  ">
             404
@@ -26,11 +26,12 @@ const Page404 = () => {
           </div>
 
           <div className="w-full text-center pt-8">
-            <Link href="javascript:history.back(1)" className='text-4xl' >⬅️</Link>
-            {/* <Link href="#" onClick={(e) =>{
-                e.preventDefault()
-                window.history.back()
-              }} className='text-4xl' >⬅️</Link> */}
+            <Link href="javascript:history.back(1)"
+              className='text-4xl border border-indigo-600 text-white px-3 py-1 rounded-md'
+            >
+              <i className="fa-solid fa-arrow-left-long"></i>
+            </Link>
+
           </div>
         </div>
       </div>

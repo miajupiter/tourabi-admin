@@ -93,8 +93,8 @@ const AccommodationsPage = () => {
             </thead>
             {docs &&
               <tbody>
-                {docs.map((item: any, key) => (
-                  <tr key={key} className='h-24'>
+                {docs.map((item: any, index: number) => (
+                  <tr key={index} className='h-24'>
                     <td className="border-b border-[#eee] px-2 py-2 pl-6 dark:border-strokedark xl:pl-7">
                       <h5 className="font-medium text-black dark:text-white">
                         {item.title}
@@ -109,21 +109,21 @@ const AccommodationsPage = () => {
 
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark">
-                      <div className="text-black dark:text-white w-full">
+                      <p className="text-black dark:text-white w-full">
                         {item.country}
-                      </div>
-                      <div className='flex justify-start items-center'>
-                        <div className="text-sm">
+                      </p>
+                      <p className='flex justify-start items-center'>
+                        <span className="text-sm">
                           {item.capacity} <i className="fa-solid fa-bed"></i>
-                        </div>
-                        <div className="text-2xl text-yellow-500">
-                          {Array.from(Array(5).keys()).map((e,index)=><>
-                            {(index+1)<=item.stars && <i className="fa-solid fa-star"></i>}
-                            {(index+1)>item.stars && <i className="fa-regular fa-star"></i>}
+                        </span>
+                        <span className="text-2xl text-yellow-500">
+                          {Array.from(Array(5).keys()).map((e, index) => <>
+                            {(index + 1) <= item.stars && <i className="fa-solid fa-star"></i>}
+                            {(index + 1) > item.stars && <i className="fa-regular fa-star"></i>}
                           </>)}
                           {item.capacity} <i className="fa-solid fa-bed"></i>
-                        </div>
-                      </div>
+                        </span>
+                      </p>
 
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark font-medium text-center">
@@ -135,16 +135,15 @@ const AccommodationsPage = () => {
                       }
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark">
-                      <TableRowActionButtons
-                        viewButton={{ href: `/accommodations/view/${item._id}` }}
-                        removeButton={{
-                          onClick(e) {
-                            removeItem(item)
-                          },
-                        }}
-                        editButton={{ href: `/accommodations/edit/${item._id}` }}
-                      />
-
+                        <TableRowActionButtons
+                          viewButton={{ href: `/accommodations/view/${item._id}` }}
+                          removeButton={{
+                            onClick(e) {
+                              removeItem(item)
+                            },
+                          }}
+                          editButton={{ href: `/accommodations/edit/${item._id}` }}
+                        />
                     </td>
                   </tr>
                 ))}
