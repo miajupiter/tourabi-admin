@@ -161,53 +161,48 @@ export const TravelPlan = ({ item, setItem, saveItem, readOnly }: { item: TourIt
   useEffect(() => {
 
   }, [t, item])
-  return (
-    <FormCard id="tours-travelplan" title={t('Travel plan')}
-      defaultOpen={false}
-      icon={(<i className="fa-solid fa-list-ol"></i>)}
-    >
-      {item && <>
-        <div className="grid grid-cols-1 gap-5.5 p-5">
-          <div >
-            {item.travelPlan && item.travelPlan.map((plan: any, index: number) =>
-              <div key={'tours-travel-plan' + v4()}
-                className={`w-full mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
+  return (<>
+    {item && <>
+      <div className="grid grid-cols-1 gap-5.5 p-5">
+        <div >
+          {item.travelPlan && item.travelPlan.map((plan: any, index: number) =>
+            <div key={'tours-travel-plan' + v4()}
+              className={`w-full mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
 
-                {/* {plan && <PlanItem key={index} index={index} title={plan.title || ''} description={plan.description || ''} />} */}
-                {plan &&
-                  <>
-                    {PlanItem({ index: index, title: plan.title || '', description: plan.description || '' })}
-                  </>
-                }
+              {/* {plan && <PlanItem key={index} index={index} title={plan.title || ''} description={plan.description || ''} />} */}
+              {plan &&
+                <>
+                  {PlanItem({ index: index, title: plan.title || '', description: plan.description || '' })}
+                </>
+              }
 
-              </div>
-            )}
-          </div>
-          {!readOnly &&
-            <>
-              <div className='text-center'>
-                <Link
-                  href="#"
-                  className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
-                  onClick={async (e) => {
-                    if (!item.travelPlan) item.travelPlan = []
-                    item.travelPlan.push({
-                      title: `New plan title ${item.travelPlan.length + 1}`,
-                      description: ''
-                    })
-                    setItem(item)
-                    await saveItem({ travelPlan: item.travelPlan })
-                  }}
-                >
-                  {t('Add Travel Plan')}
-                </Link>
-              </div>
-            </>
-          }
+            </div>
+          )}
         </div>
-      </>}
-    </FormCard>
-  )
+        {!readOnly &&
+          <>
+            <div className='text-center'>
+              <Link
+                href="#"
+                className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
+                onClick={async (e) => {
+                  if (!item.travelPlan) item.travelPlan = []
+                  item.travelPlan.push({
+                    title: `New plan title ${item.travelPlan.length + 1}`,
+                    description: ''
+                  })
+                  setItem(item)
+                  await saveItem({ travelPlan: item.travelPlan })
+                }}
+              >
+                {t('Add Travel Plan')}
+              </Link>
+            </div>
+          </>
+        }
+      </div>
+    </>}
+  </>)
 }
 
 export default TravelPlan

@@ -13,7 +13,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Pagination from '@/components/Pagination'
 import TableRowActionButtons, { TableRowActionButtonsProps } from '../../../components/TableRowActionButtons'
-import UserRole from './UserRole'
+import UserRoleEmojiStyle from './UserRoleEmojiStyle'
 
 
 const UsersPage = () => {
@@ -127,7 +127,7 @@ const UsersPage = () => {
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark font-medium text-center">
                       <p className="text-black dark:text-white uppercase">
-                        <UserRole role={item.role} />
+                        <UserRoleEmojiStyle role={item.role} />
                       </p>
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark font-medium text-center">

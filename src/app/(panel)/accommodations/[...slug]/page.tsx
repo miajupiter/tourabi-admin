@@ -268,7 +268,7 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
                     readOnly={formStatus == FormStatus.view}
                     label={t('Address')}
                     defaultValue={item.addressText}
-                    onFocus={(e) => setFocusText(e.target.value)}
+                    // onFocus={(e) => setFocusText(e.target.value)}
                     onBlur={async (e) => {
                       if (e.target.value != item.addressText) {
                         setItem({ ...item, addressText: e.target.value })

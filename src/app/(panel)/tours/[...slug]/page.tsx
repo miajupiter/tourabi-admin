@@ -11,11 +11,27 @@ import SwitchPassive from '@/components/SwitchPassive'
 import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
 import ImageListWidget, { ImageItemProps } from '@/widgets/ImageListWidget'
+import { useLogin, UserRole } from '@/hooks/useLogin'
+import SelectWithLabel from '@/components/SelectWithLabel'
+import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
+import { eventLog } from '@/lib/developerHelper'
+import { tabNext } from '@/lib/util'
 
 export interface TourPageDetailProps {
   params: { slug: string | [] }
 }
 
+export interface I18nProps {
+  lastTranslated?: any
+  en: { title: String, description: String }
+  tr: { title: String, description: String }
+  ru: { title: String, description: String }
+  de: { title: String, description: String }
+  es: { title: String, description: String }
+  ko: { title: String, description: String }
+  fr: { title: String, description: String }
+  zh: { title: String, description: String }
+}
 export interface TourItemType {
   _id?: string
   title?: string
@@ -26,19 +42,26 @@ export interface TourItemType {
   // tempImages?: StaticImageData[] | []
   priceTable?: any[]
   travelPlan?: any[]
-  currency?: string
+  currency?: CurrencyType | string
+
+  priceWithoutDiscount?: number
   price?: number
   singleSupplement?: number
   inclusions?: string
   exclusions?: string
   passive?: boolean
 
+  // <!-- developer image & tranlate -->
+  i18n: I18nProps | any
+  temp: any
 }
 
 const mdxKod = '--1--1'
 
 const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const { t } = useLanguage()
+  const { user } = useLogin()
+
   const { slug } = params
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
 
@@ -82,14 +105,27 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
     const token = localStorage.getItem('token') || ''
+
+    const times: number[] = []
+    const fieldName = data && Object.keys(data || {})[0] || 'if ? there must be a problem here'
+    const analuciator = (note?: string) => {
+      times.push(new Date().getDate())
+      eventLog(fieldName, (note || ''), `t-${times.length}:`, times[times.length - 1])
+    }
+    analuciator('start')
+
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${item?._id}?partial=true`, {
       method: item?._id ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json', token: token },
       body: JSON.stringify(data)
     })
-      .then(ret => ret.json())
+      .then(ret => {
+        analuciator('fetch1')
+        return ret.json()
+      })
       .then(result => {
-        console.log('saveItem result:', result)
+        analuciator('fetch2')
+
         if (result.success && result.data) {
           setItem({ ...item, ...result.data })
           if (formStatus == FormStatus.new && item?._id) {
@@ -102,6 +138,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
           reject('error: saveItem')
         }
       }).catch((err: any) => {
+        analuciator('fetchErr:')
         console.error(err)
         reject(err.message || err)
       })
@@ -186,19 +223,96 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 </div>
                 <InputWithLabel
                   readOnly={formStatus == FormStatus.view}
-                  placeholder={t('Places')}
+                  label={t('Places')}
                   defaultValue={item.places}
-                  onFocus={(e) => setFocusText(e.target.value)}
-                  onChange={(e) => setItem({ ...item, places: e.target.value })}
                   onBlur={async (e) => {
-                    if (e.target.value != focusText) {
-                      await saveItem({ places: item.places })
+                    if (e.target.value != item.places) {
+                      setItem({ ...item, places: e.target.value })
+                      await saveItem({ places: e.target.value })
                     }
                   }}
                 />
 
               </div>
             </FormCard>
+            <FormCard id="tours-prices" title={t('Prices')}
+              defaultOpen={false} icon={(<i className="fa-solid fa-money-check-dollar"></i>)} >
+              <div className='flex flex-col space-y-4'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                  <SelectWithLabel
+                    label={t('Currency')}
+                    readOnly={formStatus == FormStatus.view}
+
+                    defaultValue={item.currency || CurrencyType.USD}
+                    onBlur={async (e) => {
+                      if (e.target.value != item.currency) {
+                        setItem({ ...item, currency: e.target.value })
+                        saveItem({ currency: e.target.value })
+                      }
+                    }}
+                  >
+                    {CurrencyTypeList.map((e, index) => <>
+                      <option key={index} value={e}>{e}</option>
+                    </>)}
+                  </SelectWithLabel>
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type='number'
+                    label={t('Price')}
+                    title={t('Real price or discounted price.')}
+                    defaultValue={item.priceWithoutDiscount}
+                    min={0}
+                    enterKeyHint='next'
+                    onBlur={async (e) => {
+                      if (item.priceWithoutDiscount && e.target.value) {
+                        setItem({ ...item, priceWithoutDiscount: Number(e.target.value) })
+                        saveItem({ priceWithoutDiscount: Number(e.target.value) })
+                      }
+                    }}
+                  />
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type='number'
+                    label={t('Price without discount')}
+                    title={t('Ineffective price. It is used to show the user a crossed-out high price.')}
+                    labelClassName='line-through'
+                    defaultValue={item.priceWithoutDiscount}
+                    min={0}
+                    onBlur={async (e) => {
+                      if (item.priceWithoutDiscount && e.target.value) {
+                        setItem({ ...item, priceWithoutDiscount: Number(e.target.value) })
+                        saveItem({ priceWithoutDiscount: Number(e.target.value) })
+                      }
+                    }}
+
+                  />
+                </div>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                  <InputWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    type='number'
+                    label={t('Single supplement')}
+                    defaultValue={item.singleSupplement}
+                    min={0}
+                    onBlur={async (e) => {
+                      if (item.singleSupplement && e.target.value) {
+                        setItem({ ...item, singleSupplement: Number(e.target.value) })
+                        saveItem({ singleSupplement: Number(e.target.value) })
+                      }
+                    }}
+                  />
+
+
+                </div>
+              </div>
+            </FormCard>
+            {user && user.role === UserRole.DEVELOPER && <>
+              <FormCard id="tours-developer" title={t('Developer')} defaultOpen={false}            >
+                <div className='grid grid-cols-1 gap-4'>
+                  user role:{user && user.role}
+                </div>
+              </FormCard>
+            </>}
           </div>
           {item._id && <>
             <FormCard id="tours-images" title={t('Images')} defaultOpen={false}
@@ -215,15 +329,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 uploadFolder={'tour-images002/'}
                 readOnly={formStatus == FormStatus.view}
               />
-            </FormCard>
-            <FormCard id="debug-console" title={t('debug-console')}
-              defaultOpen={false}
-            >
-              <h3 className='text-2xl w-full'>focusMarkDown</h3>
-              <p>{focusMarkDown}</p>
-              <hr />
-              <h3 className='text-2xl w-full'>focusText</h3>
-              <p>{focusText}</p>
             </FormCard>
 
             <FormCard id="tours-description" title={t('Description')}
@@ -245,9 +350,11 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
               </div>
             </FormCard>
 
-            {/* Travel Plan List */}
-            <TravelPlan item={item} setItem={setItem} saveItem={saveItem} />
-            {/* ./Travel Plan List */}
+            <FormCard id="tours-travelplan" title={t('Travel plan')} defaultOpen={false}
+              icon={(<i className="fa-solid fa-list-ol"></i>)}
+            >
+              <TravelPlan item={item} setItem={setItem} saveItem={saveItem} />
+            </FormCard>
             <FormCard id="tours-inclusions" title={t('Inclusions')}
               defaultOpen={false}
               icon={(<i className="fa-solid fa-file-circle-plus"></i>)}

@@ -4,21 +4,14 @@ export interface MenuItemProps {
   title?: string
   icon?: string | any
   path?: string
+  disabled?:boolean
   children?: any
 }
 
 export const SideMenu = (role?: UserRole) => {
 
   const deleloperMenu = {
-    "dashboard": {
-      "title": "Dashboard",
-      "icon": "fa-solid fa-gauge",
-      "path": "/dashboard",
-      "children": {
-        "general": { "title": "Genel", "path": "/dashboard", "icon": "fa-solid fa-chart-column" },
-        "daily": { "title": "Günlük", "path": "/dashboard/daily", "icon": "fa-solid fa-chart-column" }
-      }
-    },
+    
     "divider2": "DEVELOPER",
     "ui-elements": {
       "title": "UI Elements",
@@ -49,11 +42,25 @@ export const SideMenu = (role?: UserRole) => {
       "path": "/dashboard",
       "children": {
         "general": { "title": "Genel", "path": "/dashboard", "icon": "fa-solid fa-chart-column" },
+        "daily": { "title": "Günlük", "disable":true, "icon": "fa-solid fa-chart-column" }
       }
     },
-    "tours": { "title": "Turlar", "path": "/tours", "icon": "fa-solid fa-earth-asia" },
-    "destinations": { "title": "Turlar", "path": "/destinations", "icon": "fa-solid fa-map-location-dot" },
-    "accommodations": { "title": "Hotels", "path": "/accommodations", "icon": "fa-solid fa-hotel" },
+    "tours": {
+      "title": "Tour operations", "path": "/tours", "icon": "fa-solid fa-earth-asia",
+      "children": {
+        "agencyOp": { "title": "Acency sales operations", "disable":true,"icon": "fa-solid fa-handshake" },
+        "sales": { "title": "Sales", "disable":true, "icon": "fa-solid fa-cash-register" },
+        "tours": { "title": "Tour definitions", "path": "/tours", "icon": "fa-solid fa-route" }
+      }
+    },
+    "defs": {
+      "title": "Definitions", "path": "/defs", "icon": "fa-solid fa-list-check",
+      "children": {
+        "destinations": { "title": "Destinations", "path": "/destinations", "icon": "fa-solid fa-map-location-dot" },
+        "places": { "title": "Places", "disable":true, "icon": "fa-solid fa-mountain-city" },
+        "accommodations": { "title": "Hotels", "path": "/accommodations", "icon": "fa-solid fa-hotel" }
+      }
+    },
     "users": { "title": "Kullanicilar", "path": "/users", "icon": "fa-solid fa-users" },
     "divider1": "---",
     "settings": { "title": "Ayarlar", "path": "/settings", "icon": "fa-solid fa-screwdriver-wrench" }

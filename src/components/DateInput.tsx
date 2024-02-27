@@ -32,7 +32,7 @@ export const DateInput: FC<DateInputProps> = ({
         <input
           // type='date'
           // className={`relative form-datepicker z-20 w-full appearance-none rounded-[4px] border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
-          className={`form-datepicker z-20 w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${className}`}
+          className={`form-datepicker z-20 w-full rounded border-[1.5px] border-stroke bg-transparent px-3 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${className}`}
           // placeholder="mm/dd/yyyy"
           data-class="flatpickr-right"
 

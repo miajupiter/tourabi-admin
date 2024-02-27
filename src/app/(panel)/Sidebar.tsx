@@ -36,6 +36,22 @@ const Sidebar = () => {
 
   const [sidebarExpanded, setSidebarExpanded] = useState(localStorage.getItem("sidebar-expanded") || "true")
 
+  const checkActiveCondition = (item: MenuItemProps) => {
+    var bActive = false
+    if (item.path && pathname.startsWith(item.path))
+      return true
+    if (item.children) {
+      for (var key in item.children) {
+        const subItem = item.children[key]
+        if (subItem.path && pathname.startsWith(subItem.path)) {
+          bActive = true
+          return true
+        }
+
+      }
+    }
+    return bActive
+  }
 
   const SidebarLinkGroup = ({ children, activeCondition }: SidebarLinkGroupProps) => {
     const [open, setOpen] = useState<boolean>(activeCondition)
@@ -74,7 +90,8 @@ const Sidebar = () => {
         <Link href={item.path || ''}
           className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium
            text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4
-           ${pathname.includes("tables") && "bg-graydark dark:bg-meta-4"}
+           ${pathname === item.path && "bg-graydark dark:bg-meta-4"}
+           ${(item.disabled || !item.path) && "disabled:* cursor-default opacity-45"}
           `}>
           {item.icon && typeof item.icon === "string" && <i className={item.icon}></i>}
           {item.icon && typeof item.icon != "string" && (item.icon)}
@@ -83,7 +100,7 @@ const Sidebar = () => {
       </>
     } else if (item.children) {
       return <>
-        <SidebarLinkGroup activeCondition={item.path && pathname.startsWith(item.path) ? true : false}>
+        <SidebarLinkGroup activeCondition={checkActiveCondition(item)}>
           {(handleClick, open) => {
             return (<React.Fragment>
               <Link href="#"

@@ -18,7 +18,7 @@ export const SelectWithLabel: React.FC<SelectProps> = ({
 
   return (
     <div className={`${className}`}>
-      <label className={`mb-3 block text-sm font-medium text-black dark:text-white ${labelClassName}`}>
+      <label className={`mb-1 ms-2 block text-sm font-medium text-black dark:text-white ${labelClassName}`}>
         {label}
       </label>
       <Select
