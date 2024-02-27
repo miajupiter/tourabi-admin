@@ -164,7 +164,8 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
       {item &&
         <div className="grid grid-cols-1 gap-6 ">
           <div className="flex flex-col gap-6">
-            <FormCard id="accommodation-head" title={item.title || '...'} defaultOpen={true}>
+            <FormCard id="accommodation-head" title={item.title || '...'} defaultOpen={true}
+              icon={(<i className="fa-solid fa-hotel"></i>)}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className='col-span-full grid grid-cols-1 md:grid-cols-4 gap-4'>
                   <div className='col-span-3'>
@@ -209,7 +210,7 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
                       }
                     }}
                   >
-                    {PROPERTY_TYPES.map((propertyType:string, index:number) => (
+                    {PROPERTY_TYPES.map((propertyType: string, index: number) => (
                       <option key={index} value={propertyType}>{t(propertyType)}</option>
                     ))}
                   </SelectWithLabel>
@@ -280,18 +281,22 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
             </FormCard>
           </div>
           {item._id && <>
-            <ImageListWidget
-              title={t('Images')}
-              images={item.images as ImageItemProps[]}
-              saveImages={(imgList: any) => {
-                item.images = imgList
-                setItem(item)
-                saveItem({ images: imgList })
-              }}
-              uploadFolder={'hotel-images/'}
-              readOnly={formStatus == FormStatus.view}
-            />
-
+            <FormCard id="tours-images" title={t('Images')}
+              defaultOpen={false}
+              icon={(<i className="fa-regular fa-images"></i>)}
+            >
+              <ImageListWidget
+                title={t('Images')}
+                images={item.images as ImageItemProps[]}
+                saveImages={(imgList: any) => {
+                  item.images = imgList
+                  setItem(item)
+                  saveItem({ images: imgList })
+                }}
+                uploadFolder={'hotel-images/'}
+                readOnly={formStatus == FormStatus.view}
+              />
+            </FormCard>
             <FormCard id="accommodation-description" title={t('Description')} defaultOpen={false}>
               <div className="grid grid-cols-1 gap-4">
                 <AliAbiMDXEditor markdown={item.description || ''}
@@ -331,7 +336,7 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
 
                         }
                       }} />
-                      <Input
+                    <Input
                       className='text-sm'
                       placeholder={t('Minutes')}
                       onFocus={(e) => setFocusText(e.target.value)}
@@ -360,7 +365,7 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
 
                         }
                       }} />
-                      <Input
+                    <Input
                       className='text-sm'
                       placeholder={t('Minutes')}
                       onFocus={(e) => setFocusText(e.target.value)}

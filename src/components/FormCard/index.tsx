@@ -46,7 +46,7 @@ const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName,bodyCla
               >
 
                 <div className="block text-lg text-black dark:text-white space-x-3 rounded-tl rounded-tr">
-                  {!icon && <><i className="fa-regular fa-rectangle-list"></i></>}
+                  {/* {!icon && <><i className="fa-regular fa-rectangle-list"></i></>} */}
                   {icon && <>{icon}</>}
                   <span>{title}</span>
                 </div>

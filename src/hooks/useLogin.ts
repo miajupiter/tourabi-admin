@@ -15,7 +15,7 @@ export enum UserRole {
   USER = "user",
   MANAGER = "manager",
   ADMIN = "admin",
-  SYSADMIN = "sysadmin",
+  DEVELOPER = "developer",
 }
 
 export const useLogin = () => {
@@ -46,7 +46,7 @@ export const useLogin = () => {
       .then(result => {
         if (result.success) {
           console.log(`loginUser result:`, result)
-          if (!['manager', 'admin', 'sysadmin'].includes(result.data.user.role)) {
+          if (!['manager', 'admin', 'developer'].includes(result.data.user.role)) {
             ShowError(t('access denied'))
             return
           }

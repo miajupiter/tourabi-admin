@@ -160,15 +160,16 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
       ]} />
 
       {item &&
-        <div className="grid grid-cols-1 gap-9 ">
-          <div className="flex flex-col gap-9">
-            <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="flex flex-col gap-5.5 p-5">
+        <div className="grid grid-cols-1 gap-6 ">
+          <div className="flex flex-col gap-6">
+            <FormCard id="users-head" title={item.email || '...'} defaultOpen={true}
+            icon={(<i className="fa-solid fa-users"></i>)}>
+
+              <div className="flex flex-col gap-4">
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                   <InputWithLabel
                     readOnly={formStatus == FormStatus.view}
                     label={t('First name')}
-                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     defaultValue={item.firstName}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, firstName: e.target.value })}
@@ -181,7 +182,6 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                   <InputWithLabel
                     readOnly={formStatus == FormStatus.view}
                     label={t('Last name')}
-                    // className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     defaultValue={item.lastName}
                     onFocus={(e) => setFocusText(e.target.value)}
                     onChange={(e) => setItem({ ...item, lastName: e.target.value })}
@@ -246,8 +246,10 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                     </label>
                   </div>
                 </div>
+
+
               </div>
-            </div>
+            </FormCard>
             {item._id && <>
               <FormCard id="user-financials" title={t('Address')}
                 defaultOpen={false}

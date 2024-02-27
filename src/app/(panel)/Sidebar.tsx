@@ -101,7 +101,7 @@ const Sidebar = () => {
                 {item.title && t(item.title)}
                 <ChevronDown open={open} />
               </Link>
-              <ul className={`mb-5.5 mt-4 flex flex-col gap-2.5 ps-4 translate transform overflow-hidden ${!open && "hidden"}`} >
+              <ul className={`mb-2 mt-2 flex flex-col gap-2.5 ps-4 translate transform overflow-hidden ${!open && "hidden"}`} >
                 {Object.keys(item.children).map((menuKey, index) => <>
                   <li key={index}>
                     {menuItem(item.children[menuKey])}
@@ -119,11 +119,6 @@ const Sidebar = () => {
 
   }
 
-  const denemeItem = (item: MenuItemProps) => {
-    return <>
-      {item && item.title || ''}
-    </>
-  }
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -153,16 +148,16 @@ const Sidebar = () => {
 
   useEffect(() => {
     localStorage.setItem("sidebar-expanded", sidebarExpanded.toString())
-    // if (sidebarExpanded) {
-    //   document.querySelector("body")?.classList.add("sidebar-expanded")
-    // } else {
-    //   document.querySelector("body")?.classList.remove("sidebar-expanded")
-    // }
     if (sidebarExpanded) {
-      document.querySelector('#side-menu')?.classList.remove('hidden')
+      document.querySelector("body")?.classList.add("sidebar-expanded")
     } else {
-      document.querySelector('#side-menu')?.classList.add('hidden')
+      document.querySelector("body")?.classList.remove("sidebar-expanded")
     }
+    // if (sidebarExpanded) {
+    //   document.querySelector('#side-menu')?.classList.remove('hidden')
+    // } else {
+    //   document.querySelector('#side-menu')?.classList.add('hidden')
+    // }
   }, [sidebarExpanded])
 
   // useEffect(() => {
@@ -177,7 +172,7 @@ const Sidebar = () => {
         }`}
       suppressHydrationWarning={true}
     >
-      <div key={v4()} className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+      <div key={v4()} className="flex items-center justify-between gap-2 px-6 py-4">
         <Logo width={176} />
         <button
           ref={trigger}
@@ -191,7 +186,7 @@ const Sidebar = () => {
       </div>
 
       <div key={v4()} className="no-scrollbar flex flex-col overflow-y-auto duration-100 ease-linear">
-        <nav className="mt-5 px-4 py-4 lg:px-6">
+        <nav className="px-4 py-2 lg:px-4">
 
           <ul key={`main-ul`} className="mb-6 flex flex-col gap-1.5">
             {sideMenu && <>

@@ -155,11 +155,8 @@ export const ImageListWidget = ({ images, saveImages, uploadFolder, title, id = 
 
 
   return (
-    <FormCard id={id} title={title || t('Images')}
-      defaultOpen={false}
-      icon={(<i className="fa-regular fa-images"></i>)}
-    >
-      <div className="grid grid-cols-1 gap-5.5 p-5">
+    <>
+      <div className="grid grid-cols-1 gap-4">
         <div className='grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' >
           {(images || []).map((imgItem: ImageItemProps, index: number) => <>
             <div key={'image-' + v4()}
@@ -189,7 +186,7 @@ export const ImageListWidget = ({ images, saveImages, uploadFolder, title, id = 
           </div>
         }
       </div>
-    </FormCard>
+    </>
   )
 }
 

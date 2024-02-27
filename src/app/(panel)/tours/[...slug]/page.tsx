@@ -141,7 +141,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
   return (
     <>
-
       <PageHeader pageTitle={formTitle()} breadcrumbList={[
         { href: '/', pageTitle: 'Dashboard' },
         { href: '/tours', pageTitle: 'Tours' },
@@ -149,17 +148,18 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       ]} />
 
       {item &&
-        <div className="grid grid-cols-1 gap-9 ">
-          <div className="flex flex-col gap-9">
-            <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="grid grid-cols gap-5.5 p-5">
+        <div className="grid grid-cols-1 gap-6 ">
+          <div className="flex flex-col gap-6">
+            <FormCard id="tours-head" title={item.title || '...'} defaultOpen={true}
+              icon={(<i className="fa-solid fa-earth-asia"></i>)}
+            >
+              <div className="grid grid-cols gap-4">
                 <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
                   <div className='col-span-3'>
                     <InputWithLabel
                       readOnly={formStatus == FormStatus.view}
                       label={t('Title')}
                       defaultValue={item.title}
-                      // onFocus={(e) => setFocusText(e.target.value)}
                       onBlur={async (e) => {
                         if (e.target.value != item.title) {
                           setItem({ ...item, title: e.target.value })
@@ -198,95 +198,97 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 />
 
               </div>
-            </div>
-            {item._id &&
-              <>
-                <ImageListWidget
-                  title={t('Images')}
-                  images={item.images as ImageItemProps[]}
-                  saveImages={(imgList: any) => {
-                    item.images = imgList
-                    setItem(item)
-                    saveItem({ images: imgList })
-                  }}
-                  uploadFolder={'destinations/'}
-                  readOnly={formStatus == FormStatus.view}
-                />
-                <FormCard id="debug-console" title={t('debug-console')}
-                  defaultOpen={false}
-                >
-                  <h3 className='text-2xl w-full'>focusMarkDown</h3>
-                  <p>{focusMarkDown}</p>
-                  <hr />
-                  <h3 className='text-2xl w-full'>focusText</h3>
-                  <p>{focusText}</p>
-                </FormCard>
-
-                <FormCard id="tours-description" title={t('Description')}
-                  defaultOpen={false}
-                >
-                  <div className="grid grid-cols-1  gap-5.5 p-5">
-                    <AliAbiMDXEditor markdown={item.description || ''}
-                      readOnly={formStatus == FormStatus.view}
-                      onChange={(markdown) => setFocusMarkDown(markdown)}
-                      onBlur={async (e) => {
-                        if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
-                          item.description = focusMarkDown
-                          setItem(item)
-                          setFocusMarkDown(mdxKod)
-                          await saveItem({ description: item.description })
-                        }
-                      }}
-                    />
-                  </div>
-                </FormCard>
-
-                {/* Travel Plan List */}
-                <TravelPlan item={item} setItem={setItem} saveItem={saveItem} />
-                {/* ./Travel Plan List */}
-                <FormCard id="tours-inclusions" title={t('Inclusions')}
-                  defaultOpen={false}
-                  icon={(<i className="fa-solid fa-file-circle-plus"></i>)}
-                >
-                  <div className="grid grid-cols-1  gap-5.5 p-5">
-                    <AliAbiMDXEditor markdown={item.inclusions || ''}
-                      readOnly={formStatus == FormStatus.view}
-                      onChange={(markdown) => setFocusMarkDown(markdown)}
-                      onBlur={async (e) => {
-                        if (focusMarkDown != mdxKod && focusMarkDown != item.inclusions) {
-                          item.inclusions = focusMarkDown
-                          setItem(item)
-                          setFocusMarkDown(mdxKod)
-                          await saveItem({ inclusions: item.inclusions })
-                        }
-                      }}
-                    />
-
-                  </div>
-                </FormCard>
-
-                <FormCard id="tours-exclusions" title={t('Exclusions')}
-                  defaultOpen={false}
-                  icon={(<i className="fa-solid fa-file-circle-minus"></i>)}
-                >
-                  <div className="grid grid-cols-1 gap-5.5 p-5">
-                    <AliAbiMDXEditor markdown={item.exclusions || ''}
-                      readOnly={formStatus == FormStatus.view}
-                      onChange={(markdown) => setFocusMarkDown(markdown)}
-                      onBlur={async (e) => {
-                        if (focusMarkDown != mdxKod && focusMarkDown != item.exclusions) {
-                          item.exclusions = focusMarkDown
-                          setItem(item)
-                          setFocusMarkDown(mdxKod)
-                          await saveItem({ exclusions: item.exclusions })
-                        }
-                      }}
-                    />
-                  </div>
-                </FormCard>
-              </>}
+            </FormCard>
           </div>
+          {item._id && <>
+            <FormCard id="tours-images" title={t('Images')} defaultOpen={false}
+              icon={(<i className="fa-regular fa-images"></i>)}
+            >
+              <ImageListWidget
+                title={t('Images')}
+                images={item.images as ImageItemProps[]}
+                saveImages={(imgList: any) => {
+                  item.images = imgList
+                  setItem(item)
+                  saveItem({ images: imgList })
+                }}
+                uploadFolder={'tour-images002/'}
+                readOnly={formStatus == FormStatus.view}
+              />
+            </FormCard>
+            <FormCard id="debug-console" title={t('debug-console')}
+              defaultOpen={false}
+            >
+              <h3 className='text-2xl w-full'>focusMarkDown</h3>
+              <p>{focusMarkDown}</p>
+              <hr />
+              <h3 className='text-2xl w-full'>focusText</h3>
+              <p>{focusText}</p>
+            </FormCard>
 
+            <FormCard id="tours-description" title={t('Description')}
+              defaultOpen={false}
+            >
+              <div className="grid grid-cols-1  gap-4">
+                <AliAbiMDXEditor markdown={item.description || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
+                      item.description = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ description: item.description })
+                    }
+                  }}
+                />
+              </div>
+            </FormCard>
+
+            {/* Travel Plan List */}
+            <TravelPlan item={item} setItem={setItem} saveItem={saveItem} />
+            {/* ./Travel Plan List */}
+            <FormCard id="tours-inclusions" title={t('Inclusions')}
+              defaultOpen={false}
+              icon={(<i className="fa-solid fa-file-circle-plus"></i>)}
+            >
+              <div className="grid grid-cols-1  gap-4">
+                <AliAbiMDXEditor markdown={item.inclusions || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.inclusions) {
+                      item.inclusions = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ inclusions: item.inclusions })
+                    }
+                  }}
+                />
+
+              </div>
+            </FormCard>
+
+            <FormCard id="tours-exclusions" title={t('Exclusions')}
+              defaultOpen={false}
+              icon={(<i className="fa-solid fa-file-circle-minus"></i>)}
+            >
+              <div className="grid grid-cols-1 gap-4">
+                <AliAbiMDXEditor markdown={item.exclusions || ''}
+                  readOnly={formStatus == FormStatus.view}
+                  onChange={(markdown) => setFocusMarkDown(markdown)}
+                  onBlur={async (e) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != item.exclusions) {
+                      item.exclusions = focusMarkDown
+                      setItem(item)
+                      setFocusMarkDown(mdxKod)
+                      await saveItem({ exclusions: item.exclusions })
+                    }
+                  }}
+                />
+              </div>
+            </FormCard>
+          </>}
         </div>
       }
     </>
