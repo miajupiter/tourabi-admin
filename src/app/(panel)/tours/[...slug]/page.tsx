@@ -15,7 +15,6 @@ import { useLogin, UserRole } from '@/hooks/useLogin'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
 import { eventLog } from '@/lib/developerHelper'
-import { tabNext } from '@/lib/util'
 
 export interface TourPageDetailProps {
   params: { slug: string | [] }
@@ -47,6 +46,10 @@ export interface TourItemType {
   priceWithoutDiscount?: number
   price?: number
   singleSupplement?: number
+  groupSize: {
+    min: number
+    max: number
+  },
   inclusions?: string
   exclusions?: string
   passive?: boolean
@@ -113,6 +116,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       eventLog(fieldName, (note || ''), `t-${times.length}:`, times[times.length - 1])
     }
     analuciator('start')
+
 
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${item?._id}?partial=true`, {
       method: item?._id ? 'PUT' : 'POST',
@@ -235,10 +239,10 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
               </div>
             </FormCard>
-            <FormCard id="tours-prices" title={t('Prices')}
+            <FormCard id="tours-prices" title={`${t('Prices')} | ${t('Calculations')} | ${t('Groups')}`}
               defaultOpen={false} icon={(<i className="fa-solid fa-money-check-dollar"></i>)} >
               <div className='flex flex-col space-y-4'>
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4'>
                   <SelectWithLabel
                     label={t('Currency')}
                     readOnly={formStatus == FormStatus.view}
@@ -286,8 +290,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     }}
 
                   />
-                </div>
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                   <InputWithLabel
                     readOnly={formStatus == FormStatus.view}
                     type='number'
@@ -301,9 +303,39 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                       }
                     }}
                   />
-
-
                 </div>
+                <FormCard id="tours-price-groupsize" title={t('Group Size')} defaultOpen={false}            >
+                  <div className='grid grid-cols-2 gap-4'>
+                    <InputWithLabel
+                      readOnly={formStatus==FormStatus.view}
+                      type='number'
+                      label={t('Min')}
+                      min={1}
+                      defaultValue={(item.groupSize && item.groupSize.min) || 1}
+                      onBlur={(e)=>{
+                        if(item.groupSize.min!=Number(e.target.value)){
+                          item.groupSize.min=Number(e.target.value)
+                          setItem(item)
+                          saveItem({groupSize:item.groupSize})
+                        }
+                      }}
+                    />
+                    <InputWithLabel
+                      readOnly={formStatus==FormStatus.view}
+                      type='number'
+                      label={t('Max')}
+                      min={1}
+                      defaultValue={(item.groupSize && item.groupSize.max || 10)}
+                      onBlur={(e)=>{
+                        if((item.groupSize && item.groupSize.max)!=Number(e.target.value)){
+                          item.groupSize.max=Number(e.target.value)
+                          setItem(item)
+                          saveItem({groupSize:item.groupSize})
+                        }
+                      }}
+                    />
+                  </div>
+                </FormCard>
               </div>
             </FormCard>
             {user && user.role === UserRole.DEVELOPER && <>

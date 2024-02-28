@@ -79,7 +79,7 @@
 
 .apexcharts-xaxistooltip,
 .apexcharts-yaxistooltip {
-    @apply dark:!border-meta-4 dark:!bg-meta-4 dark:!text-bodydark1;
+    @apply dark:!border-meta-4 dark:!bg-meta-4 dark:!text-bodydark;
 }
 
 .apexcharts-xaxistooltip-bottom:after {
@@ -243,3 +243,18 @@ input[type="search"]::-webkit-search-cancel-button {
 [x-cloak] {
     display:none !important;
 }
+
+.zemin {
+    background-image: url(/img/bg/hero@75.b2469a49);
+}
+.dark .zemin {
+    background-image: url(/img/bg/hero-dark@90.dba36cdf.jpg);
+}
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-spin {
+    animation: spin 0.2s linear infinite;
+  }

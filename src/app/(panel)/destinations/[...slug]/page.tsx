@@ -137,7 +137,7 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
       {item &&
         <div className="grid grid-cols-1 gap-9 ">
           <div className="flex flex-col gap-9">
-            <div className="rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="rounded-[8px] border border-stroke shadow-default dark:border-strokedark">
               <div className="grid grid-cols-1 gap-5.5 p-5">
                 <div className='flex flex-row'>
                   <InputWithLabel

@@ -74,7 +74,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <div className='w-full border-b border-neutral-500 my-2'></div>
         }
         {item != "---" &&
-          <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+          <h3 className="mb-4 ml-4 text-sm font-semibold text-b11odydark2">
             {item}
           </h3>
         }
@@ -85,7 +85,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <div className='w-full border-b border-neutral-500 my-2'></div>
         }
         {item.title &&
-          <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+          <h3 className="mb-4 ml-4 text-sm font-semibold text-bodyd11ark2">
             {item.title}
           </h3>
         }
@@ -93,10 +93,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     } else if (!item.children && (!item.type || item.type === 'link')) {
       return <>
         <Link href={item.path || ''}
-          className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium
-           text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4
-           ${pathname === item.path && "bg-graydark dark:bg-meta-4"}
-           ${(item.disabled || !item.path) && "disabled:* cursor-default opacity-45"}
+          className={`group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium
+          text-neutral-900 dark:text-slate-100 hover:bg-amber-700 hover:text-slate-100
+            ${checkActiveCondition(item) ? "bg-indigo-900 text-slate-100" : ""}
+           ${(item.disabled || !item.path) && "disabled:hover:bg-none disabled:dark:hover:bg-none cursor-default opacity-45"}
           `}>
           {item.icon && typeof item.icon === "string" && <i className={item.icon}></i>}
           {item.icon && typeof item.icon != "string" && (item.icon)}
@@ -109,13 +109,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {(handleClick, open) => {
             return (<React.Fragment>
               <Link href="#"
-                className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === "/forms" ||
-                  pathname.includes("forms")) &&
-                  "bg-graydark dark:bg-meta-4"
-                  }`}
+                className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium
+                 text-neutral-900 dark:text-slate-100  hover:bg-amber-700 hover:text-slate-100
+                 ${checkActiveCondition(item)?"bg-[#2c2c5344] te11xt-slate-100":""}
+                `}
+                
                 onClick={(e) => {
                   e.preventDefault()
-                  sidebarExpanded ? handleClick() : setSidebarExpanded("true")
+                  sidebarExpanded ? handleClick() : setSidebarExpanded(true)
                 }}
               >
                 {item.icon && typeof item.icon === "string" && (<i className={item.icon}></i>)}
@@ -175,12 +176,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     } else {
       document.querySelector("body")?.classList.remove("sidebar-expanded")
     }
-    
+
   }, [sidebarExpanded])
 
   return (
     <aside ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-bla11ck dar11k:bg-box11dark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       suppressHydrationWarning={true}
     >

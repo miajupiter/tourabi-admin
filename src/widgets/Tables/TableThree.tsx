@@ -29,11 +29,11 @@ const packageData: Package[] = [
 
 const TableThree = () => {
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <div className="rounded-sm border border-strokepx-5 pb-2.5 pt-6 shadow-default dark:border-strokedark  bg-slate-100 dark:bg-[#0b1121] sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+            <tr className="bg-green-700  text-left dark:bg-green-500">
               <th className="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
                 Package
               </th>

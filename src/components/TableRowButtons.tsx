@@ -7,14 +7,14 @@ export interface ActionButtonProps {
   href?: string
   onClick?: (e: React.MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => void
 }
-export interface TableRowActionButtonsProps {
+export interface TableRowButtonsProps {
   className?: string
   viewButton?: ActionButtonProps
   removeButton?: ActionButtonProps
   editButton?: ActionButtonProps
 }
 
-export const TableRowActionButtons: FC<TableRowActionButtonsProps> = ({
+export const TableRowButtons: FC<TableRowButtonsProps> = ({
   className = "flex justify-center items-center space-x-3.5 text-xl",
   viewButton,
   removeButton,
@@ -57,7 +57,7 @@ export const TableRowActionButtons: FC<TableRowActionButtonsProps> = ({
       }
 
       {editButton &&
-        <Link 
+        <Link
           title={t('Edit')}
           className={editButton.className || "text-blue-600 hover:text-primary"}
           href={editButton.href || '#'}
@@ -75,4 +75,4 @@ export const TableRowActionButtons: FC<TableRowActionButtonsProps> = ({
   </>
 }
 
-export default TableRowActionButtons
+export default TableRowButtons

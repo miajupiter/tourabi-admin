@@ -34,7 +34,7 @@ const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName,bodyCla
       {(handleClick, open) => {
         return (
           <React.Fragment>
-            <div className={`rounded-[8px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${headerClassName}`}>
+            <div className={`rounded-[8px] border border-stroke shadow-sm dark:border-strokedark bg-slate-100 dark:bg-[#0b1121] ${headerClassName}`}>
               <Link
                 href="#"
                 className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-medium te11xt-bod11ydark1 duration-0 ease-in-out bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-meta-4`}

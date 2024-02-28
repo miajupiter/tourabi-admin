@@ -10,7 +10,7 @@ const Settings = () => {
   const { t } = useLanguage()
   return (<>
     <Head>
-      <title>{`${t('Chart')} | ${aliabiConfig.title}`}</title>
+      <title>{`${t('Settings')} | ${aliabiConfig.title}`}</title>
       <meta name="description" content="This is Chart page for TourAbi Admin Panel" />
     </Head>
     <div className="mx-auto max-w-270">
@@ -18,7 +18,7 @@ const Settings = () => {
 
       <div className="grid grid-cols-5 gap-8">
         <div className="col-span-5 xl:col-span-3">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark bg-slate-100 dark:bg-[#0b1121]">
             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Personal Information
@@ -61,7 +61,7 @@ const Settings = () => {
                         </svg>
                       </span>
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-indigo-700 py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="fullName"
                         id="fullName"
@@ -219,7 +219,7 @@ const Settings = () => {
           </div>
         </div>
         <div className="col-span-5 xl:col-span-2">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark da11rk:bg-box11dark">
             <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Your Photo
@@ -261,7 +261,7 @@ const Settings = () => {
                     className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                   />
                   <div className="flex flex-col items-center justify-center space-y-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark da11rk:bg-box11dark">
                       <svg
                         width="16"
                         height="16"

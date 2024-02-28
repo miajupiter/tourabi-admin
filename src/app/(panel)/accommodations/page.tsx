@@ -9,7 +9,7 @@ import { useLanguage } from '@/hooks/i18n'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Pagination from '@/components/Pagination'
-import TableRowActionButtons, { TableRowActionButtonsProps } from '@/components/TableRowActionButtons'
+import TableRowButtons, { TableRowButtonsProps } from '@/components/TableRowButtons'
 import { ImageItemProps } from '@/widgets/ImageListWidget'
 
 
@@ -66,7 +66,7 @@ const AccommodationsPage = () => {
 
   const ItemList = () => {
     return (
-      <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="rounded-sm border border-stroke  px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark bg-slate-100 dark:bg-[#0b1121] sm:px-7.5 xl:pb-1">
         <div className="max-w-full ">
           <table className="w-full table-auto">
             <thead>
@@ -135,7 +135,7 @@ const AccommodationsPage = () => {
                       }
                     </td>
                     <td className="border-b border-[#eee] px-2 py-2 dark:border-strokedark">
-                        <TableRowActionButtons
+                        <TableRowButtons
                           viewButton={{ href: `/accommodations/view/${item._id}` }}
                           removeButton={{
                             onClick(e) {

@@ -49,14 +49,10 @@ export default function RootLayout({
 
   return (
     <html lang="en" className='dark'>
-      {/* <Head>
-        <title>{aliabiConfig.title}</title>
-        <meta name='description' content={aliabiConfig.meta.description} />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="48x48" />
-      </Head> */}
+     
       <body suppressHydrationWarning={true}
-        className='bg-white dark:bg-neutral-900 text-base  text-neutral-900 dark:text-neutral-200'>
-        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+        className='zemin text-base  '>
+        <div className="dark:bg-[#0b1121] dark:text-bodydark">
           {loading && <Loader />}
           {!loading && <>
             <ClientCommons />

@@ -42,17 +42,17 @@ const LogInPage: FC = () => {
         <title>{`${t('Login page')} | ${aliabi}`}</title>
         <meta name="description" content="This is Login Page for TourAbi Admin Panel" />
       </Head>
-      <div className="max-w-[600px] rounded-[8px] border border-slate-400 bg-slate-100 shadow-md shadow-slate-800 dark:border-strokedark dark:bg-boxdark p-2">
+      <div className="max-w-[600px] rounded-[8px] border border-slate-400 bg-sl11ate-100 shadow-md shadow-slate-800 dark:border-strokedark da11rk:bg-box11dark p-2">
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="hidden w-full md:block ">
             <div className="h-full my-auto p-8 ">
-                <Image className='aspect-auto' src={'/img/security-abi.png'} alt="security abi" width={558} height={832} />
+              <Image className='aspect-auto' src={'/img/security-abi.png'} alt="security abi" width={558} height={832} />
             </div>
           </div>
 
           <div className="w-full  border-stroke dark:border-strokedark  xl:border-l-2">
             <div className="w-full p-4 ">
-              
+
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 {t('Admin Panel')}
               </h2>

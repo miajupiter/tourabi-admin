@@ -13,11 +13,13 @@ import SwitchPassive from '@/components/SwitchPassive'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import Select from '@/components/Select'
 import DateInput from '@/components/DateInput'
-import UserRole from '../UserRoleEmojiStyle'
+// import {  UserRole } from '@/hooks/useLogin'
 import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
 import DateInputWithLabel from '@/components/DateInputWithLabel'
 import TextareaWithLabel from '@/components/TextareaWithLabel'
+import UserRoleEmojiStyle from '../UserRoleEmojiStyle'
+import { UserRole } from '@/hooks/useLogin'
 export interface UserPageDetailProps {
   params: { slug: string[] }
 }
@@ -163,7 +165,7 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
         <div className="grid grid-cols-1 gap-6 ">
           <div className="flex flex-col gap-6">
             <FormCard id="users-head" title={item.email || '...'} defaultOpen={true}
-            icon={(<i className="fa-solid fa-users"></i>)}>
+              icon={(<i className="fa-solid fa-users"></i>)}>
 
               <div className="flex flex-col gap-4">
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
@@ -242,7 +244,7 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
                     <label
                       className="w-full h-12 uppercase rounded-lg border-[1.5px] border-stroke bg-transparent px-3 py-1 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     >
-                      <UserRole role={item.role} />
+                      <UserRoleEmojiStyle role={item.role as UserRole} />
                     </label>
                   </div>
                 </div>
