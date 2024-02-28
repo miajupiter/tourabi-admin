@@ -23,18 +23,23 @@ export interface SidebarLinkGroupProps {
   activeCondition: boolean
 }
 
-const Sidebar = () => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { t } = useLanguage()
   const { user } = useLogin()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  // const [sidebarOpen, setSidebarOpen] = useState(false)
   const sideMenu = SideMenu((user && user.role || UserRole.USER) as UserRole)
   const pathname = usePathname()
 
   const trigger = useRef<any>(null)
   const sidebar = useRef<any>(null)
 
+  let storedSidebarExpanded = "true"
 
-  const [sidebarExpanded, setSidebarExpanded] = useState(localStorage.getItem("sidebar-expanded") || "true")
+  const [sidebarExpanded, setSidebarExpanded] = useState(
+    storedSidebarExpanded === null ? false : storedSidebarExpanded === "true",
+  )
+
+  // const [sidebarExpanded, setSidebarExpanded] = useState(localStorage.getItem("sidebar-expanded") || "true")
 
   const checkActiveCondition = (item: MenuItemProps) => {
     var bActive = false
@@ -170,26 +175,16 @@ const Sidebar = () => {
     } else {
       document.querySelector("body")?.classList.remove("sidebar-expanded")
     }
-    // if (sidebarExpanded) {
-    //   document.querySelector('#side-menu')?.classList.remove('hidden')
-    // } else {
-    //   document.querySelector('#side-menu')?.classList.add('hidden')
-    // }
+    
   }, [sidebarExpanded])
-
-  // useEffect(() => {
-  //   setSideMenu(SideMenu((user && user.role || UserRole.USER) as UserRole))
-
-  // }, [user])
 
   return (
     <aside ref={sidebar}
-      id='side-menu'
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-100 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       suppressHydrationWarning={true}
     >
-      <div key={v4()} className="flex items-center justify-between gap-2 px-6 py-4">
+      <div className="flex items-center justify-between gap-2 px-6 py-4">
         <Logo width={176} />
         <button
           ref={trigger}
@@ -202,7 +197,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div key={v4()} className="no-scrollbar flex flex-col overflow-y-auto duration-100 ease-linear">
+      <div className="no-scrollbar flex flex-col overflow-y-auto">
         <nav className="px-4 py-2 lg:px-4">
 
           <ul key={`main-ul`} className="mb-6 flex flex-col gap-1.5">

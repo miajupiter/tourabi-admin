@@ -4,14 +4,14 @@ export interface MenuItemProps {
   title?: string
   icon?: string | any
   path?: string
-  disabled?:boolean
+  disabled?: boolean
   children?: any
 }
 
 export const SideMenu = (role?: UserRole) => {
 
   const deleloperMenu = {
-    
+
     "divider2": "DEVELOPER",
     "ui-elements": {
       "title": "UI Elements",
@@ -42,22 +42,22 @@ export const SideMenu = (role?: UserRole) => {
       "path": "/dashboard",
       "children": {
         "general": { "title": "Genel", "path": "/dashboard", "icon": "fa-solid fa-chart-column" },
-        "daily": { "title": "Günlük", "disable":true, "icon": "fa-solid fa-chart-column" }
+        "daily": { "title": "Günlük", "disable": true, "icon": "fa-solid fa-chart-column" }
       }
     },
     "tours": {
       "title": "Tour operations", "path": "/tours", "icon": "fa-solid fa-earth-asia",
       "children": {
-        "agencyOp": { "title": "Acency sales operations", "disable":true,"icon": "fa-solid fa-handshake" },
-        "sales": { "title": "Sales", "disable":true, "icon": "fa-solid fa-cash-register" },
-        "tours": { "title": "Tour definitions", "path": "/tours", "icon": "fa-solid fa-route" }
+        "tours": { "title": "Tour definitions", "path": "/tours", "icon": "fa-solid fa-route" },
+        "agencyOp": { "title": "Acency sales operations", "disable": true, "icon": "fa-solid fa-handshake" },
+        "sales": { "title": "Sales", "disable": true, "icon": "fa-solid fa-cash-register" }
       }
     },
     "defs": {
       "title": "Definitions", "path": "/defs", "icon": "fa-solid fa-list-check",
       "children": {
         "destinations": { "title": "Destinations", "path": "/destinations", "icon": "fa-solid fa-map-location-dot" },
-        "places": { "title": "Places", "disable":true, "icon": "fa-solid fa-mountain-city" },
+        "places": { "title": "Places", "disable": true, "icon": "fa-solid fa-mountain-city" },
         "accommodations": { "title": "Hotels", "path": "/accommodations", "icon": "fa-solid fa-hotel" }
       }
     },
