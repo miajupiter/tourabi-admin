@@ -23,7 +23,9 @@ export const InputWithLabel: React.FC<InputProps> = ({ className, inputClassName
       <label className={`mb-1 ms-2 block text-sm font-medium text-black dark:text-white ${labelClassName}`}>
         {label || placeholder}
       </label>
-      <Input type={type} placeholder={placeholder || label || ""}
+      <Input type={type}
+        placeholder={placeholder || label || ""}
+        className={`${inputClassName}`}
         onFocus={myOnFocus}
         {...args}
       />

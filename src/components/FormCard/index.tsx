@@ -16,6 +16,7 @@ interface FormCardProps {
   title: string
   icon?: any
   defaultOpen?: boolean
+  className?: string
   headerClassName?: string
   bodyClassName?: string
   // formCardOpen: boolean
@@ -25,7 +26,10 @@ interface FormCardProps {
   cardType?: FormCardType
 }
 
-const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName, bodyClassName,
+const FormCard = ({ id, title, icon, defaultOpen = true,
+  className, 
+  headerClassName, 
+  bodyClassName,
   cardType = FormCardType.DEFAULT,
   children }: FormCardProps) => {
   // const pathname = usePathname()
@@ -42,7 +46,7 @@ const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName, bodyCl
         return (
           <React.Fragment>
             <div className={`rounded-[4px] text-slate-900 dark:text-slate-300 border  border-stroke border-opacity-50 shadow dark:border-strokedark
-             bg-slate-100 dark:bg-slate-900`}>
+             bg-slate-100 dark:bg-slate-900 ${className}`}>
               {cardType === FormCardType.DEFAULT && <>
                 <Link href="#"
                   className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-bold
@@ -53,7 +57,7 @@ const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName, bodyCl
                     handleClick()
                   }}
                 >
-                  <div className="block text-lg  space-x-3 rounded-tl rounded-tr">
+                  <div className="block text-lg space-x-3 rounded-tl rounded-tr">
                     {icon && <>{icon}</>} <span>{title}</span>
                   </div>
                   <ChevronDown open={open} />

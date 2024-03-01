@@ -16,6 +16,7 @@ import SelectWithLabel from '@/components/SelectWithLabel'
 import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
 import { eventLog } from '@/lib/developerHelper'
 import { Input } from '@/components/Input'
+import PriceTable from './PriceTable'
 
 export interface TourPageDetailProps {
   params: { slug: string | [] }
@@ -310,7 +311,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                   defaultValue={Number(item.groupMin)}
                   onBlur={async (e) => {
                     if (item.groupMin != Number(e.target.value)) {
-                      item.groupMin=Number(e.target.value)
+                      item.groupMin = Number(e.target.value)
                       setItem(item)
                       await saveItem({ groupMin: item.groupMin })
                     }
@@ -334,7 +335,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
               {/* <!-- END Group Size --> */}
 
               {/* <!-- Price per person --> */}
-              <FormCard id="tours-price-per-person" title={t('Prices per person')}
+              <FormCard id="tours-price-per-person" title={t('Price per person')}
                 bodyClassName='grid grid-cols-3 gap-4' cardType={FormCardType.STATIC} >
                 <label htmlFor="">#</label>
                 <label htmlFor="">Economy</label>
@@ -452,7 +453,11 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 />
               </FormCard>
               {/* <!-- END Price per person --> */}
-
+              <FormCard id="tours-price-table" title={t('Price table')} defaultOpen={false}
+                className=' col-span-3'
+              >
+                <PriceTable item={item} setItem={setItem} saveItem={saveItem} />
+              </FormCard>
             </FormCard>
             {user && user.role === UserRole.DEVELOPER && <>
               <FormCard id="tours-developer" title={t('Developer')} defaultOpen={false}            >
