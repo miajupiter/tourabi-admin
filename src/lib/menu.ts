@@ -12,14 +12,14 @@ export const SideMenu = (role?: UserRole) => {
 
   const deleloperMenu = {
 
-    // "divider2": "DEVELOPER",
-    // "ec2ec4":{
-    //   "title":"Ec2eC4 🚀 development tools",
-    //   "path":"/ec2ec4",
-    //   "children":{
-    //     "ec2ec4": { "title": "Ec2Ec4 🌌", "path": "/ec2ec4" },
-    //   }
-    // },
+    "divider2": "DEVELOPER",
+    "test":{
+      "title":"Develop Tests",
+      "path":"/test",
+      "children":{
+        "testPage": { "title": "Test", "path": "/test" },
+      }
+    },
     "ui-elements": {
       "title": "UI Elements",
       "icon": "fa-solid fa-building-wheat",

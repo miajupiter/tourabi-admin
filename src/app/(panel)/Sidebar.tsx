@@ -94,8 +94,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       return <>
         <Link href={item.path || ''}
           className={`group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium
-          text-neutral-900 dark:text-slate-100 hover:bg-amber-700 hover:text-slate-100
-            ${checkActiveCondition(item) ? "bg-indigo-900 text-slate-100" : ""}
+          text-neutral-900 dark:text-slate-200  hover:bg-slate-300
+          ${checkActiveCondition(item)?"bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 hover:dark:bg-slate-900":""}
            ${(item.disabled || !item.path) && "disabled:hover:bg-none disabled:dark:hover:bg-none cursor-default opacity-45"}
           `}>
           {item.icon && typeof item.icon === "string" && <i className={item.icon}></i>}
@@ -109,11 +109,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {(handleClick, open) => {
             return (<React.Fragment>
               <Link href="#"
-                className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium
-                 text-neutral-900 dark:text-slate-100  hover:bg-amber-700 hover:text-slate-100
-                 ${checkActiveCondition(item)?"bg-[#2c2c5344] te11xt-slate-100":""}
+                className={`group rounded-md relative flex items-center gap-2.5  px-4 py-2 font-medium
+                 text-neutral-900 dark:text-slate-200  hover:bg-slate-300 
+                 ${checkActiveCondition(item)?"bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 hover:dark:bg-slate-900":""}
                 `}
-                
+                // className={`group rounded-md relative flex items-center gap-2.5  px-4 py-2 font-medium
+                //  text-neutral-900 dark:text-slate-200  hover:bg-[#abaace] hov11er:te11xt-slate-200
+                //  ${checkActiveCondition(item)?"bg-[#e4e3fd] dark:bg-[#1f2638] hover:bg-[#e4e3fd] hover:dark:bg-[#1f2638]":""}
+                // `}
                 onClick={(e) => {
                   e.preventDefault()
                   sidebarExpanded ? handleClick() : setSidebarExpanded(true)

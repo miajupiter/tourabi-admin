@@ -6,6 +6,10 @@ import Link from "next/link"
 import FormCardGroup from "./FormCardGroup"
 import { ChevronDown } from '@/components/ChevronDown'
 
+export enum FormCardType {
+  DEFAULT,
+  STATIC,
+}
 interface FormCardProps {
 
   id: string
@@ -18,9 +22,12 @@ interface FormCardProps {
   // setFormCardOpen?: (arg: boolean) => void
 
   children?: React.ReactNode
+  cardType?: FormCardType
 }
 
-const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName,bodyClassName, children }: FormCardProps) => {
+const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName, bodyClassName,
+  cardType = FormCardType.DEFAULT,
+  children }: FormCardProps) => {
   // const pathname = usePathname()
 
 
@@ -34,26 +41,32 @@ const FormCard = ({ id, title, icon, defaultOpen = true, headerClassName,bodyCla
       {(handleClick, open) => {
         return (
           <React.Fragment>
-            <div className={`rounded-[8px] border border-stroke shadow-sm dark:border-strokedark bg-slate-100 dark:bg-[#0b1121] ${headerClassName}`}>
-              <Link
-                href="#"
-                className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-medium te11xt-bod11ydark1 duration-0 ease-in-out bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-meta-4`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleClick()
-                  // setFormCardExpanded(true)
-                }}
-              >
-
-                <div className="block text-lg text-black dark:text-white space-x-3 rounded-tl rounded-tr">
-                  {/* {!icon && <><i className="fa-regular fa-rectangle-list"></i></>} */}
-                  {icon && <>{icon}</>}
-                  <span>{title}</span>
+            <div className={`rounded-[4px] text-slate-900 dark:text-slate-300 border  border-stroke border-opacity-50 shadow dark:border-strokedark
+             bg-slate-100 dark:bg-slate-900`}>
+              {cardType === FormCardType.DEFAULT && <>
+                <Link href="#"
+                  className={`group relative flex items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-bold
+                  border-b border-stroke border-opacity-15 dark:border-opacity-15  hover:bg-slate-300
+                dark:hover:bg-[rgba(56,48,163,0.37)] ${headerClassName}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleClick()
+                  }}
+                >
+                  <div className="block text-lg  space-x-3 rounded-tl rounded-tr">
+                    {icon && <>{icon}</>} <span>{title}</span>
+                  </div>
+                  <ChevronDown open={open} />
+                </Link>
+              </>}
+              {cardType === FormCardType.STATIC && <>
+                <div className={`group relative items-center justify-between gap-2.5 rounded-sm px-4 py-2 font-bold
+                  border-b border-stroke border-opacity-15 dark:border-opacity-15
+                  block text-lg  space-x-3 rounded-tl rounded-tr`}>
+                    {icon && <>{icon}</>} <span>{title}</span>
                 </div>
-                <ChevronDown open={open} />
-              </Link>
-              {/* <div className={`translate transform overflow-hidden ${!open && "hidden"}`}> */}
-              <div className={` ${!open && "hidden"} p-4 ${bodyClassName}`}>
+              </>}
+              <div className={` ${cardType === FormCardType.DEFAULT && !open && "hidden"} p-4 ${bodyClassName}`}>
                 {children}
               </div>
             </div>

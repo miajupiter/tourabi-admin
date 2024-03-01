@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   poweredByHeader: false,
-  devIndicators:{
-    buildActivity:true,
-    buildActivityPosition:'bottom-right'
-  },
-  output: "standalone",
-  basePath:"",
-
+  // output: "standalone",
+  basePath: "",
+  pageExtensions: ['ts', 'tsx', 'jsx', 'mdx'],
+  cleanDistDir: true,
+  crossOrigin: 'anonymous',
+  compress: false,
   images: {
     unoptimized: true,
     disableStaticImages: true,
@@ -52,7 +52,12 @@ const nextConfig = {
       },
     ],
   },
-  pageExtensions: ['ts', 'tsx', 'jsx', 'mdx'],
+  // typescript: {
+  //   tsconfigPath: "tsconfig.json",
+  // },
+  // compiler: {
+
+  // },
 
 }
 

@@ -5,6 +5,7 @@ import "jsvectormap/dist/css/jsvectormap.css"
 import "flatpickr/dist/flatpickr.min.css"
 import "@/styles/css/satoshi.css"
 import "@/styles/css/style.css"
+import "@/styles/css/global.css"
 import React, { useEffect, useState } from "react"
 import { Viewport } from 'next'
 // import { useLogin } from "@/hooks/useLogin"

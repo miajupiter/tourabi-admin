@@ -1,0 +1,13 @@
+:is(.dark .dark\:bg-form-input) {
+  background-color: #101627;
+}
+
+
+.border-stroke {
+  --tw-border-opacity: 1;
+  border-color: rgb(206 212 220 / var(--tw-border-opacity));
+}
+
+:is(.dark .dark\:border-stroke) {
+  border-color: rgb(226 232 240 / 33%);
+}
