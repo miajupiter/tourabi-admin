@@ -63,9 +63,9 @@ export const SideMenu = (role?: UserRole) => {
     "defs": {
       "title": "Definitions", "path": "/defs", "icon": "fa-solid fa-list-check",
       "children": {
+        "locations": { "title": "Locations", "path": "/locations", "icon": "fa-solid fa-mountain-city" },
+        "accommodations": { "title": "Hotels", "path": "/accommodations", "icon": "fa-solid fa-hotel" },
         "destinations": { "title": "Destinations", "path": "/destinations", "icon": "fa-solid fa-map-location-dot" },
-        "places": { "title": "Places", "disable": true, "icon": "fa-solid fa-mountain-city" },
-        "accommodations": { "title": "Hotels", "path": "/accommodations", "icon": "fa-solid fa-hotel" }
       }
     },
     "users": { "title": "Kullanicilar", "path": "/users", "icon": "fa-solid fa-users" },

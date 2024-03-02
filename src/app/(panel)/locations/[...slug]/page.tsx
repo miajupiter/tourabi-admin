@@ -16,17 +16,17 @@ import InputWithLabel from '@/components/InputWithLabel'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import { useLogin } from '@/hooks/useLogin'
 
-export interface DestinationPageDetailProps {
+export interface LocationPageDetailProps {
   params: { slug: string[] }
 }
 
 
 
-export interface DestinationItemType {
+export interface LocationItemType {
   _id?: string
   title?: string
   description?: string
-
+  destination?: string
   country?: string
   images?: StaticImageData[] | []
 
@@ -35,21 +35,21 @@ export interface DestinationItemType {
 
 const mdxKod = '--1--1'
 
-const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
+const LocationPageDetail: FC<LocationPageDetailProps> = ({ params }) => {
+
   const { token } = useLogin()
   const { t } = useLanguage()
 
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
-
-  const [item, setItem] = useState<DestinationItemType>()
+  const [destinationList, setDestinationList] = useState([])
+  const [item, setItem] = useState<LocationItemType>()
   const [pullData, setPullData] = useState(false)
   const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.new)
   const [focusText, setFocusText] = useState('')
   const [focusMarkDown, setFocusMarkDown] = useState('')
 
-
   const getItem = (itemId: string) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/destinations/${itemId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/locations/${itemId}`, {
       headers: { 'Content-Type': 'application/json', token: token },
     })
       .then(ret => ret.json())
@@ -62,38 +62,48 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
   }
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/destinations/${item?._id}?partial=true`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/locations/${item?._id}?partial=true`, {
       method: item?._id ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json', token: token },
       body: JSON.stringify(data)
     })
       .then(ret => ret.json())
       .then(result => {
-        if (result.success && result.data) {
-          setItem({ ...item, ...result.data })
+        if (result.success) {
+          setItem({ ...item, ...(result.data || {}) })
           if (formStatus == FormStatus.new && item?._id) {
             setFormStatus(FormStatus.edit)
           }
           resolve(item)
-        } else if (result.error) {
-          reject(result.error)
         } else {
-          reject('error: saveItem')
+          reject(result.error)
         }
       }).catch((err: any) => {
-        console.error(err)
         reject(err.message || err)
       })
   })
 
+  const getDestinationList = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/destinations`, {
+      method: 'SEARCH',
+      headers: { 'Content-Type': 'application/json', token: token },
+      body: JSON.stringify({ select: '_id title', limit: 200 })
+    })
+    if (response.ok) {
+      const result = await response.json()
+      if (result.success) {
+        setDestinationList(result.data.docs)
+      } else alert(result.error)
+    } else alert(response.statusText)
+  }
   const formTitle = () => {
     switch (formStatus) {
       case FormStatus.new:
-        return t('New destination')
+        return t('New location')
       case FormStatus.edit:
-        return t('Edit destination')
+        return t('Edit location')
       case FormStatus.view:
-        return t('View destination')
+        return t('View location')
     }
     return ''
   }
@@ -101,9 +111,10 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
   useEffect(() => {
     if (!pullData) {
       setPullData(true)
+      getDestinationList()
       if (params.slug[0] == 'new') {
         setFormStatus(FormStatus.new)
-        setItem({ ...item, title: '', _id: '' } as DestinationItemType)
+        setItem({ ...item, destination: '', title: 'yeni', _id: '' } as LocationItemType)
       } else if (params.slug[0] == 'edit') {
         setFormStatus(FormStatus.edit)
         getItem(params.slug[1])
@@ -113,16 +124,15 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, item, pullData, getItem])
+  }, [])
 
 
   return (
     <>
-
       <PageHeader pageTitle={formTitle()} breadcrumbList={[
         { href: '/', pageTitle: 'Dashboard' },
-        { href: '/destinations', pageTitle: 'Destinations' },
-        params.slug.length >= 2 && { href: `/destinations/` + params.slug[1], pageTitle: 'Destination Item' }
+        { href: '/locations', pageTitle: 'Locations' },
+        params.slug.length >= 2 && { href: `/locations/` + params.slug[1], pageTitle: 'Location Item' }
       ]} />
 
       {item &&
@@ -130,6 +140,41 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
           <div className="flex flex-col gap-9">
             <div className="rounded-[8px] border border-stroke shadow-default dark:border-strokedark">
               <div className="grid grid-cols-1 gap-4 p-4">
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <SelectWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    label={t('Destination')}
+                    onBlur={async (e) => {
+                      if (item.destination != e.target.value) {
+                        setItem({ ...item, destination: e.target.value })
+                        if (item._id) {
+                          saveItem({ destination: e.target.value })
+                        }
+                      }
+                    }}
+                  >
+                    {destinationList.map((e: any, index: number) => (
+                      <option key={index} value={e._id}>{e.title}</option>
+                    ))}
+                  </SelectWithLabel>
+                  <SelectWithLabel
+                    readOnly={formStatus == FormStatus.view}
+                    label={t('Country')}
+                    onBlur={async (e) => {
+                      if (item.country != e.target.value) {
+                        setItem({ ...item, country: e.target.value })
+                        if (item._id) {
+                          saveItem({ country: e.target.value })
+                        }
+                      }
+                    }}
+                  >
+                    {countries.map((ulke, index) => (
+                      <option key={index} value={ulke.code}>{ulke.name}</option>
+                    ))}
+                  </SelectWithLabel>
+                </div>
+                <div className='grid grid-cols-1 gap-4'>
                 <div className='flex flex-row'>
                   <InputWithLabel className='basis-4/5'
                     readOnly={formStatus == FormStatus.view}
@@ -138,7 +183,11 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
                     onBlur={async (e) => {
                       if (item.title != e.target.value) {
                         setItem({ ...item, title: e.target.value })
-                        await saveItem({ title: e.target.value })
+                        if (item._id) {
+                          saveItem({ title: e.target.value })
+                        } else {
+                          saveItem(item)
+                        }
                       }
                     }}
                   />
@@ -152,32 +201,17 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
                         defaultValue={item.passive}
                         onSwitch={async (e) => {
                           setItem({ ...item, passive: e })
-                          await saveItem({ passive: e })
+                          saveItem({ passive: e })
                         }}
                       />
                     </div>
                   </div>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-5.5'>
-                  <SelectWithLabel
-                    readOnly={formStatus == FormStatus.view}
-                    label={t('Country')}
-                    onBlur={async (e) => {
-                      if (item.country != e.target.value) {
-                        setItem({ ...item, country: e.target.value })
-                        await saveItem({ country: e.target.value })
-                      }
-                    }}
-                  >
-                    {countries.map((ulke, index) => (
-                      <option key={index} value={ulke.code}>{ulke.name}</option>
-                    ))}
-                  </SelectWithLabel>
                 </div>
               </div>
             </div>
             {item._id && <>
-              <FormCard id="destination-images" title={t('Images')} defaultOpen={false}
+              <FormCard id="location-images" title={t('Images')} defaultOpen={false}
                 icon={(<i className="fa-regular fa-images"></i>)}
               >
                 <ImageListWidget
@@ -188,12 +222,12 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
                     setItem(item)
                     saveItem({ images: imgList })
                   }}
-                  uploadFolder={'destinations/'}
+                  uploadFolder={'locations/'}
                   readOnly={formStatus == FormStatus.view}
                 />
               </FormCard>
 
-              <FormCard id="destination-description" title={t('Description')}
+              <FormCard id="location-description" title={t('Description')}
                 defaultOpen={false}
               >
                 <AliAbiMDXEditor markdown={item.description || ''}
@@ -217,4 +251,4 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
   )
 }
 
-export default DestinationPageDetail
+export default LocationPageDetail

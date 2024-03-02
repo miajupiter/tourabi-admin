@@ -16,6 +16,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "eu2.contabostorage.com/tourabi",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "tourabi.s3.eu-central-1.amazonaws.com",
         port: "",
         pathname: "/**",

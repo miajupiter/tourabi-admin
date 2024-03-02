@@ -26,13 +26,13 @@ export const DateInput: FC<DateInputProps> = ({
   }, [])
 
   return (
-    // <div className="relative z-20 bg-transparent dark:bg-form-input">
-    <div className='relative z11-2011 bg-tran11sparent dark:bg-fo11rm-inp11ut'>
+    <div className="relative z-20 bg-transparent dark:bg-form-input">
+    {/* <div className='relative z11-2011 bg-tran11sparent dark:bg-fo11rm-inp11ut'> */}
       <div className="relative">
         <input
           type='date'
-          // className={`relative form-datepicker z-20 w-full appearance-none rounded-[4px] border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
-          className={`form-datepicker z11-1120 w-full rounded border-[1.5px] border-stroke 11bg-tra11nsparent px-3 pb-2.5 pt-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${className}`}
+          className={`relative form-datepicker z-20 w-full appearance-none rounded-[4px] border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${className}`}
+          // className={`form-datepicker z11-1120 w-full rounded border-[1.5px] border-stroke 11bg-tra11nsparent px-3 pb-2.5 pt-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${className}`}
           // placeholder="mm/dd/yyyy"
           data-class="flatpickr-right"
 
