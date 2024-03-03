@@ -26,7 +26,7 @@ export const DateInput: FC<DateInputProps> = ({
   }, [])
 
   return (
-    <div className="relative z-20 bg-transparent dark:bg-form-input">
+    <div className="re111lative z-20 bg-transparent dark:bg-form-input">
     {/* <div className='relative z11-2011 bg-tran11sparent dark:bg-fo11rm-inp11ut'> */}
       <div className="relative">
         <input

@@ -3,10 +3,10 @@ import { v4 } from "uuid"
 export interface SwitchPassiveProps {
   className?: string
   defaultValue?: boolean
-  showSmiles?: boolean
+
   onSwitch?: (checked: boolean) => void
 }
-export const SwitchPassive: FC<SwitchPassiveProps> = ({ className = "", defaultValue = false, showSmiles = true, onSwitch }) => {
+export const SwitchPassive: FC<SwitchPassiveProps> = ({ className = "", defaultValue = false,  onSwitch }) => {
   const [enabled, setEnabled] = useState<boolean>(defaultValue)
   const id = v4()
 
@@ -16,9 +16,7 @@ export const SwitchPassive: FC<SwitchPassiveProps> = ({ className = "", defaultV
         htmlFor={id}
         className="flex cursor-pointer select-none items-center justify-start"
       >
-        {showSmiles &&
-          <div className={`${!enabled ? "opacity-100" : "opacity-30"}`} title="Active"><i className="fa-regular fa-face-smile text-2xl text-blue-600"></i></div>
-        }
+        
         <div className="relative">
           <input
             type="checkbox"
@@ -37,9 +35,7 @@ export const SwitchPassive: FC<SwitchPassiveProps> = ({ className = "", defaultV
             className={`absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${enabled && "!right-1 !translate-x-full"}`}
           ></div>
         </div>
-        {showSmiles &&
-          <div className={`${enabled ? "opacity-100" : "opacity-30"}`} title="Passive"><i className="fa-regular fa-face-dizzy text-2xl text-neutral-700"></i></div>
-        }
+        
       </label>
     </div>
   )

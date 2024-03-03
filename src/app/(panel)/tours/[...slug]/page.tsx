@@ -16,22 +16,11 @@ import SelectWithLabel from '@/components/SelectWithLabel'
 import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
 import { eventLog } from '@/lib/developerHelper'
 import { Input } from '@/components/Input'
-import PriceTable from './PriceTable'
 import { getItem, deleteItem, putItem } from '@/lib/fetch'
+import Switch from '@/components/Switch'
+import Link from 'next/link'
 export interface TourPageDetailProps {
   params: { slug: string | [] }
-}
-
-export interface I18nProps {
-  lastTranslated?: any
-  en: { title: String, description: String }
-  tr: { title: String, description: String }
-  ru: { title: String, description: String }
-  de: { title: String, description: String }
-  es: { title: String, description: String }
-  ko: { title: String, description: String }
-  fr: { title: String, description: String }
-  zh: { title: String, description: String }
 }
 
 export interface TourItemType {
@@ -48,23 +37,26 @@ export interface TourItemType {
 
   priceWithoutDiscount?: number
   price?: number
-  singleSupplement?: number
-  pricePerPerson: {
-    person1: { eco: Number, com: Number },
-    person2: { eco: Number, com: Number },
-    person3: { eco: Number, com: Number },
-    person4: { eco: Number, com: Number },
-    singleSupplement: { eco: Number, com: Number },
+  travelOptions: {
+    normal: boolean,
+    economy: boolean,
+    comfort: boolean,
+    singleSupplement: boolean
   }
+  // singleSupplement?: number
+  // pricePerPerson: {
+  //   person1: { eco: Number, com: Number },
+  //   person2: { eco: Number, com: Number },
+  //   person3: { eco: Number, com: Number },
+  //   person4: { eco: Number, com: Number },
+  //   singleSupplement: { eco: Number, com: Number },
+  // }
   groupMin?: number,
   groupMax?: number,
   inclusions?: string
   exclusions?: string
   passive?: boolean
 
-  // <!-- developer image & tranlate -->
-  i18n?: I18nProps
-  temp?: any
 }
 
 const mdxKod = '--1--1'
@@ -84,61 +76,11 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const [focusMarkDown, setFocusMarkDown] = useState('')
 
 
-  // const getItem = (itemId: string) => {
-  //   const token = localStorage.getItem('token') || ''
-  //   fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${itemId}`, {
-  //     headers: { 'Content-Type': 'application/json', token: token },
-  //   })
-  //     .then(ret => ret.json())
-  //     .then(result => {
-  //       if (result.success && result.data) {
-  //         const test = { ...item, ...result.data }
-  //         console.log('result.data:', result.data)
-  //         console.log('testobj:', test)
-  //         setItem({ ...item, ...result.data })
-  //       }
-  //     }).catch(console.error)
-
-  // }
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
-    const token = localStorage.getItem('token') || ''
-
-    // const times: number[] = []
-    // const fieldName = data && Object.keys(data || {})[0] || 'if ? there must be a problem here'
-    // const analuciator = (note?: string) => {
-    //   times.push(new Date().getDate())
-    //   eventLog(fieldName, (note || ''), `t-${times.length}:`, times[times.length - 1])
-    // }
-    // analuciator('start')
-
-
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${item?._id}?partial=true`, {
-      method: item?._id ? 'PUT' : 'POST',
-      headers: { 'Content-Type': 'application/json', token: token },
-      body: JSON.stringify(data)
-    })
-      .then(ret => {
-        console.log('ret.ok:', ret.ok)
-        return ret.json()
-      })
-      .then(result => {
-        if (result.success && result.data) {
-          setItem({ ...item, ...result.data })
-          if (formStatus == FormStatus.new && item?._id) {
-            setFormStatus(FormStatus.edit)
-          }
-          resolve(item)
-        } else if (result.error) {
-          reject(result.error)
-        } else {
-          reject('error: saveItem')
-        }
-      }).catch((err: any) => {
-        // analuciator('fetchErr:')
-        console.error(err)
-        reject(err.message || err)
-      })
+    putItem(`/admin/tours/${item?._id}?partial=true`, token, item)
+      .then(data => setItem({ ...item, ...data }))
+      .catch(err => alert(err))
   })
 
 
@@ -163,7 +105,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         setItem({ ...item, title: '', _id: '' } as TourItemType)
       } else {
         setFormStatus(params.slug[0] == 'edit' ? FormStatus.edit : FormStatus.view)
-        getItem(`/tours/${params.slug[1]}`, token)
+        getItem(`/admin/tours/${params.slug[1]}`, token)
           .then(data => setItem(data))
           .catch(err => console.log('err:', err))
       }
@@ -211,7 +153,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     </label>
                     <div className='flex w-full h-full justify-center'>
                       <SwitchPassive
-                        showSmiles={false}
                         defaultValue={item.passive}
                         onSwitch={async (e) => {
                           setItem({ ...item, passive: e })
@@ -236,7 +177,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
               </div>
             </FormCard>
 
-            <FormCard id="tours-prices" title={`${t('Prices')} | ${t('Calculations')} | ${t('Groups')}`}
+            <FormCard id="tours-prices" title={`${t('List Prices')} | ${t('Calculations')} | ${t('Groups')}`}
               defaultOpen={false} icon={(<i className="fa-solid fa-money-check-dollar"></i>)}
               bodyClassName='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
             >
@@ -286,19 +227,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     }
                   }}
                 />
-                <InputWithLabel
-                  readOnly={formStatus == FormStatus.view}
-                  type='number'
-                  label={t('Single supplement')}
-                  defaultValue={Number(item.singleSupplement)}
-                  onBlur={async (e) => {
-                    if (item.singleSupplement != Number(e.target.value)) {
-                      item.singleSupplement = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ singleSupplement: item.singleSupplement })
-                    }
-                  }}
-                />
+
               </FormCard>
               {/* <!-- ENDList Price --> */}
 
@@ -331,142 +260,68 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                     }
                   }}
                 />
+                <Link
+                  href={`/tours/${params.slug}/expeditions`}
+                  className=''
+                 >
+                  Tur Seferleri (Tour Expeditions)
+                </Link>
 
               </FormCard>
               {/* <!-- END Group Size --> */}
 
               {/* <!-- Price per person --> */}
-              <FormCard id="tours-price-per-person" title={t('Price per person')}
+              <FormCard id="tours-travel-options" title={t('Travel Options')}
                 bodyClassName='grid grid-cols-3 gap-4' cardType={FormCardType.STATIC} >
-                <label htmlFor="">#</label>
-                <label htmlFor="">Economy</label>
-                <label htmlFor="">Comfort</label>
-
-                <label htmlFor="">1 Person</label>
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  placeholder={t('1 Person Eco')}
-                  defaultValue={Number(item.pricePerPerson.person1.eco)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person1.eco != Number(e.target.value)) {
-                      item.pricePerPerson.person1.eco = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  placeholder={t('1 Person Com')}
-                  defaultValue={Number(item.pricePerPerson.person1.com)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person1.com != Number(e.target.value)) {
-                      item.pricePerPerson.person1.com = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-
-                <label htmlFor="">2 Person</label>
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  placeholder={t('2 Person Eco')}
-                  defaultValue={Number(item.pricePerPerson.person2.eco)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person2.eco != Number(e.target.value)) {
-                      item.pricePerPerson.person2.eco = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  placeholder={t('2 Person Com')}
-                  defaultValue={Number(item.pricePerPerson.person2.com)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person2.com != Number(e.target.value)) {
-                      item.pricePerPerson.person2.com = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <label htmlFor="">3 Person</label>
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  defaultValue={Number(item.pricePerPerson.person3.eco)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person3.eco != Number(e.target.value)) {
-                      item.pricePerPerson.person3.eco = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  defaultValue={Number(item.pricePerPerson.person3.com)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person3.com != Number(e.target.value)) {
-                      item.pricePerPerson.person3.com = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <label htmlFor="">4 Person</label>
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  defaultValue={Number(item.pricePerPerson.person4.eco)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person4.eco != Number(e.target.value)) {
-                      item.pricePerPerson.person4.eco = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  defaultValue={Number(item.pricePerPerson.person4.com)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.person4.com != Number(e.target.value)) {
-                      item.pricePerPerson.person4.com = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <label htmlFor="">Single Supplement</label>
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  defaultValue={Number(item.pricePerPerson.singleSupplement.eco)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.singleSupplement.eco != Number(e.target.value)) {
-                      item.pricePerPerson.singleSupplement.eco = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-                <Input type='number' readOnly={formStatus == FormStatus.view}
-                  defaultValue={Number(item.pricePerPerson.singleSupplement.com)}
-                  onBlur={async (e) => {
-                    if (item.pricePerPerson.singleSupplement.com != Number(e.target.value)) {
-                      item.pricePerPerson.singleSupplement.com = Number(e.target.value)
-                      setItem(item)
-                      await saveItem({ pricePerPerson: item.pricePerPerson })
-                    }
-                  }}
-                />
-              </FormCard>
-              {/* <!-- END Price per person --> */}
-              <FormCard id="tours-price-table" title={t('Price table')} defaultOpen={false}
-                className=' col-span-3'
-              >
-                <PriceTable item={item} setItem={setItem} saveItem={saveItem} />
-              </FormCard>
-            </FormCard>
-            {user && user.role === UserRole.DEVELOPER && <>
-              <FormCard id="tours-developer" title={t('Developer')} defaultOpen={false}            >
-                <div className='grid grid-cols-1 gap-4'>
-                  user role:{user && user.role}
+                <div className='flex flex-row items-center'>
+                  <label>{t('Normal')}</label>
+                  <Switch
+                    defaultValue={item.travelOptions.normal}
+                    onSwitch={(e) => {
+                      item.travelOptions.normal = e
+                      setItem({ ...item, travelOptions: item.travelOptions })
+                      saveItem({ ...item, travelOptions: item.travelOptions })
+                    }}
+                  />
+                </div>
+                <div className='flex flex-row items-center'>
+                  <label>{t('Economy')}</label>
+                  <Switch
+                    defaultValue={item.travelOptions.economy}
+                    onSwitch={(e) => {
+                      item.travelOptions.economy = e
+                      setItem({ ...item, travelOptions: item.travelOptions })
+                      saveItem({ ...item, travelOptions: item.travelOptions })
+                    }}
+                  />
+                </div>
+                <div className='flex flex-row items-center'>
+                  <label>{t('Comfort')}</label>
+                  <Switch
+                    defaultValue={item.travelOptions.comfort}
+                    onSwitch={(e) => {
+                      item.travelOptions.comfort = e
+                      setItem({ ...item, travelOptions: item.travelOptions })
+                      saveItem({ ...item, travelOptions: item.travelOptions })
+                    }}
+                  />
+                </div>
+                <div className='flex flex-row items-center'>
+                  <label>{t('Single Supplement')}</label>
+                  <Switch
+                    defaultValue={item.travelOptions.singleSupplement}
+                    onSwitch={(e) => {
+                      item.travelOptions.singleSupplement = e
+                      setItem({ ...item, travelOptions: item.travelOptions })
+                      saveItem({ ...item, travelOptions: item.travelOptions })
+                    }}
+                  />
                 </div>
               </FormCard>
-            </>}
+              {/* <!-- END Price per person --> */}
+
+            </FormCard>
+
           </div>
           {item._id && <>
             <FormCard id="tours-images" title={t('Images')} defaultOpen={false}

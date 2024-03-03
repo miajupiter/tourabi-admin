@@ -54,14 +54,15 @@ export const SideMenu = (role?: UserRole) => {
     "tours": {
       "title": "Tour operations", "path": "/tours", "icon": "fa-solid fa-earth-asia",
       "children": {
-        "tours": { "title": "Tour definitions", "path": "/tours", "icon": "fa-solid fa-route" },
-        "agencyOp": { "title": "Acency sales operations", "disable": true, "icon": "fa-solid fa-handshake" },
-        "sales": { "title": "Sales", "disable": true, "icon": "fa-solid fa-cash-register" }
+        "agencyOp": { "title": "Acency Orders", "path":"/agencyOrders", "icon": "fa-solid fa-handshake" },
+        "sales": { "title": "Sales", "disable": true, "icon": "fa-solid fa-cash-register" },
+        "tourExpeditions": { "title": "Tour Expeditions", "path":"/tourExpeditions", "icon": "fa-solid fa-route" }
       }
     },
     "defs": {
       "title": "Definitions", "path": "/defs", "icon": "fa-solid fa-list-check",
       "children": {
+        "tours": { "title": "Tour definitions", "path": "/tours", "icon": "fa-solid fa-route" },
         "locations": { "title": "Locations", "path": "/locations", "icon": "fa-solid fa-mountain-city" },
         "accommodations": { "title": "Hotels", "path": "/accommodations", "icon": "fa-solid fa-hotel" },
         "destinations": { "title": "Destinations", "path": "/destinations", "icon": "fa-solid fa-map-location-dot" },

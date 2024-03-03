@@ -195,7 +195,6 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
                     </label>
                     <div className='flex w-full h-full justify-center'>
                       <SwitchPassive
-                        showSmiles={false}
                         defaultValue={item.passive}
                         onSwitch={async (e) => {
                           setItem({ ...item, passive: e })
