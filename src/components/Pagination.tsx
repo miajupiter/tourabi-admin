@@ -3,6 +3,13 @@
 import Link from 'next/link'
 import React, { FC, useEffect, useState } from "react"
 
+export interface ResultPaging {
+  pageNo?:number
+  pageSize?:number
+  pageCount?:number
+  totalDocs?:number
+}
+
 export interface PaginationProps {
   className?: string
   pageNo: number

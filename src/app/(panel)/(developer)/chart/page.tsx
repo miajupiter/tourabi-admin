@@ -14,7 +14,11 @@ const BasicChartPage: React.FC = () => {
       <meta name="description" content="This is Chart page for TourAbi Admin Panel" />
     </Head>
     {/* <Chart /> */}
-    <p>chart compoenent qwerty</p>
+    <div className='w-full p-4 harita-method'>
+      
+      <p className='mt-10'>chart compoenent qwerty</p>
+    </div>
+    
   </>
   )
 }

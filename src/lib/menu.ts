@@ -12,7 +12,6 @@ export const SideMenu = (role?: UserRole) => {
 
   const deleloperMenu = {
 
-    "divider2": "DEVELOPER",
     "test":{
       "title":"Develop Tests",
       "path":"/test",

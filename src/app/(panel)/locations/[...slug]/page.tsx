@@ -15,6 +15,7 @@ import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import { useLogin } from '@/hooks/useLogin'
+import { deleteItem } from '@/lib/fetch'
 
 export interface LocationPageDetailProps {
   params: { slug: string[] }
@@ -129,11 +130,15 @@ const LocationPageDetail: FC<LocationPageDetailProps> = ({ params }) => {
 
   return (
     <>
-      <PageHeader pageTitle={formTitle()} breadcrumbList={[
-        { href: '/', pageTitle: 'Dashboard' },
-        { href: '/locations', pageTitle: 'Locations' },
-        params.slug.length >= 2 && { href: `/locations/` + params.slug[1], pageTitle: 'Location Item' }
-      ]} />
+      <PageHeader
+        pageTitle={formTitle()}
+        breadcrumbList={[
+          { href: '/', pageTitle: 'Dashboard' },
+          { href: '/locations', pageTitle: 'Locations' },
+          params.slug.length >= 2 && { href: `/locations/` + params.slug[1], pageTitle: 'Location Item' }
+        ]}
+        icon={(<i className="fa-solid fa-mountain-city"></i>)}
+      />
 
       {item &&
         <div className="grid grid-cols-1 gap-9 ">
@@ -175,38 +180,38 @@ const LocationPageDetail: FC<LocationPageDetailProps> = ({ params }) => {
                   </SelectWithLabel>
                 </div>
                 <div className='grid grid-cols-1 gap-4'>
-                <div className='flex flex-row'>
-                  <InputWithLabel className='basis-4/5'
-                    readOnly={formStatus == FormStatus.view}
-                    label={t('Title')}
-                    defaultValue={item.title}
-                    onBlur={async (e) => {
-                      if (item.title != e.target.value) {
-                        setItem({ ...item, title: e.target.value })
-                        if (item._id) {
-                          saveItem({ title: e.target.value })
-                        } else {
-                          saveItem(item)
+                  <div className='flex flex-row'>
+                    <InputWithLabel className='basis-4/5'
+                      readOnly={formStatus == FormStatus.view}
+                      label={t('Title')}
+                      defaultValue={item.title}
+                      onBlur={async (e) => {
+                        if (item.title != e.target.value) {
+                          setItem({ ...item, title: e.target.value })
+                          if (item._id) {
+                            saveItem({ title: e.target.value })
+                          } else {
+                            saveItem(item)
+                          }
                         }
-                      }
-                    }}
-                  />
-                  <div className='basis-1/5'>
-                    <label className="mb-3 block text-sm text-center font-medium text-black dark:text-white">
-                      {t('Passive?')}
-                    </label>
-                    <div className='flex w-full h-full justify-center'>
-                      <SwitchPassive
-                        showSmiles={false}
-                        defaultValue={item.passive}
-                        onSwitch={async (e) => {
-                          setItem({ ...item, passive: e })
-                          saveItem({ passive: e })
-                        }}
-                      />
+                      }}
+                    />
+                    <div className='basis-1/5'>
+                      <label className="mb-3 block text-sm text-center font-medium text-black dark:text-white">
+                        {t('Passive?')}
+                      </label>
+                      <div className='flex w-full h-full justify-center'>
+                        <SwitchPassive
+                          showSmiles={false}
+                          defaultValue={item.passive}
+                          onSwitch={async (e) => {
+                            setItem({ ...item, passive: e })
+                            saveItem({ passive: e })
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -245,6 +250,22 @@ const LocationPageDetail: FC<LocationPageDetailProps> = ({ params }) => {
               </FormCard>
             </>}
           </div>
+
+          <div className='flex flex-row mt-10'>
+            <button
+              className='p-2 border border-stroke dark:border-strokedark rounded-md bg-red text-white'
+              onClick={(e) => {
+                if (confirm(t(`${item?.title}\n\nDo you want to remove?`))) {
+                  deleteItem(`/admin/locations/${item?._id}`, token)
+                    .then(() => {
+                      location.href = '/locations'
+                    }).catch(err => alert(err))
+                }
+              }}>
+              <i className="fa-regular fa-trash-can"></i> Delete
+            </button>
+          </div>
+
         </div>
       }
     </>

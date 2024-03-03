@@ -1,11 +1,12 @@
 import Link from "next/link"
 interface PageHeaderProps {
-  pageTitle: string
+  pageTitle: any
   breadcrumbList: any[],
- 
+ icon?:any
 }
 const PageHeader = ({
   pageTitle,
+  icon,
   breadcrumbList = [{
     href: '/',
     pageTitle: 'DashBoard'
@@ -15,7 +16,7 @@ const PageHeader = ({
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-        {pageTitle}
+      {icon && <>{icon}</>}  {pageTitle}
       </h2>
       <nav>
         <ul className="flex items-center gap-2">

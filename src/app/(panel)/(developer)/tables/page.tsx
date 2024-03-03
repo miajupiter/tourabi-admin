@@ -7,6 +7,7 @@ import TableTwo from "@/widgets/Tables/TableTwo"
 import Head from 'next/head'
 import { aliabiConfig } from 'aliabi'
 import { useLanguage } from '@/hooks/i18n'
+import TableAdvanced from './TableAdvanced'
 // import { Metadata } from "next"
 
 // export const metadata: Metadata = {
@@ -26,9 +27,10 @@ const TablesPage = () => {
       <Breadcrumb pageName="Tables" />
 
       <div className="flex flex-col gap-10">
-        <TableOne />
+        <TableAdvanced />
+        {/* <TableOne />
         <TableTwo />
-        <TableThree />
+        <TableThree /> */}
       </div>
     </>
   )

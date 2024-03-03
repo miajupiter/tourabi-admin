@@ -15,6 +15,7 @@ import { FormStatus } from '@/types/formStatus'
 import InputWithLabel from '@/components/InputWithLabel'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import { useLogin } from '@/hooks/useLogin'
+import { deleteItem } from '@/lib/fetch'
 
 export interface DestinationPageDetailProps {
   params: { slug: string[] }
@@ -113,17 +114,20 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, item, pullData, getItem])
+  }, [])
 
 
   return (
     <>
-
-      <PageHeader pageTitle={formTitle()} breadcrumbList={[
-        { href: '/', pageTitle: 'Dashboard' },
-        { href: '/destinations', pageTitle: 'Destinations' },
-        params.slug.length >= 2 && { href: `/destinations/` + params.slug[1], pageTitle: 'Destination Item' }
-      ]} />
+      <PageHeader
+        pageTitle={formTitle()}
+        breadcrumbList={[
+          { href: '/', pageTitle: 'Dashboard' },
+          { href: '/destinations', pageTitle: 'Destinations' },
+          params.slug.length >= 2 && { href: `/destinations/` + params.slug[1], pageTitle: 'Destination Item' }
+        ]}
+        icon={(<i className="fa-solid fa-map-location-dot"></i>)}
+      />
 
       {item &&
         <div className="grid grid-cols-1 gap-9 ">
@@ -213,6 +217,20 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
           </div>
         </div>
       }
+      <div className='flex flex-row mt-10'>
+        <button
+          className='p-2 border border-stroke dark:border-strokedark rounded-md bg-red text-white'
+          onClick={(e) => {
+            if (confirm(t(`${item?.title}\n\nDo you want to remove?`))) {
+              deleteItem(`/admin/destinations/${item?._id}`, token)
+                .then(() => {
+                  location.href = '/destinations'
+                }).catch(err => alert(err))
+            }
+          }}>
+          <i className="fa-regular fa-trash-can"></i> Delete
+        </button>
+      </div>
     </>
   )
 }

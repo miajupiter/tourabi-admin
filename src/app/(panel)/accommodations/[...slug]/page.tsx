@@ -16,6 +16,8 @@ import InputWithLabel from '@/components/InputWithLabel'
 import SelectWithLabel from '@/components/SelectWithLabel'
 import { countries } from 'country-list-json'
 import Input from '@/components/Input'
+import { deleteItem } from '@/lib/fetch'
+import { useLogin } from '@/hooks/useLogin'
 
 export interface AccommodationPageDetailProps {
   params: { slug: string[] }
@@ -70,6 +72,8 @@ const ROOM_TYPES = [
 const mdxKod = '--1--1'
 
 const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) => {
+  const {token}=useLogin()
+  
   const { t } = useLanguage()
 
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
@@ -154,12 +158,15 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
 
   return (
     <>
-
-      <PageHeader pageTitle={formTitle()} breadcrumbList={[
-        { href: '/', pageTitle: 'Dashboard' },
-        { href: '/accommodations', pageTitle: 'Hotels' },
-        params.slug.length >= 2 && { href: `/accommodations/` + params.slug[1], pageTitle: 'Hotel' }
-      ]} />
+      <PageHeader
+        pageTitle={formTitle()}
+        breadcrumbList={[
+          { href: '/', pageTitle: 'Dashboard' },
+          { href: '/accommodations', pageTitle: 'Hotels' },
+          params.slug.length >= 2 && { href: `/accommodations/` + params.slug[1], pageTitle: 'Hotel' }
+        ]}
+        icon={(<i className="fa-solid fa-hotel"></i>)}
+      />
 
       {item &&
         <div className="grid grid-cols-1 gap-6 ">
@@ -379,6 +386,21 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
               </div>
             </FormCard>
           </>}
+
+          <div className='flex flex-row mt-10'>
+            <button
+              className='p-2 border border-stroke dark:border-strokedark rounded-md bg-red text-white'
+              onClick={(e) => {
+                if (confirm(t(`${item?.title}\n\nDo you want to remove?`))) {
+                  deleteItem(`/admin/accommodations/${item?._id}`, token)
+                    .then(() => {
+                      location.href = '/accommodations'
+                    }).catch(err => alert(err))
+                }
+              }}>
+              <i className="fa-regular fa-trash-can"></i> Delete
+            </button>
+          </div>
         </div>
       }
     </>

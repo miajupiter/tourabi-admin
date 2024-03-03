@@ -17,7 +17,7 @@ import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
 import { eventLog } from '@/lib/developerHelper'
 import { Input } from '@/components/Input'
 import PriceTable from './PriceTable'
-
+import { getItem, deleteItem, putItem } from '@/lib/fetch'
 export interface TourPageDetailProps {
   params: { slug: string | [] }
 }
@@ -70,8 +70,9 @@ export interface TourItemType {
 const mdxKod = '--1--1'
 
 const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
+  const { token, user } = useLogin()
   const { t } = useLanguage()
-  const { user } = useLogin()
+
 
   const { slug } = params
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
@@ -83,22 +84,22 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const [focusMarkDown, setFocusMarkDown] = useState('')
 
 
-  const getItem = (itemId: string) => {
-    const token = localStorage.getItem('token') || ''
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${itemId}`, {
-      headers: { 'Content-Type': 'application/json', token: token },
-    })
-      .then(ret => ret.json())
-      .then(result => {
-        if (result.success && result.data) {
-          const test = { ...item, ...result.data }
-          console.log('result.data:', result.data)
-          console.log('testobj:', test)
-          setItem({ ...item, ...result.data })
-        }
-      }).catch(console.error)
+  // const getItem = (itemId: string) => {
+  //   const token = localStorage.getItem('token') || ''
+  //   fetch(`${process.env.NEXT_PUBLIC_API_URI}/admin/tours/${itemId}`, {
+  //     headers: { 'Content-Type': 'application/json', token: token },
+  //   })
+  //     .then(ret => ret.json())
+  //     .then(result => {
+  //       if (result.success && result.data) {
+  //         const test = { ...item, ...result.data }
+  //         console.log('result.data:', result.data)
+  //         console.log('testobj:', test)
+  //         setItem({ ...item, ...result.data })
+  //       }
+  //     }).catch(console.error)
 
-  }
+  // }
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
     const token = localStorage.getItem('token') || ''
@@ -122,8 +123,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         return ret.json()
       })
       .then(result => {
-
-        console.log('fetch bitti:', result)
         if (result.success && result.data) {
           setItem({ ...item, ...result.data })
           if (formStatus == FormStatus.new && item?._id) {
@@ -141,6 +140,8 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         reject(err.message || err)
       })
   })
+
+
 
   const formTitle = () => {
     switch (formStatus) {
@@ -160,15 +161,11 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
       if (params.slug[0] == 'new') {
         setFormStatus(FormStatus.new)
         setItem({ ...item, title: '', _id: '' } as TourItemType)
-
-      } else if (params.slug[0] == 'edit') {
-        setFormStatus(FormStatus.edit)
-
-        getItem(params.slug[1])
-      } else if (params.slug[0] == 'view') {
-        setFormStatus(FormStatus.view)
-
-        getItem(params.slug[1])
+      } else {
+        setFormStatus(params.slug[0] == 'edit' ? FormStatus.edit : FormStatus.view)
+        getItem(`/tours/${params.slug[1]}`, token)
+          .then(data => setItem(data))
+          .catch(err => console.log('err:', err))
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -177,11 +174,15 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
   return (
     <>
-      <PageHeader pageTitle={formTitle()} breadcrumbList={[
-        { href: '/', pageTitle: 'Dashboard' },
-        { href: '/tours', pageTitle: 'Tours' },
-        params.slug.length >= 2 && { href: `/tours/` + params.slug[1], pageTitle: 'Tour Item' }
-      ]} />
+      <PageHeader
+        pageTitle={formTitle()}
+        breadcrumbList={[
+          { href: '/', pageTitle: 'Dashboard' },
+          { href: '/tours', pageTitle: 'Tours' },
+          params.slug.length >= 2 && { href: `/tours/` + params.slug[1], pageTitle: 'Tour Item' }
+        ]}
+        icon={(<i className='fa-solid fa-route'></i>)}
+      />
 
       {item &&
         <div className="grid grid-cols-1 gap-6 ">
@@ -549,6 +550,21 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
               </div>
             </FormCard>
           </>}
+
+          <div className='flex flex-row'>
+            <button
+              className='p-2 border border-stroke dark:border-strokedark rounded-md bg-red text-white'
+              onClick={(e) => {
+                if (confirm(t(`${item?.title}\n\nDo you want to remove?`))) {
+                  deleteItem(`/tours/${item?._id}`, token)
+                    .then(() => {
+                      location.href = '/tours'
+                    }).catch(err => alert(err))
+                }
+              }}>
+              <i className="fa-regular fa-trash-can"></i> Delete
+            </button>
+          </div>
         </div>
       }
     </>

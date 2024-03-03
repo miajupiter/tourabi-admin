@@ -94,8 +94,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       return <>
         <Link href={item.path || ''}
           className={`group relative flex items-center gap-2.5 rounded-md px-4 py-2 font-medium
-          text-neutral-900 dark:text-slate-200  hover:bg-slate-300
-          ${checkActiveCondition(item)?"bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 hover:dark:bg-slate-900":""}
+          text-neutral-900 dark:text-slate-200  hover:bg-slate-300  dark:hover:bg-slate-950
+          ${checkActiveCondition(item)?"bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 hover:dark:bg-slate-950":""}
            ${(item.disabled || !item.path) && "disabled:hover:bg-none disabled:dark:hover:bg-none cursor-default opacity-45"}
           `}>
           {item.icon && typeof item.icon === "string" && <i className={item.icon}></i>}
@@ -110,8 +110,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             return (<React.Fragment>
               <Link href="#"
                 className={`group rounded-md relative flex items-center gap-2.5  px-4 py-2 font-medium
-                 text-neutral-900 dark:text-slate-200  hover:bg-slate-300 
-                 ${checkActiveCondition(item)?"bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 hover:dark:bg-slate-900":""}
+                 text-neutral-900 dark:text-slate-200  hover:bg-slate-300  dark:hover:bg-slate-950
+                 ${checkActiveCondition(item)?"bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 hover:dark:bg-slate-950":""}
                 `}
                 // className={`group rounded-md relative flex items-center gap-2.5  px-4 py-2 font-medium
                 //  text-neutral-900 dark:text-slate-200  hover:bg-[#abaace] hov11er:te11xt-slate-200

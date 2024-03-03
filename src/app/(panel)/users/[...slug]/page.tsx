@@ -19,7 +19,8 @@ import InputWithLabel from '@/components/InputWithLabel'
 import DateInputWithLabel from '@/components/DateInputWithLabel'
 import TextareaWithLabel from '@/components/TextareaWithLabel'
 import UserRoleEmojiStyle from '../UserRoleEmojiStyle'
-import { UserRole } from '@/hooks/useLogin'
+import { UserRole, useLogin } from '@/hooks/useLogin'
+import { deleteItem } from '@/lib/fetch'
 export interface UserPageDetailProps {
   params: { slug: string[] }
 }
@@ -60,6 +61,7 @@ export interface UserItemType {
 const mdxKod = '--1--1'
 
 const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
+  const {token}=useLogin()
   const { t } = useLanguage()
 
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
@@ -120,11 +122,11 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
   const formTitle = () => {
     switch (formStatus) {
       case FormStatus.new:
-        return t('New destination')
+        return t('New User')
       case FormStatus.edit:
-        return t('Edit destination')
+        return t('Edit User')
       case FormStatus.view:
-        return t('View destination')
+        return t('View User')
     }
     return ''
   }
@@ -154,12 +156,15 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
 
   return (
     <>
-
-      <PageHeader pageTitle={formTitle()} breadcrumbList={[
-        { href: '/', pageTitle: 'Dashboard' },
-        { href: '/users', pageTitle: 'Users' },
-        params.slug.length >= 2 && { href: `/users/` + params.slug[1], pageTitle: 'User Item' }
-      ]} />
+      <PageHeader
+        pageTitle={formTitle()}
+        breadcrumbList={[
+          { href: '/', pageTitle: 'Dashboard' },
+          { href: '/users', pageTitle: 'Users' },
+          params.slug.length >= 2 && { href: `/users/` + params.slug[1], pageTitle: 'User Item' }
+        ]}
+        icon={(<i className="fa-solid fa-users"></i>)}
+      />
 
       {item &&
         <div className="grid grid-cols-1 gap-6 ">
@@ -338,6 +343,21 @@ const UserPageDetail: FC<UserPageDetailProps> = ({ params }) => {
               </FormCard>
             </>}
           </div>
+
+          <div className='flex flex-row mt-10'>
+        <button
+          className='p-2 border border-stroke dark:border-strokedark rounded-md bg-red text-white'
+          onClick={(e) => {
+            if (confirm(t(`${item?.email}\n\nDo you want to remove?`))) {
+              deleteItem(`/admin/users/${item?._id}`, token)
+                .then(() => {
+                  location.href = '/users'
+                }).catch(err => alert(err))
+            }
+          }}>
+          <i className="fa-regular fa-trash-can"></i> Delete
+        </button>
+      </div>
         </div>
       }
     </>
