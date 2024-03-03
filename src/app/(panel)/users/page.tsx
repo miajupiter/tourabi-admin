@@ -69,22 +69,28 @@ const UsersPage = () => {
           rowEditButton={{ href: `/users/edit/{_id}` }}
           addNewButton={{ href: `/users/new` }}
           theadTrTdClassName='text-start'
+          // theadTrClassName='h-17 '
           onRenderRow={(tr, colItem, colIndex, rowIndex) => <>
             {colIndex == 0 && <>
               <h5 className="ms-2 font-medium text-black dark:text-slate-100">
-                {tr.title}
+                {tr.email}
               </h5>
               {tr.image &&
-                <div className='flex justify-start mt-2'>
-                  <div key={colIndex} className='h-14 max-w-26 mx-1'>
-                    <Image className='aspect-square rounded-full' src={tr.image || ''} alt="alt" width={72} height={72} />
+                <div className='flex justify-start'>
+                  <div key={colIndex} className='h-16 max-w-26 mx-1'>
+                    <Image className='aspect-square rounded-full' src={tr.image || ''} alt="alt" width={64} height={64} />
                   </div>
                 </div>}
             </>}
-            {colIndex == 1 && tr.country}
+            {colIndex == 1 && <>
+              <h5 className="font-medium text-black dark:text-slate-100">
+                {tr.name}
+              </h5>
+            <p className='text-sm'>{tr.gender} | {tr.dateOfBirth}</p>
+            </>}
             {colIndex == 2 && <TdActivePassive passive={tr.passive} />}
           </>}
-          columns={['Title', 'Country', 'Passive?']}
+          columns={['Email', 'Name', 'Passive?']}
         />
         <div className='flex mt-4 justify-center items-center'>
           <Pagination pageNo={pageNo} pageCount={pageCount}

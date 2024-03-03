@@ -78,15 +78,15 @@ return <>
     <div className={`relative overflow-x-auto shadow-md rounded-md border border-stroke dark:border-strokedark border-opacity-40 ${className}`}>
       <table className={`w-full table-auto ${tableClassName}`}>
         <thead className={`text-slate-900 dark:text-slate-100 bg-slate-300 dark:bg-slate-700 ${theadClassName}`}>
-          <tr className={`h-14 ${theadTrClassName || ''}`}>
+          <tr className={`h-12 ${theadTrClassName || ''}`}>
             {columns.map((th: any, index: number) => <>
-              <th className={`px-2 py-2 font-semibold ${theadTrTdClassName || ''}`}>
+              <th className={`ps-3 pe-2 py-2 font-semibold ${theadTrTdClassName || ''}`}>
                 {onRenderHeader && <>{onRenderHeader(th, index)}</>}
                 {!onRenderHeader && <>{th}</>}
               </th>
             </>)}
             {addNewButton && <>
-              <th className="w-[90px] font-medium text-center">
+              <th className="w-[90px] font-medium">
                 <Link
                   href={addNewButton.href || '#'}
                   className={`py-2 px-3 rounded-md bg-blue-700 text-neutral-100 hover:bg-blue-900 shadow-default`}
