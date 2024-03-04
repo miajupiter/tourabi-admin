@@ -7,10 +7,10 @@ import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
 import Link from 'next/link'
 import Image from 'next/image'
-import TableRowButtons from '@/components/TableRowButtons'
-import Pagination from '@/components/Pagination'
+import TableRowButtons from '@/aliabi/TableRowButtons'
+import Pagination from '@/aliabi/Pagination'
 import ModalOne from '@/components/ModalDialogs/ModalOne'
-import {ListPageTable, TdTitleAndImage, TdActivePassive } from '@/components/Table'
+import { ListPageTable, TdTitleAndImage, TdActivePassive } from '@/aliabi/Table'
 import { getList } from '@/lib/fetch'
 import { useLogin } from '@/hooks/useLogin'
 
@@ -65,7 +65,7 @@ const ToursPage: FC<ToursPageProps> = ({ }) => {
       <div className="flex flex-col gap-10">
         <ListPageTable
           docs={docs} page={pageNo} pageCount={pageCount} pageSize={pageSize} totalDocs={totalDocs}
-          rowEditButton={{ href: `/tours/edit/{_id}`, title: 'Edit' }}
+          rowEditButton={{ href: `/tours/{_id}`, title: 'Edit'}}
           addNewButton={{ href: `/tours/new`, title: 'New' }}
           theadTrTdClassName='text-start'
           onRenderRow={(tr, colItem, colIndex, rowIndex) => <>
@@ -74,12 +74,20 @@ const ToursPage: FC<ToursPageProps> = ({ }) => {
               <p className="text-black dark:text-white">{tr.places || ''}</p>
               <div className="w-full text-sm">{tr.duration || ''} Day(s)</div>
             </>}
-            {colIndex == 2 && <TdActivePassive passive={tr.passive} />}
+            {colIndex == 2 && <>
+              <Link 
+                href={`/tours/${tr._id}/expeditions`}
+                className={`px-3 py-2 rounded-md bg-amber-800 text-white hover:bg-opacity-65`}
+                title={t('Expeditions')}>
+                <i className="fa-solid fa-plane-departure text-lg"></i>
+              </Link>
+            </>}
+            {colIndex == 3 && <TdActivePassive passive={tr.passive} />}
           </>}
-          columns={['Title', 'Country', 'Passive?']}
+          columns={[t('Title'), t('Places'), t('Expeditions'), t('Passive?')]}
         />
         <div className='flex mt-4 justify-center items-center'>
-          <Pagination pageNo={pageNo} pageCount={pageCount}
+          <Pagination pageNo={pageNo || 1} pageCount={pageCount || 0}
             onPageClick={(no: number) => setPageNo(no)}
           />
         </div>

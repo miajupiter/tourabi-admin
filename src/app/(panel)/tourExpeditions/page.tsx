@@ -1,70 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-import React, { FC, useState, useEffect } from 'react'
-import { useLanguage } from '@/hooks/i18n'
-import { StaticImageData } from 'next/image'
 import PageHeader from '@/components/PageHeader'
-import { AliAbiMDXEditor } from '@/components/Editor/AliAbiMDXEditor'
-import FormCard, { FormCardType } from '@/components/FormCard'
-import SwitchPassive from '@/components/SwitchPassive'
-import { FormStatus } from '@/types/formStatus'
-import InputWithLabel from '@/components/InputWithLabel'
-import ImageListWidget, { ImageItemProps } from '@/widgets/ImageListWidget'
-import { useLogin, UserRole } from '@/hooks/useLogin'
-import SelectWithLabel from '@/components/SelectWithLabel'
-import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
-import { Input } from '@/components/Input'
-import { getItem, deleteItem, putItem, getList } from '@/lib/fetch'
-export interface TourExpeditionPageProps {
-  params: { slug: string | [] }
-}
+import aliabiConfig from 'aliabi'
+import Image from "next/image"
+import Head from 'next/head'
+import { useLanguage } from '@/hooks/i18n'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import Pagination from '@/aliabi/Pagination'
+import ListPageTable from '@/aliabi/Table/ListPageTable'
+import { TdActivePassive, TdTitleAndImage } from '@/aliabi/Table/SomeTableComponents'
+import { getList, searchList } from '@/lib/fetch'
+import { useLogin } from '@/hooks/useLogin'
+import { convertNumbThousand } from '@/lib/convertNumbThousand'
+import { useQRCode } from 'next-qrcode'
 
-export interface ExpeditionItemType {
-  _id?: string
-  tourId: string,
-  expeditionNumber: { type: String, default: '', index: true },
-  duration: number,
-  dateFrom: string,
-  dateTo: string,
-  deadline: string,
-  status: string | 'pending' | 'avail' | 'closed' | 'cancelled'
-  price: number
-  currency?: CurrencyType | string
-  priceWithoutDiscount: number,
-  singleSupplement: {
-    normal: number,
-    economy: number,
-    comfort: number,
-  },
-  pricePerPerson: [{
-    personCount: number,
-    normal: number,
-    economy: number,
-    comfort: number,
-  }],
-  quantitySold: { type: Number, default: 0, },
-}
-
-const mdxKod = '--1--1'
-
-const TourExpeditionPage: FC<TourExpeditionPageProps> = ({ params }) => {
-  const { token, user } = useLogin()
-  const { t } = useLanguage()
-
-
-  const { slug } = params
-  // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
-
-  const [docs, setDocs] = useState<ExpeditionItemType[]>([])
-  const [formStatus, setFormStatus] = useState<FormStatus>(FormStatus.new)
+const TourExpeditionsPage = () => {
+  const { token } = useLogin()
   const [pageNo, setPageNo] = useState(1)
+  const [pageSize, setPageSize] = useState(8)
   const [pageCount, setPageCount] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-  const [totalDocs, setTotalDocs] = useState([])
+  const [totalDocs, setTotalDocs] = useState(0)
+  const [docs, setDocs] = useState([])
+  const { t } = useLanguage()
+  const { Canvas } = useQRCode()
 
-  const getListData = () => {
-    getList(`/admin/tourExpeditions?page=${pageNo}`, token)
+  const getListData = (sayfaNo: number) => {
+    setPageNo(sayfaNo)
+    searchList(`/admin/tourExpeditions?page=${pageNo}`, token, {
+      filter: {},
+      populate: [{ path: 'tourId', select: '_id title ' }]
+    })
       .then((data) => {
+        console.log('data', data)
         setDocs(data.docs)
         setPageCount(data.pageCount)
         setPageSize(data.pageSize)
@@ -72,49 +41,86 @@ const TourExpeditionPage: FC<TourExpeditionPageProps> = ({ params }) => {
       })
       .catch(err => alert(err))
   }
-  // const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
-  //   putItem(`/admin/tourExpeditions/${item?._id}?partial=true`, token, item)
-  //     .then(data => setItem({ ...item, ...data }))
-  //     .catch(err => alert(err))
-  // })
-
 
 
   useEffect(() => {
-    getListData()
+    getListData(pageNo)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNo])
 
 
   return (
     <>
+      <Head>
+        <title>{`${t('Tour Expeditions')} - ${aliabiConfig.title}`}</title>
+        <meta name="description" content="This is TourExpeditions page for TourAbi Admin Panel" />
+      </Head>
       <PageHeader
-        pageTitle={'qwerty'}
+        pageTitle={t('Tour Expeditions')}
         breadcrumbList={[
-          { href: '/', pageTitle: 'Dashboard' },
-          { href: '/tours', pageTitle: 'Tours' },
-          params.slug.length >= 2 && { href: `/tours/` + params.slug[1], pageTitle: 'Tour Item' }
+          { href: '/dashboard', pageTitle: 'Dashboard' },
+          { href: '/tourExpeditions', pageTitle: 'Tour Expeditions' }
         ]}
-        icon={(<i className='fa-solid fa-route'></i>)}
+        icon={(<i className="fa-solid fa-hotel"></i>)}
       />
-
-
-      <div className="grid grid-cols-1 gap-6 ">
-        <div className="flex flex-col gap-6">
-
-          <FormCard id="tours-prices" title={`${t('Prices')} | ${t('Calculations')} | ${t('Groups')}`}
-            defaultOpen={false} icon={(<i className="fa-solid fa-money-check-dollar"></i>)}
-            bodyClassName='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4'
-          >
-
-          </FormCard>
-
+      <div className="flex flex-col gap-10">
+        <ListPageTable
+          docs={docs} page={pageNo} pageCount={pageCount} pageSize={pageSize} totalDocs={totalDocs}
+          rowEditButton={{ href: `/tourExpeditions/edit/{_id}` }}
+          addNewButton={{ href: `/tourExpeditions/new` }}
+          theadTrTdClassName='text-start'
+          onRenderRow={(tr, colItem, colIndex, rowIndex) => <>
+            {colIndex == 0 && <>
+              <div className='flex space-x-2'>
+                <div className='flex-none'>
+                  <Canvas
+                    text={tr.expeditionNumber || ''}
+                    options={{
+                      errorCorrectionLevel: 'M',
+                      margin: 1,
+                      scale: 0.5,
+                      width: 48,
+                      color: {
+                        dark: '#000000FF',
+                        light: '#F2F2F2FF',
+                      },
+                    }}
+                  />
+                </div>
+                <div className='flex-auto'>
+                  <h5>{tr.tourId.title}</h5>
+                  <p className='text-sm'>{tr.expeditionNumber} </p>
+                </div>
+              </div>
+            </>}
+            {colIndex == 1 && <>
+              <p className='font-medium'>{tr.dateFrom} - {tr.dateTo}</p>
+              <p className='inline-block'>
+                <span className='ms-3'>{tr.duration} Days</span>
+                <span className='font-medium text-rose-700'>DL:{tr.deadline}</span>
+              </p>
+            </>}
+            {colIndex == 2 && <>
+              <p className='inline-block space-x-3'>
+                <span>US ${convertNumbThousand(tr.price)}</span>
+                <span className='line-through text-opacity-70'>{convertNumbThousand(tr.priceWithoutDiscount)}</span>
+              </p>
+            </>}
+            {colIndex == 3 && <>
+              <p className='text-base font-medium uppercase'>{tr.status}</p>
+              <span className='line-through'>{tr.quantitySold} <span className='text-sm'>Sold</span> </span>
+            </>}
+          </>}
+          columns={['Tour', 'Expedition Dates', 'Price', 'Status']}
+        />
+        <div className='flex mt-4 justify-center items-center'>
+          <Pagination pageNo={pageNo} pageCount={pageCount}
+            onPageClick={(no: number) => setPageNo(no)}
+          />
         </div>
-
-
       </div>
     </>
   )
 }
 
-export default TourExpeditionPage
+export default TourExpeditionsPage

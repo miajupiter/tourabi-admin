@@ -13,7 +13,7 @@ export enum FormCardType {
 interface FormCardProps {
 
   id: string
-  title: string
+  title: any | string
   icon?: any
   defaultOpen?: boolean
   className?: string

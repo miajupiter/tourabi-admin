@@ -1,11 +1,11 @@
 import { FC, useState } from "react"
 import { v4 } from "uuid"
 export interface SwitchProps {
-  className?:string
-  defaultValue?:boolean
-  onSwitch?: (checked:boolean) => void
+  className?: string
+  defaultValue?: boolean
+  onSwitch?: (checked: boolean) => void
 }
-export const Switch: FC<SwitchProps> = ({className="", defaultValue=false, onSwitch}) => {
+export const Switch: FC<SwitchProps> = ({ className = "", defaultValue = false, onSwitch }) => {
   const [enabled, setEnabled] = useState<boolean>(defaultValue)
   const id = v4()
 
@@ -21,14 +21,14 @@ export const Switch: FC<SwitchProps> = ({className="", defaultValue=false, onSwi
             id={id}
             className="sr-only"
             onChange={() => {
-              
-              if(typeof onSwitch=='function'){
+
+              if (onSwitch) {
                 onSwitch(!enabled)
               }
               setEnabled(!enabled)
             }}
           />
-          <div className={`block h-8 w-14 rounded-full ${enabled?"bg-blue-600":"bg-neutral-700"}`}></div>
+          <div className={`block h-8 w-14 rounded-full ${enabled ? "bg-blue-600" : "bg-neutral-700"}`}></div>
           <div
             className={`absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${enabled && "!right-1 !translate-x-full"}`}
           ></div>

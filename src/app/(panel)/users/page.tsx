@@ -11,12 +11,12 @@ import { useLanguage } from '@/hooks/i18n'
 import { FC, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import Pagination from '@/components/Pagination'
-import TableRowButtons, { TableRowButtonsProps } from '../../../components/TableRowButtons'
+import Pagination from '@/aliabi/Pagination'
+import TableRowButtons, { TableRowButtonsProps } from '../../../aliabi/TableRowButtons'
 import UserRoleEmojiStyle from './UserRoleEmojiStyle'
 import { getList } from '@/lib/fetch'
 import { useLogin } from '@/hooks/useLogin'
-import { ListPageTable, TdActivePassive, TdTitleAndImage } from '@/components/Table'
+import { ListPageTable, TdActivePassive, TdTitleAndImage } from '@/aliabi/Table'
 
 
 const UsersPage = () => {

@@ -8,7 +8,7 @@ import Logo from '@/widgets/Logo'
 import { useLanguage } from '@/hooks/i18n'
 import { useLogin } from '@/hooks/useLogin'
 import ButtonPrimary from '@/components/ButtonPrimary'
-import InputWithLabel from '@/components/InputWithLabel'
+import InputWithLabel from '@/aliabi/InputWithLabel'
 import Head from 'next/head'
 // export const metadata: Metadata = {
 //   title: "Login | TourAbi Admin Panel",

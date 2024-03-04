@@ -1,8 +1,26 @@
 import Link from 'next/link'
 import { FC } from 'react'
 
+export const AliAbiHCOL=({...props})=>{
+  return <th {...props} >{props.children}</th>
+}
 
-export interface ListPageTableProps {
+export const AliAbiCOL=({...props})=>{
+  return <td {...props} >{props.children}</td>
+}
+
+export const AliAbiROW=({...props})=>{
+  return <tr {...props} >{props.children}</tr>
+}
+
+export const AliAbiTHEAD=({...props})=>{
+  return <thead {...props} >{props.children}</thead>
+}
+export const AliAbiBODY=({...props})=>{
+  return <tbody {...props} >{props.children}</tbody>
+}
+
+export interface AliAbiTableProps {
   columns: any[],
   onRenderHeader?: (th: any, colIndex: number) => void
   onRenderRow?: (tr: any, colItem: any | string, colIndex: number, rowIndex: number) => void
@@ -31,7 +49,7 @@ export interface ListPageTableProps {
   tbodyTrTdClassName?: string
 }
 
-const ListPageTable: FC<ListPageTableProps> = ({
+const AliAbiTABLE: FC<AliAbiTableProps> = ({
   columns, onRenderHeader, onRenderRow, addNewButton, rowEditButton, docs,
   page, pageCount, pageSize, totalDocs,
   className, tableClassName, theadClassName, theadTrClassName, tbodyClassName, tbodyTrClassName, tbodyTrTdClassName, theadTrTdClassName
@@ -114,4 +132,4 @@ return <>
   </>
 }
 
-export default ListPageTable
+export default AliAbiTABLE

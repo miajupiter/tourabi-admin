@@ -10,11 +10,11 @@ import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import Pagination from '@/components/Pagination'
-import TableRowButtons, { TableRowButtonsProps } from '../../../components/TableRowButtons'
+import Pagination from '@/aliabi/Pagination'
+import TableRowButtons, { TableRowButtonsProps } from '../../../aliabi/TableRowButtons'
 import { useLogin } from '@/hooks/useLogin'
 import { getList } from '@/lib/fetch'
-import { ListPageTable, TdActivePassive, TdTitleAndImage } from '@/components/Table'
+import { ListPageTable, TdActivePassive, TdTitleAndImage } from '@/aliabi/Table'
 
 
 const DestinationsPage = () => {

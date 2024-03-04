@@ -56,7 +56,7 @@ export const SideMenu = (role?: UserRole) => {
       "children": {
         "agencyOp": { "title": "Acency Orders", "path":"/agencyOrders", "icon": "fa-solid fa-handshake" },
         "sales": { "title": "Sales", "disable": true, "icon": "fa-solid fa-cash-register" },
-        "tourExpeditions": { "title": "Tour Expeditions", "path":"/tourExpeditions", "icon": "fa-solid fa-route" }
+        "tourExpeditions": { "title": "Tour Expeditions", "path":"/tourExpeditions", "icon": "fa-solid fa-truck-plane" }
       }
     },
     "defs": {

@@ -12,3 +12,5 @@ const WrapDashBorder = ({ key, className, children }: WrapDashBorderProps) => {
     </div>
   </>
 }
+
+export default WrapDashBorder

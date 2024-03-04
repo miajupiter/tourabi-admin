@@ -4,23 +4,23 @@ import React, { FC, useState, useEffect } from 'react'
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
 import PageHeader from '@/components/PageHeader'
-import { AliAbiMDXEditor } from '@/components/Editor/AliAbiMDXEditor'
-import FormCard, { FormCardType } from '@/components/FormCard'
+import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
+import FormCard, { FormCardType } from '@/aliabi/FormCard'
 import { TravelPlan } from './TravelPlan'
-import SwitchPassive from '@/components/SwitchPassive'
+import SwitchPassive from '@/aliabi/SwitchPassive'
 import { FormStatus } from '@/types/formStatus'
-import InputWithLabel from '@/components/InputWithLabel'
-import ImageListWidget, { ImageItemProps } from '@/widgets/ImageListWidget'
+import InputWithLabel from '@/aliabi/InputWithLabel'
+import ImageListWidget, { ImageItemProps } from '@/aliabi/ImageListWidget'
 import { useLogin, UserRole } from '@/hooks/useLogin'
-import SelectWithLabel from '@/components/SelectWithLabel'
+import SelectWithLabel from '@/aliabi/SelectWithLabel'
 import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
 import { eventLog } from '@/lib/developerHelper'
-import { Input } from '@/components/Input'
-import { getItem, deleteItem, putItem } from '@/lib/fetch'
-import Switch from '@/components/Switch'
+import { Input } from '@/aliabi/Input'
+import { getItem, deleteItem, putItem, postItem } from '@/lib/fetch'
+import Switch from '@/aliabi/Switch'
 import Link from 'next/link'
 export interface TourPageDetailProps {
-  params: { slug: string | [] }
+  params: { tourId: string }
 }
 
 export interface TourItemType {
@@ -30,8 +30,6 @@ export interface TourItemType {
   duration?: number
   places?: string
   images?: StaticImageData[] | []
-  // tempImages?: StaticImageData[] | []
-  priceTable?: any[]
   travelPlan?: any[]
   currency?: CurrencyType | string
 
@@ -66,8 +64,6 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   const { t } = useLanguage()
 
 
-  const { slug } = params
-  // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
 
   const [item, setItem] = useState<TourItemType>()
   const [pullData, setPullData] = useState(false)
@@ -78,9 +74,15 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
 
   const saveItem = (data: any) => new Promise<any>((resolve, reject) => {
-    putItem(`/admin/tours/${item?._id}?partial=true`, token, item)
-      .then(data => setItem({ ...item, ...data }))
-      .catch(err => alert(err))
+    if (item?._id) {
+      putItem(`/admin/tours/${item?._id}?partial=true`, token, item)
+        .then(data => setItem({ ...item, ...data }))
+        .catch(err => alert(err))
+    } else {
+      postItem(`/admin/tours/${item?._id}?partial=true`, token, item)
+        .then(data => setItem({ ...item, ...data }))
+        .catch(err => alert(err))
+    }
   })
 
 
@@ -100,18 +102,21 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
   useEffect(() => {
     if (!pullData) {
       setPullData(true)
-      if (params.slug[0] == 'new') {
+      if (params.tourId === 'new') {
         setFormStatus(FormStatus.new)
-        setItem({ ...item, title: '', _id: '' } as TourItemType)
+        setItem({
+          ...item, title: '', _id: '',
+          travelOptions: { normal: true, economy: false, comfort: false, singleSupplement: true }
+        } as TourItemType)
       } else {
-        setFormStatus(params.slug[0] == 'edit' ? FormStatus.edit : FormStatus.view)
-        getItem(`/admin/tours/${params.slug[1]}`, token)
+        setFormStatus(FormStatus.edit)
+        getItem(`/admin/tours/${params.tourId}`, token)
           .then(data => setItem(data))
           .catch(err => console.log('err:', err))
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, formStatus, slug])
+  }, [token, params.tourId])
 
 
   return (
@@ -121,7 +126,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
         breadcrumbList={[
           { href: '/', pageTitle: 'Dashboard' },
           { href: '/tours', pageTitle: 'Tours' },
-          params.slug.length >= 2 && { href: `/tours/` + params.slug[1], pageTitle: 'Tour Item' }
+          { href: `/tours/` + params.tourId, pageTitle: 'Tour Item' }
         ]}
         icon={(<i className='fa-solid fa-route'></i>)}
       />
@@ -263,7 +268,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 <Link
                   href={`/tours/${params.slug}/expeditions`}
                   className=''
-                 >
+                >
                   Tur Seferleri (Tour Expeditions)
                 </Link>
 
@@ -272,51 +277,49 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
               {/* <!-- Price per person --> */}
               <FormCard id="tours-travel-options" title={t('Travel Options')}
-                bodyClassName='grid grid-cols-3 gap-4' cardType={FormCardType.STATIC} >
-                <div className='flex flex-row items-center'>
-                  <label>{t('Normal')}</label>
-                  <Switch
-                    defaultValue={item.travelOptions.normal}
-                    onSwitch={(e) => {
-                      item.travelOptions.normal = e
-                      setItem({ ...item, travelOptions: item.travelOptions })
-                      saveItem({ ...item, travelOptions: item.travelOptions })
-                    }}
-                  />
-                </div>
-                <div className='flex flex-row items-center'>
-                  <label>{t('Economy')}</label>
-                  <Switch
-                    defaultValue={item.travelOptions.economy}
-                    onSwitch={(e) => {
-                      item.travelOptions.economy = e
-                      setItem({ ...item, travelOptions: item.travelOptions })
-                      saveItem({ ...item, travelOptions: item.travelOptions })
-                    }}
-                  />
-                </div>
-                <div className='flex flex-row items-center'>
-                  <label>{t('Comfort')}</label>
-                  <Switch
-                    defaultValue={item.travelOptions.comfort}
-                    onSwitch={(e) => {
-                      item.travelOptions.comfort = e
-                      setItem({ ...item, travelOptions: item.travelOptions })
-                      saveItem({ ...item, travelOptions: item.travelOptions })
-                    }}
-                  />
-                </div>
-                <div className='flex flex-row items-center'>
-                  <label>{t('Single Supplement')}</label>
-                  <Switch
-                    defaultValue={item.travelOptions.singleSupplement}
-                    onSwitch={(e) => {
-                      item.travelOptions.singleSupplement = e
-                      setItem({ ...item, travelOptions: item.travelOptions })
-                      saveItem({ ...item, travelOptions: item.travelOptions })
-                    }}
-                  />
-                </div>
+                bodyClassName='grid grid-cols-4 gap-4' cardType={FormCardType.STATIC} >
+
+                <label className='col-span-3'>{t('Normal')}</label>
+                <Switch
+                  className='col-span-1'
+                  defaultValue={item.travelOptions.normal}
+                  onSwitch={(e) => {
+                    item.travelOptions.normal = e
+                    setItem({ ...item, travelOptions: item.travelOptions })
+                    saveItem({ ...item, travelOptions: item.travelOptions })
+                  }}
+                />
+
+                <label className='col-span-3'>{t('Economy')}</label>
+                <Switch
+                  className='col-span-1'
+                  defaultValue={item.travelOptions.economy}
+                  onSwitch={(e) => {
+                    item.travelOptions.economy = e
+                    setItem({ ...item, travelOptions: item.travelOptions })
+                    saveItem({ ...item, travelOptions: item.travelOptions })
+                  }}
+                />
+                <label className='col-span-3'>{t('Comfort')}</label>
+                <Switch
+                  className='col-span-1'
+                  defaultValue={item.travelOptions.comfort}
+                  onSwitch={(e) => {
+                    item.travelOptions.comfort = e
+                    setItem({ ...item, travelOptions: item.travelOptions })
+                    saveItem({ ...item, travelOptions: item.travelOptions })
+                  }}
+                />
+                <label className='col-span-3'>{t('Single Supplement')}</label>
+                <Switch
+                  className='col-span-1'
+                  defaultValue={item.travelOptions.singleSupplement}
+                  onSwitch={(e) => {
+                    item.travelOptions.singleSupplement = e
+                    setItem({ ...item, travelOptions: item.travelOptions })
+                    saveItem({ ...item, travelOptions: item.travelOptions })
+                  }}
+                />
               </FormCard>
               {/* <!-- END Price per person --> */}
 
@@ -411,7 +414,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
               className='p-2 border border-stroke dark:border-strokedark rounded-md bg-red text-white'
               onClick={(e) => {
                 if (confirm(t(`${item?.title}\n\nDo you want to remove?`))) {
-                  deleteItem(`/tours/${item?._id}`, token)
+                  deleteItem(`/admin/tours/${item?._id}`, token)
                     .then(() => {
                       location.href = '/tours'
                     }).catch(err => alert(err))

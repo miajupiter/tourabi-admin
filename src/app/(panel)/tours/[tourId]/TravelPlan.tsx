@@ -1,5 +1,5 @@
 
-import FormCard from '@/components/FormCard'
+import FormCard from '@/aliabi/FormCard'
 import { v4 } from 'uuid'
 import { useLanguage } from '@/hooks/i18n'
 import Link from 'next/link'
