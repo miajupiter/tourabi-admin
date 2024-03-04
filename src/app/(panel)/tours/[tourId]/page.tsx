@@ -266,7 +266,7 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                   }}
                 />
                 <Link
-                  href={`/tours/${params.slug}/expeditions`}
+                  href={`/tours/${params.tourId}/expeditions`}
                   className=''
                 >
                   Tur Seferleri (Tour Expeditions)

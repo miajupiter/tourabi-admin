@@ -175,7 +175,7 @@ const PageExpeditions: FC<PageExpeditionsProps> = ({ params }) => {
             <Switch
               className='col-span-1'
               defaultValue={item.travelOptions.normal}
-              onChange={(e) => {
+              onSwitch={(e) => {
                 console.log(e)
                 item.travelOptions.normal = e
                 setItem({ ...item, travelOptions: item.travelOptions })
@@ -187,7 +187,7 @@ const PageExpeditions: FC<PageExpeditionsProps> = ({ params }) => {
             <Switch
               className='col-span-1'
               defaultValue={item.travelOptions.economy}
-              onChange={(e) => {
+              onSwitch={(e) => {
                 item.travelOptions.economy = e
                 setItem({ ...item, travelOptions: item.travelOptions })
                 saveItem({ ...item, travelOptions: item.travelOptions })
@@ -197,7 +197,7 @@ const PageExpeditions: FC<PageExpeditionsProps> = ({ params }) => {
             <Switch
               className='col-span-1'
               defaultValue={item.travelOptions.comfort}
-              onChange={(e) => {
+              onSwitch={(e) => {
                 item.travelOptions.comfort = e
                 setItem({ ...item, travelOptions: item.travelOptions })
                 saveItem({ ...item, travelOptions: item.travelOptions })
@@ -207,7 +207,7 @@ const PageExpeditions: FC<PageExpeditionsProps> = ({ params }) => {
             <Switch
               className='col-span-1'
               defaultValue={item.travelOptions.singleSupplement}
-              onChange={(e) => {
+              onSwitch={(e) => {
                 item.travelOptions.singleSupplement = e
                 setItem({ ...item, travelOptions: item.travelOptions })
                 saveItem({ ...item, travelOptions: item.travelOptions })
