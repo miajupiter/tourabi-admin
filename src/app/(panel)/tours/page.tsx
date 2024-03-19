@@ -1,7 +1,7 @@
 "use client"
 
 import React, { FC, useState, useEffect } from 'react'
-import PageHeader from '@/components/PageHeader'
+import PageHeader from '@/components/others/PageHeader'
 import { aliabiConfig } from 'aliabi'
 import Head from 'next/head'
 import { useLanguage } from '@/hooks/i18n'
@@ -9,7 +9,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import TableRowButtons from '@/aliabi/TableRowButtons'
 import Pagination from '@/aliabi/Pagination'
-import ModalOne from '@/components/ModalDialogs/ModalOne'
+import ModalOne from '@/components/others/ModalDialogs/ModalOne'
 import { ListPageTable, TdTitleAndImage, TdActivePassive } from '@/aliabi/Table'
 import { getList } from '@/lib/fetch'
 import { useLogin } from '@/hooks/useLogin'

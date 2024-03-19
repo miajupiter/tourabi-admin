@@ -7,8 +7,8 @@ import "@/styles/css/satoshi.css"
 import "@/styles/css/style.css"
 import "@/styles/css/global.css"
 import React, { useEffect, useState } from "react"
-import { Viewport } from 'next'
-// import { useLogin } from "@/hooks/useLogin"
+import { Metadata, Viewport } from 'next'
+
 import ClientCommons from './ClientCommons'
 import Head from 'next/head'
 import Loader from "@/widgets/common/Loader"
@@ -48,11 +48,12 @@ export default function RootLayout({
     setTimeout(() => setLoading(false), 0)
   }, [loading])
 
-  return (
-    <html lang="en" className='dark'>
-     
-      <body suppressHydrationWarning={true}
-        className='zemin text-base  '>
+  
+  return (<>
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body suppressHydrationWarning className='zemin text-base'>
+
         <div className="dark:bg-[#0b1121] dark:text-bodydark">
           {loading && <Loader />}
           {!loading && <>
@@ -62,5 +63,21 @@ export default function RootLayout({
         </div>
       </body>
     </html>
+  </>
+    // <html lang="en" className='dark'>
+
+    //   <body suppressHydrationWarning={true}
+    //     className='zemin text-base  '>
+    //     <div className="dark:bg-[#0b1121] dark:text-bodydark">
+    //       {loading && <Loader />}
+    //       {!loading && <>
+    //         <ClientCommons />
+    //         {children}
+    //       </>}
+    //     </div>
+    //   </body>
+    // </html>
   )
 }
+
+

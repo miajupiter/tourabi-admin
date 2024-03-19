@@ -1,5 +1,5 @@
 "use client"
-import DarkModeSwitcher from '@/components/DarkModeSwitcher'
+import DarkModeSwitcher from '@/components/others/DarkModeSwitcher'
 import Logo from '@/widgets/Logo'
 import React, { useState, ReactNode } from "react"
 

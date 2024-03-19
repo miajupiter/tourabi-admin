@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import FormCardGroup from "./FormCardGroup"
-import { ChevronDown } from '@/components/ChevronDown'
+import { ChevronDown } from '@/components/others/ChevronDown'
 
 export enum FormCardType {
   DEFAULT,

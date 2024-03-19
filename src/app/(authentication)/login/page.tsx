@@ -7,7 +7,7 @@ import Logo from '@/widgets/Logo'
 // import SecurityAbi from '@/images/security-abi.png'
 import { useLanguage } from '@/hooks/i18n'
 import { useLogin } from '@/hooks/useLogin'
-import ButtonPrimary from '@/components/ButtonPrimary'
+import ButtonPrimary from '@/components/others/ButtonPrimary'
 import InputWithLabel from '@/aliabi/InputWithLabel'
 import Head from 'next/head'
 // export const metadata: Metadata = {

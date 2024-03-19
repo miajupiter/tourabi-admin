@@ -44,8 +44,8 @@ const ListPageTable: FC<ListPageTableProps> = ({
   const RowComponent = (rowItem: any, index: number) => {
     return <>
       <tr key={index}
-        className={`h-16 border-b border-[#ddd] dark:border-strokedark border-opacity-15
-        ${index % 2 == 0 ? "bg-slate-50 dark:bg-[#0e1425]" : "bg-slate-200 bg-opacity-90 dark:bg-[#0c1222]"}
+        className={`h-16 border-b border-[#ddd] dark:border-strokedark border-opacity-15 
+        ${index % 2 == 1 && " bg-slate-200 dark:bg-slate-800"} 
         ${tbodyTrClassName}`}>
         {columns.map((th: any, colIndex: number) => <>
           <td key={colIndex} className={`px-2 py-2 font-medium ${tbodyTrTdClassName}`}>

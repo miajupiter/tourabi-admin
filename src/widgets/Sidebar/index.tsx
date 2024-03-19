@@ -7,7 +7,7 @@ import Image from "next/image"
 import SidebarLinkGroup from "./SidebarLinkGroup"
 import Logo from '../Logo'
 import { useLanguage } from '@/hooks/i18n'
-import {ChevronDown} from '@/components/ChevronDown'
+import {ChevronDown} from '@/components/others/ChevronDown'
 
 interface SidebarProps {
   sidebarOpen: boolean
@@ -66,7 +66,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear da11rk:bg-box11dark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      className={`absolute left-0 top-0 z-20 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear da11rk:bg-box11dark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}

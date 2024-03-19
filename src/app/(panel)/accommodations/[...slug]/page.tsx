@@ -4,9 +4,8 @@ import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
 
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
-import PageHeader from '@/components/PageHeader'
-import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
-import Link from 'next/link'
+import PageHeader from '@/components/others/PageHeader'
+
 import FormCard from '@/aliabi/FormCard'
 import { ImageItemProps, ImageListWidget } from '../../../../aliabi/ImageListWidget'
 import Switch from '@/aliabi/Switch'
@@ -18,6 +17,8 @@ import { countries } from 'country-list-json'
 import Input from '@/aliabi/Input'
 import { deleteItem } from '@/lib/fetch'
 import { useLogin } from '@/hooks/useLogin'
+import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
+// import { MdEditor } from '@/aliabi/MdEditor/MdEditor'
 
 export interface AccommodationPageDetailProps {
   params: { slug: string[] }
@@ -72,8 +73,8 @@ const ROOM_TYPES = [
 const mdxKod = '--1--1'
 
 const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) => {
-  const {token}=useLogin()
-  
+  const { token } = useLogin()
+
   const { t } = useLanguage()
 
   // const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false)
@@ -301,23 +302,25 @@ const AccommodationPageDetail: FC<AccommodationPageDetailProps> = ({ params }) =
                 }}
                 uploadFolder={'hotel-images/'}
                 readOnly={formStatus == FormStatus.view}
+
               />
             </FormCard>
-            <FormCard id="accommodation-description" title={t('Description')} defaultOpen={false}>
-              <div className="grid grid-cols-1 gap-4">
-                <AliAbiMDXEditor markdown={item.description || ''}
-                  readOnly={formStatus == FormStatus.view}
-                  onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={async (e) => {
-                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
-                      item.description = focusMarkDown
-                      setItem(item)
-                      setFocusMarkDown(mdxKod)
-                      await saveItem({ description: item.description })
-                    }
-                  }}
-                />
-              </div>
+            <FormCard id="accommodation-description" title={t('Description')}
+              defaultOpen={false}
+              bodyClassName='px-2 py-2'
+            >
+              <AliAbiMDXEditor
+                markdown={item.description || ''}
+                onChange={(markdown: string) => setFocusMarkDown(markdown)}
+                onBlur={async (e: FocusEvent) => {
+                  if (focusMarkDown != mdxKod && focusMarkDown != (item.description || '')) {
+                    item.description = focusMarkDown
+                    setItem(item)
+                    setFocusMarkDown(mdxKod)
+                    await saveItem({ description: item.description })
+                  }
+                }}
+              />
             </FormCard>
             <FormCard id="accommodation-features" title={t('Features')} defaultOpen={false}
             >

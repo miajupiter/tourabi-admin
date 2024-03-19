@@ -3,8 +3,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
-import PageHeader from '@/components/PageHeader'
-import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
+import PageHeader from '@/components/others/PageHeader'
 import FormCard, { FormCardType } from '@/aliabi/FormCard'
 import { TravelPlan } from './TravelPlan'
 import SwitchPassive from '@/aliabi/SwitchPassive'
@@ -14,11 +13,12 @@ import ImageListWidget, { ImageItemProps } from '@/aliabi/ImageListWidget'
 import { useLogin, UserRole } from '@/hooks/useLogin'
 import SelectWithLabel from '@/aliabi/SelectWithLabel'
 import { CurrencyType, CurrencyTypeList } from '@/lib/priceHelper'
-import { eventLog } from '@/lib/developerHelper'
-import { Input } from '@/aliabi/Input'
 import { getItem, deleteItem, putItem, postItem } from '@/lib/fetch'
 import Switch from '@/aliabi/Switch'
 import Link from 'next/link'
+import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
+// import {MdEditor } from '@/aliabi/MdEditor/MdEditor'
+
 export interface TourPageDetailProps {
   params: { tourId: string }
 }
@@ -334,6 +334,8 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
                 title={t('Images')}
                 images={item.images as ImageItemProps[]}
                 saveImages={(imgList: any) => {
+                  if (!item.images) item.images = []
+
                   item.images = imgList
                   setItem(item)
                   saveItem({ images: imgList })
@@ -345,21 +347,20 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
 
             <FormCard id="tours-description" title={t('Description')}
               defaultOpen={false}
+              bodyClassName='px-2 py-2'
             >
-              <div className="grid grid-cols-1  gap-4">
-                <AliAbiMDXEditor markdown={item.description || ''}
-                  readOnly={formStatus == FormStatus.view}
-                  onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={async (e) => {
-                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
-                      item.description = focusMarkDown
-                      setItem(item)
-                      setFocusMarkDown(mdxKod)
-                      await saveItem({ description: item.description })
-                    }
-                  }}
-                />
-              </div>
+              <AliAbiMDXEditor
+                markdown={item.description || ''}
+                onChange={(markdown: string) => setFocusMarkDown(markdown)}
+                onBlur={async (e: FocusEvent) => {
+                  if (focusMarkDown != mdxKod && focusMarkDown != (item.description || '')) {
+                    item.description = focusMarkDown
+                    setItem(item)
+                    setFocusMarkDown(mdxKod)
+                    await saveItem({ description: item.description })
+                  }
+                }}
+              />
             </FormCard>
 
             <FormCard id="tours-travelplan" title={t('Travel plan')} defaultOpen={false}
@@ -370,42 +371,41 @@ const TourPageDetail: FC<TourPageDetailProps> = ({ params }) => {
             <FormCard id="tours-inclusions" title={t('Inclusions')}
               defaultOpen={false}
               icon={(<i className="fa-solid fa-file-circle-plus"></i>)}
+              bodyClassName='px-2 py-2'
             >
-              <div className="grid grid-cols-1  gap-4">
-                <AliAbiMDXEditor markdown={item.inclusions || ''}
-                  readOnly={formStatus == FormStatus.view}
-                  onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={async (e) => {
-                    if (focusMarkDown != mdxKod && focusMarkDown != item.inclusions) {
-                      item.inclusions = focusMarkDown
-                      setItem(item)
-                      setFocusMarkDown(mdxKod)
-                      await saveItem({ inclusions: item.inclusions })
-                    }
-                  }}
-                />
+              <AliAbiMDXEditor
+                markdown={item.inclusions || ''}
+                onChange={(markdown: string) => setFocusMarkDown(markdown)}
+                onBlur={async (e: FocusEvent) => {
+                  if (focusMarkDown != mdxKod && focusMarkDown != (item.inclusions || '')) {
+                    item.inclusions = focusMarkDown
+                    setItem(item)
+                    setFocusMarkDown(mdxKod)
+                    await saveItem({ inclusions: item.inclusions })
+                  }
+                }}
+              />
 
-              </div>
             </FormCard>
 
             <FormCard id="tours-exclusions" title={t('Exclusions')}
               defaultOpen={false}
               icon={(<i className="fa-solid fa-file-circle-minus"></i>)}
+              bodyClassName='px-2 py-2'
             >
-              <div className="grid grid-cols-1 gap-4">
-                <AliAbiMDXEditor markdown={item.exclusions || ''}
-                  readOnly={formStatus == FormStatus.view}
-                  onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={async (e) => {
-                    if (focusMarkDown != mdxKod && focusMarkDown != item.exclusions) {
-                      item.exclusions = focusMarkDown
-                      setItem(item)
-                      setFocusMarkDown(mdxKod)
-                      await saveItem({ exclusions: item.exclusions })
-                    }
-                  }}
-                />
-              </div>
+              <AliAbiMDXEditor
+                markdown={item.exclusions || ''}
+                onChange={(markdown: string) => setFocusMarkDown(markdown)}
+                onBlur={async (e: FocusEvent) => {
+                  if (focusMarkDown != mdxKod && focusMarkDown != (item.exclusions || '')) {
+                    item.exclusions = focusMarkDown
+                    setItem(item)
+                    setFocusMarkDown(mdxKod)
+                    await saveItem({ exclusions: item.exclusions })
+                  }
+                }}
+              />
+
             </FormCard>
           </>}
 

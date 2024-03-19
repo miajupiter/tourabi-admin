@@ -4,67 +4,23 @@ import { v4 } from 'uuid'
 import { useLanguage } from '@/hooks/i18n'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect, FC } from 'react'
-import { ImageResizeFitType, uploadMultiToS3AliAbi } from '@/lib/s3bucketHepler'
+import { useState, useEffect } from 'react'
+import { uploadToS3Bucket } from '@/lib/s3bucketHepler'
 import { ShowError, ShowMessage } from '@/widgets/Alerts'
-import { useLogin } from '@/hooks/useLogin'
 
 export interface ImageItemProps {
   _id?: string
-  src: string,
-  width?: number,
-  height?: number,
-  size?: number,
-  alt?: string,
-  mimetype?: string,
-  fit: { type: String, index: true },
-  img800: {
-    src: string,
-    width: number,
-    height: number,
-    size: number,
-  },
-  img400: {
-    src: string,
-    width: number,
-    height: number,
-    size: number,
-  },
-  img200: {
-    src: string,
-    width: number,
-    height: number,
-    size: number,
-  },
-  img100: {
-    src: string,
-    width: number,
-    height: number,
-    size: number,
-  },
-  tags?: string,
-  createdDate?: string
-  index?: number
+  title?: string
+  src: string
+  width?: number
+  height?: number
+  alt?: string
+  thumbnail?: string
+  style?: string
+  index: number
 }
-
-export interface ImageListWidgetProps {
-  images: ImageItemProps[],
-  saveImages: any,
-  uploadFolder: string,
-  title?: string,
-  id?: string,
-  readOnly?: boolean
-  tags?: string,
-  fit?: string,
-}
-
-
-
-
-export const ImageListWidget: FC<ImageListWidgetProps> = ({ images, saveImages, uploadFolder, title, id = v4(), readOnly = false, tags }) => {
+export const ImageListWidget = ({ images, saveImages, uploadFolder, title, id = v4(), readOnly = false }: { images: ImageItemProps[], saveImages: any, uploadFolder: string, title?: string, id?: string, readOnly?: boolean }) => {
   const { t } = useLanguage()
-  const { token } = useLogin()
-
   const [uploading, setUploading] = useState(false)
 
   const deleteImage = (index: number) => {
@@ -91,10 +47,10 @@ export const ImageListWidget: FC<ImageListWidgetProps> = ({ images, saveImages, 
     return <></>
   }
 
-  const ImageItem: React.FC<ImageItemProps> = ({ ...props }) => {
-    const index=props.index || 0
+  const ImageItem: React.FC<ImageItemProps> = ({ _id, src, width, height, title, alt, thumbnail, style, index = 0 }) => {
+
     return (<>
-      <div className='relative flex items-start'>
+      <div key={index} className='relative flex items-start'>
         {!readOnly && <div className=' flex flex-col  items-start w-16 mt-3 space-y-4'>
           <div className='ms-auto me-2 h-12 w-10'>
             {` `}
@@ -137,11 +93,13 @@ export const ImageListWidget: FC<ImageListWidgetProps> = ({ images, saveImages, 
         </div>
         }
         <div className='w-full'>
-          {!props.img400.src && props.src && <>
-            <Image className='aspect-square rounded-lg' src={props.src || ''} alt={props.alt || ''} title={title || ''} width={props.width} height={props.height} />
+          {src && <>
+            <Image className='aspect-square rounded-lg' src={src} alt={alt || ''} title={title || ''} width={width} height={height} />
           </>}
-          {props.img400.src && <>
-            <Image className='aspect-square rounded-lg' src={props.img400.src || ''} alt={props.alt || ''} title={title || ''} width={props.img400.width} height={props.img400.height} />
+          {!src && <>
+            <div className='bg-slate-500 h-24 w-24 flex justify-center items-center'>
+              <span>QWERTY Boş SRC</span>
+            </div>
           </>}
         </div>
       </div>
@@ -150,8 +108,45 @@ export const ImageListWidget: FC<ImageListWidgetProps> = ({ images, saveImages, 
 
   const handleUpload = (files: FileList) => {
     if (files.length == 0) return
+    if (!images) {
+      images = []
+    }
+    var i = 0
+    const calistir = () => new Promise<void>((resolve, reject) => {
+      if (i >= files.length) {
+        resolve()
+      } else {
+        const file = files.item(i)!
+        const folder = `${uploadFolder}/${file.name}`.replace(/\/\//g, '/')
 
+        uploadToS3Bucket(file, folder)
+          .then(fileUrl => {
+            images.push({
+              title: file.name,
+              alt: file.name,
+              src: fileUrl,
+              thumbnail: fileUrl,
+              width: 500,
+              height: 500,
+              index: images.length
+            })
+            i++
+            setTimeout(() => calistir().then(resolve).catch(reject), 50)
+          })
+          .catch(reject)
+      }
+    })
 
+    setUploading(true)
+    calistir()
+      .then(() => {
+        saveImages(images)
+        setUploading(false)
+      })
+      .catch((err) => {
+        setUploading(false)
+        ShowError(err)
+      })
   }
 
   // useEffect(() => {
@@ -163,10 +158,12 @@ export const ImageListWidget: FC<ImageListWidgetProps> = ({ images, saveImages, 
     <>
       <div className="grid grid-cols-1 gap-4">
         <div className='grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' >
-          {images && (images || []).map((imgItem: ImageItemProps, index: number) => <>
-            <div key={index}
+          {(images || []).map((imgItem: ImageItemProps, index: number) => <>
+            <div key={'image-' + v4()}
               className={`w-full max-w-screen-2xl mt-3 rounded-[4px] p-4 bg-opacity-5 ${index % 2 == 0 ? 'bg-slate-600' : 'bg-amber-600'} `}>
-              {imgItem.src && <ImageItem index={index} {...imgItem} />}
+              {imgItem.src && <>
+                <ImageItem {...imgItem} index={index} />
+              </>}
             </div>
           </>)}
         </div>
@@ -177,22 +174,11 @@ export const ImageListWidget: FC<ImageListWidgetProps> = ({ images, saveImages, 
               type="file"
               className="inline-flex items-center justify-center border rounded-md bg-primary px-4 py-4 text-center font-medium text-white hover:bg-opacity-90 "
               accept="image/*"
-              multiple={false}
+              multiple={true}
               onChange={async (e) => {
                 const files = e.target.files
                 if (files) {
-                  setUploading(true)
-                  uploadMultiToS3AliAbi(files, uploadFolder, ImageResizeFitType.cover, token, 'tours, silk road, asia, fitifitifitif fitifit')
-                    .then(result => {
-                      if (!images) images = []
-                      images.push(result)
-                      saveImages(images)
-                      console.log('uploadToS3AliAbi result:', result)
-                    })
-                    .catch((err) => console.log('uploadToS3AliAbi err:', err))
-                    .finally(() => {
-                      setUploading(false)
-                    })
+                  handleUpload(files)
                 }
               }}
             />

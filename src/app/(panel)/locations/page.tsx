@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-import PageHeader from '@/components/PageHeader'
+import PageHeader from '@/components/others/PageHeader'
 import aliabiConfig from 'aliabi'
 import Image from "next/image"
 import Head from 'next/head'

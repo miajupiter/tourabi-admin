@@ -4,9 +4,7 @@ import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
 import { countries } from 'country-list-json'
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
-import PageHeader from '@/components/PageHeader'
-import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
-import Link from 'next/link'
+import PageHeader from '@/components/others/PageHeader'
 import FormCard from '@/aliabi/FormCard'
 import { ImageItemProps, ImageListWidget } from '@/aliabi/ImageListWidget'
 import Switch from '@/aliabi/Switch'
@@ -16,6 +14,8 @@ import InputWithLabel from '@/aliabi/InputWithLabel'
 import SelectWithLabel from '@/aliabi/SelectWithLabel'
 import { useLogin } from '@/hooks/useLogin'
 import { deleteItem } from '@/lib/fetch'
+import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
+// import {MdEditor } from '@/aliabi/MdEditor/MdEditor'
 
 export interface LocationPageDetailProps {
   params: { slug: string[] }
@@ -233,12 +233,13 @@ const LocationPageDetail: FC<LocationPageDetailProps> = ({ params }) => {
 
               <FormCard id="location-description" title={t('Description')}
                 defaultOpen={false}
+                bodyClassName='px-2 py-2'
               >
-                <AliAbiMDXEditor markdown={item.description || ''}
-                  readOnly={formStatus == FormStatus.view}
-                  onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={async (e) => {
-                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
+                <AliAbiMDXEditor
+                  markdown={item.description || ''}
+                  onChange={(markdown: string) => setFocusMarkDown(markdown)}
+                  onBlur={async (e: FocusEvent) => {
+                    if (focusMarkDown != mdxKod && focusMarkDown != (item.description || '')) {
                       item.description = focusMarkDown
                       setItem(item)
                       setFocusMarkDown(mdxKod)

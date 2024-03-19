@@ -3,7 +3,7 @@
 
 // import Breadcrumb from "@/widgets/Breadcrumbs/Breadcrumb"
 // import DestinationList from "./DestinationList"
-import PageHeader from '@/components/PageHeader'
+import PageHeader from '@/components/others/PageHeader'
 import aliabiConfig from 'aliabi'
 
 import Head from 'next/head'

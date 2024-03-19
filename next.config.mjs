@@ -1,22 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['@mdxeditor/editor'],
   reactStrictMode: true,
   poweredByHeader: false,
-  // output: "standalone",
+  output: "standalone",
   basePath: "",
   pageExtensions: ['ts', 'tsx', 'jsx', 'mdx'],
-  cleanDistDir: true,
   crossOrigin: 'anonymous',
-  compress: false,
   images: {
-    unoptimized: true,
-    disableStaticImages: true,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 768],
+    // unoptimized: true,
+    // disableStaticImages: true,
+    // deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    // imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 768],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "eu2.contabostorage.com/tourabi",
+        hostname: "eu2.contabostorage.com",
         port: "",
         pathname: "/**",
       },

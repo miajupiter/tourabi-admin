@@ -27,7 +27,7 @@ const Page404 = () => {
 
           <div className="w-full text-center pt-8">
             <Link href="javascript:history.back(1)"
-              className='text-4xl border border-indigo-600 text-white px-3 py-1 rounded-md'
+              className='text-4xl border border-indigo-600 text-whi11te px-3 py-1 rounded-md'
             >
               <i className="fa-solid fa-arrow-left-long"></i>
             </Link>

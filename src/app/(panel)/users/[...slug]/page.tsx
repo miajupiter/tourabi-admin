@@ -4,7 +4,7 @@ import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
 
 import { useLanguage } from '@/hooks/i18n'
 import { StaticImageData } from 'next/image'
-import PageHeader from '@/components/PageHeader'
+import PageHeader from '@/components/others/PageHeader'
 import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
 import Link from 'next/link'
 import FormCard from '@/aliabi/FormCard'

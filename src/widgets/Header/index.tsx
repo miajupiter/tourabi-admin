@@ -1,5 +1,5 @@
 import Link from "next/link"
-import DarkModeSwitcher from "../../components/DarkModeSwitcher"
+import DarkModeSwitcher from "../../components/others/DarkModeSwitcher"
 import DropdownMessage from "./DropdownMessage"
 import DropdownNotification from "./DropdownNotification"
 import DropdownUser from "./DropdownUser"

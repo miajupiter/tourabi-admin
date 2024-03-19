@@ -1,11 +1,10 @@
 "use client"
 
 import React, { FC, Fragment, useState, useEffect, useRef } from 'react'
-import { countries } from 'country-list-json'
 import { useLanguage } from '@/hooks/i18n'
-import { StaticImageData } from 'next/image'
-import PageHeader from '@/components/PageHeader'
-import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
+import { StaticImageData, } from 'next/image'
+import PageHeader from '@/components/others/PageHeader'
+
 import Link from 'next/link'
 import FormCard from '@/aliabi/FormCard'
 import { ImageItemProps, ImageListWidget } from '@/aliabi/ImageListWidget'
@@ -16,6 +15,9 @@ import InputWithLabel from '@/aliabi/InputWithLabel'
 import SelectWithLabel from '@/aliabi/SelectWithLabel'
 import { useLogin } from '@/hooks/useLogin'
 import { deleteItem } from '@/lib/fetch'
+import { countries } from 'country-list-json'
+import { MdEditor } from '@/aliabi/MdEditor/MdEditor'
+import { AliAbiMDXEditor } from '@/aliabi/Editor/AliAbiMDXEditor'
 
 export interface DestinationPageDetailProps {
   params: { slug: string[] }
@@ -29,7 +31,7 @@ export interface DestinationItemType {
   description?: string
 
   country?: string
-  images?: StaticImageData[] | []
+  images: ImageItemProps[]
 
   passive?: boolean
 }
@@ -132,8 +134,10 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
       {item &&
         <div className="grid grid-cols-1 gap-9 ">
           <div className="flex flex-col gap-9">
-            <div className="rounded-[8px] border border-stroke shadow-default dark:border-strokedark">
-              <div className="grid grid-cols-1 gap-4 p-4">
+            <FormCard id="destination-head" title={item.title || '...'} defaultOpen={true}
+              icon={(<i className="fa-solid fa-map-location-dot"></i>)}
+            >
+              <div className="grid grid-cols-1 gap-4">
                 <div className='flex flex-row'>
                   <InputWithLabel className='basis-4/5'
                     readOnly={formStatus == FormStatus.view}
@@ -178,7 +182,7 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
                   </SelectWithLabel>
                 </div>
               </div>
-            </div>
+            </FormCard>
             {item._id && <>
               <FormCard id="destination-images" title={t('Images')} defaultOpen={false}
                 icon={(<i className="fa-regular fa-images"></i>)}
@@ -187,23 +191,25 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
                   title={t('Images')}
                   images={item.images as ImageItemProps[]}
                   saveImages={(imgList: any) => {
+                    if (!item.images) item.images = []
+
                     item.images = imgList
                     setItem(item)
                     saveItem({ images: imgList })
                   }}
                   uploadFolder={'destinations/'}
-                  readOnly={formStatus == FormStatus.view}
-                />
+                  readOnly={formStatus == FormStatus.view} />
               </FormCard>
 
               <FormCard id="destination-description" title={t('Description')}
                 defaultOpen={false}
+                bodyClassName='px-2 py-2'
               >
-                <AliAbiMDXEditor markdown={item.description || ''}
-                  readOnly={formStatus == FormStatus.view}
-                  onChange={(markdown) => setFocusMarkDown(markdown)}
-                  onBlur={async (e) => {
-                    if (focusMarkDown != mdxKod && focusMarkDown != item.description) {
+                <AliAbiMDXEditor
+                  markdown={item.description || ''}
+                  onChange={(markdown: string) => setFocusMarkDown(markdown)}
+                  onBlur={async (e: FocusEvent) => {
+                    if (focusMarkDown!=mdxKod && focusMarkDown != (item.description || '')) {
                       item.description = focusMarkDown
                       setItem(item)
                       setFocusMarkDown(mdxKod)
@@ -211,6 +217,7 @@ const DestinationPageDetail: FC<DestinationPageDetailProps> = ({ params }) => {
                     }
                   }}
                 />
+             
               </FormCard>
             </>}
           </div>
